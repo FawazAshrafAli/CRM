@@ -1,0 +1,43 @@
+from django.db import models
+
+class Lead(models.Model):
+    # Lead Information
+    prefix = models.CharField(max_length=25, blank=False, null=False)
+    first_name = models.CharField(max_length=100, blank=False, null=False)
+    last_name = models.CharField(max_length=100, blank=False, null=False)
+    organization = models.CharField(max_length=150, blank=False, null=False)
+    title = models.CharField(max_length=150, blank=False, null=False)
+    lead_status = models.CharField(max_length=150, blank=False, null=False, default = 'OPEN - Not Contacted')
+    user_responsible = models.CharField(max_length=150, blank=False, null=False)
+    lead_rating = models.IntegerField(blank=True, null=True)
+
+    # Additional Information
+    email = models.EmailField(max_length=254, blank=False, null=False)
+    email_opted_out = models.BooleanField(default=False)
+    phone = models.CharField(max_length=20, blank=False, null=False)
+    mobile_phone = models.CharField(max_length=20, blank=True, null=True)
+    fax = models.CharField(max_length=20, blank=True, null=True)
+    website = models.CharField(max_length=150, blank=True, null=True)
+    industry = models.CharField(max_length=150, blank=True, null=True)
+    number_of_employees = models.CharField(max_length=50, blank=True, null=True)
+    lead_source = models.CharField(max_length=150, blank=True, null=True, default="Web")
+
+    # Additional Information
+    mailing_address = models.TextField(blank=True, null=True)
+    mailing_city = models.CharField(max_length=50, blank=True, null=True)
+    mailing_state = models.CharField(max_length=50, blank=True, null=True)
+    mailing_postal_code = models.CharField(max_length=15, blank=True, null=True)
+    mailing_country = models.CharField(max_length=100, blank=True, null=True, default="India")
+
+    # Description Information
+    description = models.TextField(blank=True, null=True)
+
+    # Tag Information
+    tag_list = models.CharField(max_length=150, blank=True, null=True)
+
+    # Permissions
+    permission = models.CharField(max_length=100, blank=True, null=True)
+    
+    lead_created = models.DateTimeField(auto_now_add=True)
+    lead_modified = models.DateTimeField(auto_now=True)
+

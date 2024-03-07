@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Create Lead</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+    </head>
+
+    <body>
+        <header class="container">
+            <h1>Create Lead</h1>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </header>
+        <main class="container">            
+            <div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h4 class="modal-title text-center">Add Lead</h4>
+<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+<div class="row">
+<div class="col-md-12">
+<form method="POST" action="{% url 'create_lead' %}">
+    {% csrf_token %}
+<h4>Lead Information</h4>
+<div class="form-group row">
+<div class="col-md-12"><label class="col-form-label">Name <span class="text-danger">*</span></label></div>
+<div class="col-md-4">
+<input class="form-control" type="text" placeholder="Prefix" name="prefix" required>
+</div>
+<div class="col-md-4">
+<input class="form-control" type="text" placeholder="First name" name="first_name" required>
+</div>
+<div class="col-md-4">
+<input class="form-control" type="text" placeholder="Last name" name="last_name" required>
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-6">
+<label class="col-form-label" for="organization">Organization</label>
+<select class="form-control" name="organization" required>
+    <option>Select</option>
+    <option value="Umbrella">Umbrella</option>
+    <option value="Acme Corporation">Acme Corporation</option>
+    <option value="Soylent Corp">Soylent Corp</option>
+    <option value="Howe-Blanda LLC">Howe-Blanda LLC</option>
+</select>
+</div>
+<div class="col-sm-6">
+<label for="title" class="col-form-label">Title</label>
+<input type="text" class="form-control" name="title" placeholder="Title" required>
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-6">
+<label class="col-form-label" for="lead_status">Lead Status</label>
+<select class="form-control" name="lead_status" required>
+<option>Select</option>
+<option value="Open - Contacted">Open - Contacted</option>
+<option value="Open - Not Contacted">Open - Not Contacted</option>
+</select>
+</div>
+<div class="col-sm-6">
+<label class="col-form-label" for="user_responsible">User Responsible</label>
+<select class="form-control" name="user_responsible" required>
+<option>Select</option>
+<option value="John Doe">John Doe</option>
+<option value="Anderson">Anderson</option>
+</select>
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-6">
+<label class="col-form-label" for="lead_rating">Lead Rating</label>
+<input type="number" class="form-control" name="lead_rating" placeholder="Rating">
+</div>
+</div>
+<h4>Additional Information</h4>
+<div class="form-group row">
+<div class="col-sm-6">
+<label class="col-form-label" for="email">Email</label>
+<input type="text" class="form-control" name="email" placeholder="Email" required>
+</div>
+<div class="col-sm-6">
+<label class="col-form-label">Email Opted out</label>
+<div>
+<label class="container-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</div>
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-6">
+<label class="col-form-label" for="phone">Phone</label>
+<input type="text" class="form-control" name="phone" placeholder="Phone" required>
+</div>
+<div class="col-sm-6">
+<label class="col-form-label">Mobile Phone</label>
+<input type="text" class="form-control" name="m-phone" placeholder="Phone">
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-6">
+<label class="col-form-label">Fax</label>
+<input type="text" class="form-control" name="fax" placeholder="Fax">
+</div>
+<div class="col-sm-6">
+<label class="col-form-label">Website</label>
+<input type="text" class="form-control" name="website" placeholder="Website">
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-6">
+<label class="col-form-label">Industry</label>
+<input type="text" class="form-control" name="assistant-phone" placeholder="Industry">
+</div>
+<div class="col-sm-6">
+<label class="col-form-label">Number of Employees</label>
+<input type="text" class="form-control" name="employees" placeholder="Number of Employees">
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-6">
+<label class="col-form-label">Lead Source</label>
+<select class="form-control">
+<option>Web</option>
+<option>Phone Enquiry</option>
+<option>Partner Referral</option>
+<option>Purchased List</option>
+<option>Other</option>
+</select>
+</div>
+</div>
+<h4>Address Information</h4>
+<div class="form-group row">
+<div class="col-sm-12">
+<label class="col-form-label">Mailing Address</label>
+<textarea class="form-control" rows="3" name="address" placeholder="Address"></textarea>
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-6">
+<input type="text" class="form-control" placeholder="City" name="city">
+</div>
+<div class="col-sm-6">
+<input type="text" class="form-control" placeholder="State/Provience" name="state">
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-6">
+<input type="text" class="form-control" placeholder="Postal Code" name="postal">
+</div>
+<div class="col-sm-6">
+<select class="form-control">
+<option>India</option>
+<option>US</option>
+<option>Japan</option>
+</select>
+</div>
+</div>
+<h4>Description Information</h4>
+<div class="form-group row">
+<div class="col-sm-12">
+<label class="col-form-label">Description </label>
+<textarea class="form-control" rows="3" id="description" placeholder="Description"></textarea>
+</div>
+</div>
+<h4>Tag Information</h4>
+<div class="form-group row">
+<div class="col-sm-12">
+<label class="col-form-label">Tag List</label>
+<input type="text" class="form-control" name="tag-name" placeholder="Tag List">
+</div>
+</div>
+<h4>Permissions</h4>
+<div class="form-group row">
+<div class="col-sm-6">
+<label class="col-form-label">Permission</label>
+<select class="form-control">
+<option>Task Visibility</option>
+<option>Private Task</option>
+</select>
+</div>
+</div>
+<div class="text-center py-3">
+<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+<a href="{% url 'list_leads' %}" class="btn btn-secondary btn-rounded">Cancel</a>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+        </main>
+        <footer>
+            <!-- place footer here -->
+        </footer>
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

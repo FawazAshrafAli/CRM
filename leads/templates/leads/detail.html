@@ -1,0 +1,1946 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Detail Lead</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+    </head>
+
+    <body>
+        <header class="container">
+            <h1>Detail Lead</h1>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <a href="{% url 'update_lead' lead.pk %}">Update Lead</a>
+            <a href="{% url 'delete_lead' lead.pk %}">Delete Lead</a>
+        </header>
+        <main class="container">
+            <div class="modal-content">
+                <div class="modal-header">
+                <div class="row w-100">
+                <div class="col-md-7 account d-flex">
+                <div class="company_img">
+                <img src="assets/img/system-user.png" alt="User" class="user-image">
+                </div>
+                <div>
+                <p class="mb-0">System User</p>
+                <span class="modal-title">{{lead.user_responsible}}</span>
+                <span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
+                <span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                </div>
+                </div>
+                <div class="col-md-5 text-end">
+                <ul class="list-unstyled list-style-none">
+                <li class="dropdown list-inline-item"><br>
+                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Actions </a>
+                <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Edit This Lead</a>
+                <a class="dropdown-item" href="#">Change Lead Image</a>
+                <a class="dropdown-item" href="#">Delete This Lead</a>
+                <a class="dropdown-item" href="#">Email This Lead</a>
+                <a class="dropdown-item" href="#">Clone This Lead</a>
+                <a class="dropdown-item" href="#">Change Record Owner</a>
+                <a class="dropdown-item" href="#">Generate Merge Document</a>
+                <a class="dropdown-item" href="#">Change Lead to Contact</a>
+                <a class="dropdown-item" href="#">Convert Lead</a>
+                <a class="dropdown-item" href="#">Print This Lead</a>
+                <a class="dropdown-item" href="#">Merge Into Lead</a>
+                <a class="dropdown-item" href="#">SmartMerge Lead</a>
+                <a class="dropdown-item" href="#">Add Activity Set To Lead</a>
+                <a class="dropdown-item" href="#">Add New Event For Lead</a>
+                </div>
+                </li>
+                </ul>
+                </div>
+                </div>
+                <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="card due-dates">
+                <div class="card-body">
+                <div class="row">
+                <div class="col">
+                <span>Lead Status</span>
+                <p>{{lead.lead_status}}</p>
+                </div>
+                <div class="col">
+                <span>Name</span>
+                <p>{{lead.first_name}} {{lead.last_name}}</p>
+                </div>
+                <div class="col">
+                <span>Lead Source</span>
+                <p>{{lead.lead_source}}</p>
+                </div>
+                <div class="col">
+                <span>Lead Rating</span>
+                <p>{{lead.lead_rating}}</p>
+                </div>
+                <div class="col">
+                <span>Lead owner</span>
+                <p>{{lead.user_responsible}}</p>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="modal-body">
+                <div class="row">
+                <div class="col-md-12">
+                <ul class="cd-breadcrumb triangle nav nav-tabs w-100 crms-steps" role="tablist">
+                <li role="presentation">
+                <a href="#not-contacted" class="" aria-controls="not-contacted" role="tab" data-bs-toggle="tab" aria-expanded="true" aria-selected="false">
+                <span class="octicon octicon-light-bulb"></span>Not Contacted
+                </a>
+                </li>
+                <li role="presentation" class="">
+                <a href="#attempted-contact" aria-controls="attempted-contact" role="tab" data-bs-toggle="tab" aria-expanded="false" class="" aria-selected="false">
+                <span class="octicon octicon-diff-added"></span>Attempted Contact
+                </a>
+                </li>
+                <li role="presentation" class="">
+                <a href="#contact" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false" class="" aria-selected="false">
+                <span class="octicon octicon-comment-discussion"></span>Contact
+                </a>
+                </li>
+                <li role="presentation" class="">
+                <a href="#converted" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false" class="active" aria-selected="true">
+                <span class="octicon octicon-comment-discussion"></span>Converted
+                </a>
+                </li>
+                <li role="presentation" class="d-none">
+                <a href="#converted" aria-controls="converted" role="tab" data-bs-toggle="tab" aria-expanded="false">
+                <span class="octicon octicon-verified"></span>Converted
+                </a>
+                </li>
+                </ul>
+                </div>
+                </div>
+                <div class="tab-content pipeline-tabs border-0">
+                <div role="tabpanel" class="tab-pane p-0" id="not-contacted">
+                <div class="">
+                <div class="task-infos">
+                <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified">
+                <li class="nav-item"><a class="nav-link active" href="#not-contact-task-details" data-bs-toggle="tab">Details</a></li>
+                <li class="nav-item"><a class="nav-link" href="#not-contact-task-related" data-bs-toggle="tab">Related</a></li>
+                <li class="nav-item"><a class="nav-link" href="#not-contact-task-activity" data-bs-toggle="tab">Activity</a></li>
+                </ul>
+                <div class="tab-content">
+                <div class="tab-pane show active p-0" id="not-contact-task-details">
+                <div class="crms-tasks">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Lead Information</div>
+                <div class="accordion-body js-accordion-body" style="display: none;">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td class="border-0">Record ID</td>
+                <td class="border-0">124192692</td>
+                </tr>
+                <tr>
+                <td>Name</td>
+                <td>{{lead.first_name}} {{lead.last_name}}</td>
+                </tr>
+                <tr>
+                <td>Title</td>
+                <td>{{lead.title}}</td>
+                </tr>
+                <tr>
+                <td>Organization</td>
+                <td>{{lead.organization}}</td>
+                </tr>
+                <tr>
+                <td>Lead Status</td>
+                <td>{{lead.lead_status}}</td>
+                </tr>
+                <tr>
+                <td>User Responsible</td>
+                <td>Williams</td>
+                </tr>
+                <tr>
+                <td>Link Email Address</td>
+                <td>{{lead.email}}</td>
+                </tr>
+                <tr>
+                <td>Lead Owner</td>
+                <td>{{lead.user_responsible}}</td>
+                </tr>
+                <tr>
+                <td>Lead Created</td>
+                <td>03-Jun-20 1:14 AM</td>
+                </tr>
+                <tr>
+                <td>Date of Last Activity</td>
+                <td>09/01/2020</td>
+                </tr>
+                <tr>
+                <td>Date of Next Activity</td>
+                <td>09/01/2021</td>
+                </tr>
+                <tr>
+                <td>Lead Rating</td>
+                <td>{{lead.lead_rating}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Additional Information</div>
+                <div class="accordion-body js-accordion-body" style="display: none;">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Email Address</td>
+                <td>{{lead.email}}</td>
+                </tr>
+                <tr>
+                <td>Email Opted Out</td>
+                <td>{{lead.email_opted_out}}</td>
+                </tr>
+                <tr>
+                <td>Phone</td>
+                <td>{{lead.phone}}</td>
+                </tr>
+                <tr>
+                <td>Mobile Phone</td>
+                <td>{{lead.phone}}</td>
+                </tr>
+                <tr>
+                <td>Fax</td>
+                <td>{{lead.phone}}</td>
+                </tr>
+                <tr>
+                <td>Website</td>
+                <t{{lead.phone}}td>
+                </tr>
+                <tr>
+                <td>Industry</td>
+                <t{{lead.phone}}on Security</td>
+                </tr>
+                <tr>
+                <td>Number of Employees</td>
+                <td>{{lead.number_of_employees}}</td>
+                </tr>
+                <tr>
+                <td>Lead Source</td>
+                <td>Phone Enquiry</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Address Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td> Address</td>
+                <td>{{lead.mailing_address}}, {{lead.mailing_city}}, {{lead.mailing_state}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Description Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Description</td>
+                <td>{{lead.description}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Tag Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td class="border-0">Tag List</td>
+                <td class="border-0">{{lead.tag_list}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Lead Conversion Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Converted Contact</td>
+                <td>John</td>
+                </tr>
+                <tr>
+                <td>Converted Organization</td>
+                <td>Umbrella</td>
+                </tr>
+                <tr>
+                <td>Converted Opportunity</td>
+                <td>Lorem ipsum</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tab-pane task-related p-0" id="not-contact-task-related">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="card bg-gradient-danger card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Notes</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="card bg-gradient-info card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Files</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="crms-tasks  p-2">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Notes </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_1_length"><label>Show <select name="DataTables_Table_1_length" aria-controls="DataTables_Table_1" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_1" role="grid" aria-describedby="DataTables_Table_1_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Size: activate to sort column ascending" style="width: 0px;">Size</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 0px;">Category</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Date Added: activate to sort column ascending" style="width: 0px;">Date Added</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Added by: activate to sort column ascending" style="width: 0px;">Added by</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Document
+                </td>
+                <td>50KB</td>
+                <td>phone Call</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>{{lead.user_responsible}}</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Finance
+                </td>
+                <td>100KB</td>
+                <td>Enquiry</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>Smith</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_1_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_1_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_1_previous"><a href="#" aria-controls="DataTables_Table_1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_1_next"><a href="#" aria-controls="DataTables_Table_1" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Files </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_2_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_2_length"><label>Show <select name="DataTables_Table_2_length" aria-controls="DataTables_Table_2" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_2" role="grid" aria-describedby="DataTables_Table_2_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_2" rowspan="1" colspan="1" aria-label="Size: activate to sort column ascending" style="width: 0px;">Size</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_2" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 0px;">Category</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_2" rowspan="1" colspan="1" aria-label="Date Added: activate to sort column ascending" style="width: 0px;">Date Added</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_2" rowspan="1" colspan="1" aria-label="Added by: activate to sort column ascending" style="width: 0px;">Added by</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_2" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Document
+                </td>
+                <td>50KB</td>
+                <td>Email</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>{{lead.user_responsible}}</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Finance
+                </td>
+                <td>100KB</td>
+                <td>Phone Enquiry</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>Smith</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_2_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_2_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_2_previous"><a href="#" aria-controls="DataTables_Table_2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_2" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_2_next"><a href="#" aria-controls="DataTables_Table_2" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tab-pane p-0" id="not-contact-task-activity">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="card bg-gradient-danger card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Total Activities</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="card bg-gradient-success card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Last Activity</h4>
+                <span>1</span>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="crms-tasks  p-2">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Upcoming Activity </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_3_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_3_length"><label>Show <select name="DataTables_Table_3_length" aria-controls="DataTables_Table_3" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_3" role="grid" aria-describedby="DataTables_Table_3_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Type: activate to sort column descending" style="width: 0px;">Type</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Activity Name: activate to sort column ascending" style="width: 0px;">Activity Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Assigned To: activate to sort column ascending" style="width: 0px;">Assigned To</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Due Date: activate to sort column ascending" style="width: 0px;">Due Date</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Call Enquiry</td>
+                <td>{{lead.user_responsible}}</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Phone Enquiry</td>
+                <td>David</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_3_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_3_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_3_previous"><a href="#" aria-controls="DataTables_Table_3" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_3" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_3_next"><a href="#" aria-controls="DataTables_Table_3" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Past Activity</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_4_length"><label>Show <select name="DataTables_Table_4_length" aria-controls="DataTables_Table_4" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_4" role="grid" aria-describedby="DataTables_Table_4_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_4" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Type: activate to sort column descending" style="width: 0px;">Type</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_4" rowspan="1" colspan="1" aria-label="Activity Name: activate to sort column ascending" style="width: 0px;">Activity Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_4" rowspan="1" colspan="1" aria-label="Assigned To: activate to sort column ascending" style="width: 0px;">Assigned To</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_4" rowspan="1" colspan="1" aria-label="Due Date: activate to sort column ascending" style="width: 0px;">Due Date</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_4" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_4" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Call Enquiry</td>
+                <td>{{lead.user_responsible}}</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_4_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_4_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_4_previous"><a href="#" aria-controls="DataTables_Table_4" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_4" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_4_next"><a href="#" aria-controls="DataTables_Table_4" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div role="tabpanel" class="tab-pane p-0" id="attempted-contact">
+                <div>
+                <div class="task-infos">
+                <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified">
+                <li class="nav-item"><a class="nav-link active" href="#attempted-task-details" data-bs-toggle="tab">Details</a></li>
+                <li class="nav-item"><a class="nav-link" href="#attempted-task-related" data-bs-toggle="tab">Related</a></li>
+                <li class="nav-item"><a class="nav-link" href="#attempted-task-activity" data-bs-toggle="tab">Activity</a></li>
+                </ul>
+                <div class="tab-content">
+                <div class="tab-pane show active p-0" id="attempted-task-details">
+                <div class="crms-tasks">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Lead Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Record ID</td>
+                <td>124192692</td>
+                </tr>
+                <tr>
+                <td>Name</td>
+                <td>{{lead.first_name}} {{lead.last_name}}</td>
+                </tr>
+                <tr>
+                <td>Title</td>
+                <td>{{lead.title}}</td>
+                </tr>
+                <tr>
+                <td>Organization</td>
+                <td>{{lead.organization}}</td>
+                </tr>
+                <tr>
+                <td>Lead Status</td>
+                <td>{{lead.lead_status}}</td>
+                </tr>
+                <tr>
+                <td>User Responsible</td>
+                <td>{{lead.user_responsible}}</td>
+                </tr>
+                <tr>
+                <td>Link Email Address</td>
+                <td>{{lead.email}}</td>
+                </tr>
+                <tr>
+                <td>Lead Owner</td>
+                <td>{{lead.user_responsible}}</td>
+                </tr>
+                <tr>
+                <td>Lead Created</td>
+                <td>{{lead.lead_created}}</td>
+                </tr>
+                <tr>
+                <td>Date of Last Activity</td>
+                <td>09/03/2000</td>
+                </tr>
+                <tr>
+                <td>Date of Next Activity</td>
+                <td>10/03/2000</td>
+                </tr>
+                <tr>
+                <td>Lead Rating</td>
+                <td>{{lead.lead_rating}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Additional Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Email Address</td>
+                <td>{{lead.email}}</td>
+                </tr>
+                <tr>
+                <td>Email Opted Out</td>
+                <td>{{lead.email_opted_out}}</td>
+                </tr>
+                <tr>
+                <td>Phone</td>
+                <td>{{lead.phone}}</td>
+                </tr>
+                <tr>
+                <td>Mobile Phone</td>
+                <td>{{lead.mobile_phone}}</td>
+                </tr>
+                <tr>
+                <td>Fax</td>
+                <td>{{lead.fax}}</td>
+                </tr>
+                <tr>
+                <td>Website</td>
+                <td>{{lead.website}}</td>
+                </tr>
+                <tr>
+                <td>Industry</td>
+                <td>{{lead.industry}}</td>
+                </tr>
+                <tr>
+                <td>Number of Employees</td>
+                <td>{{lead.number_of_employees}}</td>
+                </tr>
+                <tr>
+                <td>Lead Source</td>
+                <td>Phone Enquiry</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Address Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td> Address</td>
+                <td>{{lead.mailing_address}}, {{lead.mailing_city}}, {{lead.mailing_state}}, {{lead.mailing_postal_code}}, {{lead.mailing_country}}.</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Description Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Description</td>
+                <td>{{lead.description}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Tag Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td class="border-0">Tag List</td>
+                <td class="border-0">{{lead.tag_list}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Lead Conversion Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Converted Contact</td>
+                <td>John Smith</td>
+                </tr>
+                <tr>
+                <td>Converted Organization</td>
+                <td>Claimpett Corp</td>
+                </tr>
+                <tr>
+                <td>Converted Opportunity</td>
+                <td>Lorem ipsum</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tab-pane task-related p-0" id="attempted-task-related">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="card bg-gradient-danger card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Notes</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="card bg-gradient-info card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Files</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="crms-tasks  p-2">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Notes </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_5_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_5_length"><label>Show <select name="DataTables_Table_5_length" aria-controls="DataTables_Table_5" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_5" role="grid" aria-describedby="DataTables_Table_5_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_5" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_5" rowspan="1" colspan="1" aria-label="Size: activate to sort column ascending" style="width: 0px;">Size</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_5" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 0px;">Category</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_5" rowspan="1" colspan="1" aria-label="Date Added: activate to sort column ascending" style="width: 0px;">Date Added</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_5" rowspan="1" colspan="1" aria-label="Added by: activate to sort column ascending" style="width: 0px;">Added by</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_5" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Document
+                </td>
+                <td>50KB</td>
+                <td>Phone Call</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>{{lead.user_responsible}}</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Finance
+                </td>
+                <td>100KB</td>
+                <td>Email</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>Smith</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_5_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_5_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_5_previous"><a href="#" aria-controls="DataTables_Table_5" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_5" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_5_next"><a href="#" aria-controls="DataTables_Table_5" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Files </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_6_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_6_length"><label>Show <select name="DataTables_Table_6_length" aria-controls="DataTables_Table_6" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_6" role="grid" aria-describedby="DataTables_Table_6_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_6" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_6" rowspan="1" colspan="1" aria-label="Size: activate to sort column ascending" style="width: 0px;">Size</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_6" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 0px;">Category</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_6" rowspan="1" colspan="1" aria-label="Date Added: activate to sort column ascending" style="width: 0px;">Date Added</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_6" rowspan="1" colspan="1" aria-label="Added by: activate to sort column ascending" style="width: 0px;">Added by</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_6" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Document
+                </td>
+                <td>50KB</td>
+                <td>Enquiry</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>{{lead.user_responsible}}</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Finance
+                </td>
+                <td>100KB</td>
+                <td>Email</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>Smith</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_6_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_6_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_6_previous"><a href="#" aria-controls="DataTables_Table_6" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_6" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_6_next"><a href="#" aria-controls="DataTables_Table_6" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tab-pane p-0" id="attempted-task-activity">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="card bg-gradient-danger card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Total Activities</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="card bg-gradient-success card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Last Activity</h4>
+                <span>1</span>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="crms-tasks  p-2">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Upcoming Activity </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_7_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_7_length"><label>Show <select name="DataTables_Table_7_length" aria-controls="DataTables_Table_7" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_7" role="grid" aria-describedby="DataTables_Table_7_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Type: activate to sort column descending" style="width: 0px;">Type</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" aria-label="Activity Name: activate to sort column ascending" style="width: 0px;">Activity Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" aria-label="Assigned To: activate to sort column ascending" style="width: 0px;">Assigned To</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" aria-label="Due Date: activate to sort column ascending" style="width: 0px;">Due Date</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Call Enquiry</td>
+                <td>{{lead.user_responsible}}</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Phone Enquiry</td>
+                <td>David</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_7_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_7_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_7_previous"><a href="#" aria-controls="DataTables_Table_7" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_7" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_7_next"><a href="#" aria-controls="DataTables_Table_7" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Past Activity </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_8_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_8_length"><label>Show <select name="DataTables_Table_8_length" aria-controls="DataTables_Table_8" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_8" role="grid" aria-describedby="DataTables_Table_8_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_8" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Type: activate to sort column descending" style="width: 0px;">Type</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_8" rowspan="1" colspan="1" aria-label="Activity Name: activate to sort column ascending" style="width: 0px;">Activity Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_8" rowspan="1" colspan="1" aria-label="Assigned To: activate to sort column ascending" style="width: 0px;">Assigned To</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_8" rowspan="1" colspan="1" aria-label="Due Date: activate to sort column ascending" style="width: 0px;">Due Date</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_8" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_8" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Call Enquiry</td>
+                <td>{{lead.user_responsible}}</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_8_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_8_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_8_previous"><a href="#" aria-controls="DataTables_Table_8" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_8" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_8_next"><a href="#" aria-controls="DataTables_Table_8" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div role="tabpanel" class="tab-pane p-0" id="contact">
+                <div>
+                <div class="task-infos">
+                <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified">
+                <li class="nav-item"><a class="nav-link active" href="#contact-task-details" data-bs-toggle="tab">Details</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact-task-related" data-bs-toggle="tab">Related</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact-task-activity" data-bs-toggle="tab">Activity</a></li>
+                </ul>
+                <div class="tab-content">
+                <div class="tab-pane show active p-0" id="contact-task-details">
+                <div class="crms-tasks">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Lead Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Record ID</td>
+                <td>124192692</td>
+                </tr>
+                <tr>
+                <td>Name</td>
+                <td>{{lead.first_name}} {{lead.last_name}}</td>
+                </tr>
+                <tr>
+                <td>Title</td>
+                <td>{{lead.title}}</td>
+                </tr>
+                <tr>
+                <td>Organization</td>
+                <td>{{lead.organization}}</td>
+                </tr>
+                <tr>
+                <td>Lead Status</td>
+                <td>{{lead.lead_status}}</td>
+                </tr>
+                <tr>
+                <td>User Responsible</td>
+                <td>{{lead.user_responsible}}</td>
+                </tr>
+                <tr>
+                <td>Link Email Address</td>
+                <td>{{lead.email}}</td>
+                </tr>
+                <tr>
+                <td>Lead Owner</td>
+                <td>{{lead.user_responsible}}</td>
+                </tr>
+                <tr>
+                <td>Lead Created</td>
+                <td>03-Jun-20 1:14 AM</td>
+                </tr>
+                <tr>
+                <td>Date of Last Activity</td>
+                <td>09/02/2000</td>
+                </tr>
+                <tr>
+                <td>Date of Next Activity</td>
+                <td>07/02/2010</td>
+                </tr>
+                <tr>
+                <td>Lead Rating</td>
+                <td>{{lead.lead_rating}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Additional Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Email Address</td>
+                <td>{{lead.email}}</td>
+                </tr>
+                <tr>
+                <td>Email Opted Out</td>
+                <td>{{lead.email_opted_out}}</td>
+                </tr>
+                <tr>
+                <td>Phone</td>
+                <td>{{lead.phone}}</td>
+                </tr>
+                <tr>
+                <td>Mobile Phone</td>
+                <td>{{lead.mobile_phone}}</td>
+                </tr>
+                <tr>
+                <td>Fax</td>
+                <td>{{lead.fax}}</td>
+                </tr>
+                <tr>
+                <td>Website</td>
+                <td>{{lead.website}}</td>
+                </tr>
+                <tr>
+                <td>Industry</td>
+                <td>{{lead.industry}}</td>
+                </tr>
+                <tr>
+                <td>Number of Employees</td>
+                <td>{{lead.number_of_employees}}</td>
+                </tr>
+                <tr>
+                <td>Lead Source</td>
+                <td>Phone Enquiry</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Address Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td> Address</td>
+                <td>{{lead.mailing_address}}, {{lead.mailing_city}}, {{lead.mailing_state}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Description Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Description</td>
+                <td>{{lead.description}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Tag Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td class="border-0">Tag List</td>
+                <td class="border-0">{{lead.tag_list}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Lead Conversion Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Converted Contact</td>
+                <td>{{lead.user_responsible}}</td>
+                </tr>
+                <tr>
+                <td>Converted Organization</td>
+                <td>Claimpett corp</td>
+                </tr>
+                <tr>
+                <td>Converted Opportunity</td>
+                <td>Lorem ipsum</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tab-pane task-related p-0" id="contact-task-related">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="card bg-gradient-danger card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Notes</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="card bg-gradient-info card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Files</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="crms-tasks  p-2">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Notes</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_9_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_9_length"><label>Show <select name="DataTables_Table_9_length" aria-controls="DataTables_Table_9" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_9" role="grid" aria-describedby="DataTables_Table_9_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_9" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_9" rowspan="1" colspan="1" aria-label="Size: activate to sort column ascending" style="width: 0px;">Size</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_9" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 0px;">Category</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_9" rowspan="1" colspan="1" aria-label="Date Added: activate to sort column ascending" style="width: 0px;">Date Added</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_9" rowspan="1" colspan="1" aria-label="Added by: activate to sort column ascending" style="width: 0px;">Added by</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_9" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Document
+                </td>
+                <td>50KB</td>
+                <td>Phone Call</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>{{lead.user_responsible}}</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Finance
+                </td>
+                <td>100KB</td>
+                <td>Email</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>Smith</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_9_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_9_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_9_previous"><a href="#" aria-controls="DataTables_Table_9" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_9" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_9_next"><a href="#" aria-controls="DataTables_Table_9" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Files </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_10_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_10_length"><label>Show <select name="DataTables_Table_10_length" aria-controls="DataTables_Table_10" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_10" role="grid" aria-describedby="DataTables_Table_10_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_10" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_10" rowspan="1" colspan="1" aria-label="Size: activate to sort column ascending" style="width: 0px;">Size</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_10" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 0px;">Category</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_10" rowspan="1" colspan="1" aria-label="Date Added: activate to sort column ascending" style="width: 0px;">Date Added</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_10" rowspan="1" colspan="1" aria-label="Added by: activate to sort column ascending" style="width: 0px;">Added by</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_10" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Document
+                </td>
+                <td>50KB</td>
+                <td>Enquiry</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>{{lead.user_responsible}}</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Finance
+                </td>
+                <td>100KB</td>
+                <td>Phone Call</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>Smith</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_10_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_10_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_10_previous"><a href="#" aria-controls="DataTables_Table_10" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_10" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_10_next"><a href="#" aria-controls="DataTables_Table_10" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tab-pane p-0" id="contact-task-activity">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="card bg-gradient-danger card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Total Activities</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="card bg-gradient-success card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Last Activity</h4>
+                <span>1</span>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="crms-tasks  p-2">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Upcoming Activity </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_11_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_11_length"><label>Show <select name="DataTables_Table_11_length" aria-controls="DataTables_Table_11" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_11" role="grid" aria-describedby="DataTables_Table_11_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Type: activate to sort column descending" style="width: 0px;">Type</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Activity Name: activate to sort column ascending" style="width: 0px;">Activity Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Assigned To: activate to sort column ascending" style="width: 0px;">Assigned To</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Due Date: activate to sort column ascending" style="width: 0px;">Due Date</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Call Enquiry</td>
+                <td>{{lead.user_responsible}}</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Phone Enquiry</td>
+                <td>David</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_11_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_11_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_11_previous"><a href="#" aria-controls="DataTables_Table_11" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_11" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_11_next"><a href="#" aria-controls="DataTables_Table_11" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Past Activity</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_12_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_12_length"><label>Show <select name="DataTables_Table_12_length" aria-controls="DataTables_Table_12" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_12" role="grid" aria-describedby="DataTables_Table_12_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Type: activate to sort column descending" style="width: 0px;">Type</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Activity Name: activate to sort column ascending" style="width: 0px;">Activity Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Assigned To: activate to sort column ascending" style="width: 0px;">Assigned To</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Due Date: activate to sort column ascending" style="width: 0px;">Due Date</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Call Enquiry</td>
+                <td>{{lead.user_responsible}}</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_12_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_12_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_12_previous"><a href="#" aria-controls="DataTables_Table_12" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_12" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_12_next"><a href="#" aria-controls="DataTables_Table_12" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div role="tabpanel" class="tab-pane p-0 active" id="converted">
+                <div>
+                <div class="task-infos">
+                <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified">
+                <li class="nav-item"><a class="nav-link active" href="#converted-task-details" data-bs-toggle="tab">Details</a></li>
+                <li class="nav-item"><a class="nav-link" href="#converted-task-related" data-bs-toggle="tab">Related</a></li>
+                <li class="nav-item"><a class="nav-link" href="#converted-task-activity" data-bs-toggle="tab">Activity</a></li>
+                </ul>
+                <div class="tab-content">
+                <div class="tab-pane show active p-0" id="converted-task-details">
+                <div class="crms-tasks">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Lead Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Record ID</td>
+                <td>124192692</td>
+                </tr>
+                <tr>
+                <td>Name</td>
+                <td>{{lead.first_name}} {{lead.last_name}}</td>
+                </tr>
+                <tr>
+                <td>Title</td>
+                <td>{{lead.title}}</td>
+                </tr>
+                <tr>
+                <td>Organization</td>
+                <td>{{lead.organization}}</td>
+                </tr>
+                <tr>
+                <td>Lead Status</td>
+                <td>{{lead.lead_status}}</td>
+                </tr>
+                <tr>
+                <td>User Responsible</td>
+                <td>Williams</td>
+                </tr>
+                <tr>
+                <td>Link Email Address</td>
+                <td>{{lead.email}}</td>
+                </tr>
+                <tr>
+                <td>Lead Owner</td>
+                <td>{{lead.user_responsible}}</td>
+                </tr>
+                <tr>
+                <td>Lead Created</td>
+                <td>03-Jun-20 1:14 AM</td>
+                </tr>
+                <tr>
+                <td>Date of Last Activity</td>
+                <td>09/01/2020</td>
+                </tr>
+                <tr>
+                <td>Date of Next Activity</td>
+                <td>09/01/2020</td>
+                </tr>
+                <tr>
+                <td>Lead Rating</td>
+                <td>{{lead.lead_rating}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Additional Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Email Address</td>
+                <td>{{lead.email}}</td>
+                </tr>
+                <tr>
+                <td>Email Opted Out</td>
+                <td>{{lead.email_opted_out}}</td>
+                </tr>
+                <tr>
+                <td>Phone</td>
+                <td>{{lead.phone}}</td>
+                </tr>
+                <tr>
+                <td>Mobile Phone</td>
+                <td>{{lead.phone}}</td>
+                </tr>
+                <tr>
+                <td>Fax</td>
+                <td>{{lead.phone}}</td>
+                </tr>
+                <tr>
+                <td>Website</td>
+                <td>{{lead.phone}}</td>
+                </tr>
+                <tr>
+                <td>Industry</td>
+             {{lead.phone}}td>
+                </tr>
+                <tr>
+                <td>Number of Employees</td>
+                <td>{{lead.number_of_employees}}</td>
+                </tr>
+                <tr>
+                <td>Lead Source</td>
+                <td>Phone Enquiry</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Address Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td> Address</td>
+                <td>{{lead.mailing_address}}, {{lead.mailing_city}}, {{lead.mailing_state}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Description Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Description</td>
+                <td>{{lead.description}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Tag Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td class="border-0">Tag List</td>
+                <td class="border-0">{{lead.tag_list}}</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Lead Conversion Information</div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <table class="table">
+                <tbody>
+                <tr>
+                <td>Converted Contact</td>
+                <td>{{lead.user_responsible}}</td>
+                </tr>
+                <tr>
+                <td>Converted Organization</td>
+                <td>Solemen corp</td>
+                </tr>
+                <tr>
+                <td>Converted Opportunity</td>
+                <td>Lorem Ipsum</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tab-pane task-related p-0" id="converted-task-related">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="card bg-gradient-danger card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Notes</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="card bg-gradient-info card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Files</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="crms-tasks  p-2">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Notes </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_13_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_13_length"><label>Show <select name="DataTables_Table_13_length" aria-controls="DataTables_Table_13" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_13" role="grid" aria-describedby="DataTables_Table_13_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Size: activate to sort column ascending" style="width: 0px;">Size</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 0px;">Category</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Date Added: activate to sort column ascending" style="width: 0px;">Date Added</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Added by: activate to sort column ascending" style="width: 0px;">Added by</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Document
+                </td>
+                <td>50KB</td>
+                <td>Phone call</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>{{lead.user_responsible}}</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Finance
+                </td>
+                <td>100KB</td>
+                <td>Call Enquiry</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>Smith</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_13_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_13_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_13_previous"><a href="#" aria-controls="DataTables_Table_13" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_13" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_13_next"><a href="#" aria-controls="DataTables_Table_13" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Files </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_14_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_14_length"><label>Show <select name="DataTables_Table_14_length" aria-controls="DataTables_Table_14" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_14" role="grid" aria-describedby="DataTables_Table_14_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Size: activate to sort column ascending" style="width: 0px;">Size</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 0px;">Category</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Date Added: activate to sort column ascending" style="width: 0px;">Date Added</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Added by: activate to sort column ascending" style="width: 0px;">Added by</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Document
+                </td>
+                <td>50KB</td>
+                <td>Email</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>{{lead.user_responsible}}</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Finance
+                </td>
+                <td>100KB</td>
+                <td>Phone Call</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>Smith</td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Edit Link</a>
+                <a class="dropdown-item" href="#">Delete Link</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_14_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_14_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_14_previous"><a href="#" aria-controls="DataTables_Table_14" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_14" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_14_next"><a href="#" aria-controls="DataTables_Table_14" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tab-pane p-0" id="converted-task-activity">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="card bg-gradient-danger card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Total Activities</h4>
+                <span>2</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="card bg-gradient-success card-img-holder text-white h-100">
+                <div class="card-body">
+                <img src="assets/img/circle.png" class="card-img-absolute" alt="circle-image">
+                <h4 class="font-weight-normal mb-3">Last Activity</h4>
+                <span>1</span>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="crms-tasks  p-2">
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Upcoming Activity </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_15_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_15_length"><label>Show <select name="DataTables_Table_15_length" aria-controls="DataTables_Table_15" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_15" role="grid" aria-describedby="DataTables_Table_15_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Type: activate to sort column descending" style="width: 0px;">Type</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Activity Name: activate to sort column ascending" style="width: 0px;">Activity Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Assigned To: activate to sort column ascending" style="width: 0px;">Assigned To</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Due Date: activate to sort column ascending" style="width: 0px;">Due Date</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Call Enquiry</td>
+                <td>{{lead.user_responsible}}</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr><tr role="row" class="even">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Phone Enquiry</td>
+                <td>David</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_15_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_15_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_15_previous"><a href="#" aria-controls="DataTables_Table_15" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_15" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_15_next"><a href="#" aria-controls="DataTables_Table_15" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="tasks__item crms-task-item">
+                <div class="accordion-header js-accordion-header">Past Activity </div>
+                <div class="accordion-body js-accordion-body">
+                <div class="accordion-body__contents">
+                <div class="table-responsive">
+                <div id="DataTables_Table_16_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_16_length"><label>Show <select name="DataTables_Table_16_length" aria-controls="DataTables_Table_16" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-nowrap custom-table mb-0 datatable dataTable no-footer" id="DataTables_Table_16" role="grid" aria-describedby="DataTables_Table_16_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Type: activate to sort column descending" style="width: 0px;">Type</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1" colspan="1" aria-label="Activity Name: activate to sort column ascending" style="width: 0px;">Activity Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1" colspan="1" aria-label="Assigned To: activate to sort column ascending" style="width: 0px;">Assigned To</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1" colspan="1" aria-label="Due Date: activate to sort column ascending" style="width: 0px;">Due Date</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th><th class="text-end sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 0px;">Actions</th></tr>
+                </thead>
+                <tbody>
+                
+                <tr role="row" class="odd">
+                <td class="sorting_1">
+                Meeting
+                </td>
+                <td>Call Enquiry</td>
+                <td>{{lead.user_responsible}}</td>
+                <td>13-Jul-20 11:37 PM</td>
+                <td>
+                <label class="container-checkbox">
+                <input type="checkbox" checked="">
+                <span class="checkmark"></span>
+                </label>
+                </td>
+                <td class="text-center">
+                <div class="dropdown dropdown-action">
+                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Add New Task</a>
+                <a class="dropdown-item" href="#">Add New Event</a>
+                </div>
+                </div>
+                </td>
+                </tr></tbody>
+                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="DataTables_Table_16_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_16_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_16_previous"><a href="#" aria-controls="DataTables_Table_16" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_16" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_16_next"><a href="#" aria-controls="DataTables_Table_16" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+        </main>
+        <footer>
+            <!-- place footer here -->
+        </footer>
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
