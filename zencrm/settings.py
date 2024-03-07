@@ -42,11 +42,12 @@ INSTALLED_APPS = [
     
     # neccessary apps,
     'corsheaders',
-    'csp',
+    # 'csp',
     'crispy_forms',
     "crispy_bootstrap5",
     
     # custom apps
+    'dashboard',
     'authentication',
     'contacts',
     'organizations',
@@ -68,7 +69,7 @@ MIDDLEWARE = [
 
     # custome middlewares
     'corsheaders.middleware.CorsMiddleware',
-    'csp.middleware.CSPMiddleware',    
+    # 'csp.middleware.CSPMiddleware',    
 ]
 
 ROOT_URLCONF = 'zencrm.urls'
@@ -180,7 +181,7 @@ CORS_ALLOWED_ORIGINS = [
     # Add other allowed origins as needed
 ]
 
-CSP_DEFAULT_SRC = ("'self'", "https://cdn.jsdelivr.net")
+# CSP_DEFAULT_SRC = ("'self'", "https://cdn.jsdelivr.net")
 # CSP_SCRIPT_SRC = ("'self'", "https://trusted-scripts.com")
 # CSP_IMG_SRC = ("'self'", "https://trusted-images.com")
 

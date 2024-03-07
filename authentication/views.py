@@ -49,7 +49,7 @@ class RegisterUserView(TemplateView):
                     else:
                         messages.success(request, "User creation successful")
                         login(request, user)
-                        return redirect(reverse('home'))
+                        return redirect(reverse('dashboard:home'))
                 except IntegrityError:
                     message = "User with the given username already exists"
                     context.update({"repeat_password": repeat_password})
@@ -63,7 +63,7 @@ class LoginView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect(reverse('home'))
+            return redirect(reverse('dashboard:home'))
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
@@ -73,26 +73,26 @@ class LoginView(View):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request,user)
-                return redirect(reverse('home'))
+                return redirect(reverse('dashboard:home'))
             else:
                 messages.error(request, 'Invalid username or password')                
 
-        return redirect(reverse('login'))
+        return redirect(reverse('authentication:login'))
         
         
 class LogoutView(LoginRequiredMixin, View):
-    login_url = 'login'
+    login_url = 'authentication:login'
 
     def get(self, request, *args, **kwargs):
         logout(request)
-        return redirect(reverse('login'))
+        return redirect(reverse('authentication:login'))
     
 
-class HomeView(LoginRequiredMixin, TemplateView):
-    template_name = "authentication/home.html"
-    login_url = 'login'
-    redirect_field_name = 'home'
-    raise_exception = True
+# class HomeView(LoginRequiredMixin, TemplateView):
+#     template_name = "authentication/home.html"
+#     login_url = 'login'
+#     redirect_field_name = 'home'
+#     raise_exception = True
 
-    def handle_no_permission(self):
-        return redirect(reverse(self.login_url))
+#     def handle_no_permission(self):
+#         return redirect(reverse(self.login_url))

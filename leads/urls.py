@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import ListLeadView,  CreateLeadView, UpdateLeadView, DeleteLeadView, DetailLeadView
 
+app_name= 'leads'
+
 urlpatterns = [
     path('', ListLeadView.as_view(), name='list_leads'),
     path('create_lead/', CreateLeadView.as_view(), name='create_lead'),

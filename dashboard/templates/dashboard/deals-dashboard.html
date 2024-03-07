@@ -1,0 +1,90 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}
+Deals Dashboard
+{% endblock title %}
+
+{% block main %}
+<div class="content container-fluid">
+
+	
+
+	<!-- Page Header -->
+	<div class="crms-title row bg-white mb-4">
+		<div class="col  p-0">
+			<h3 class="page-title">
+			<span class="page-title-icon bg-gradient-primary text-white me-2">
+				<i class="la la-table"></i>
+			</span> <span>Deals Dashboard</span></h3>
+		</div>
+		<div class="col p-0 text-end">
+			<ul class="breadcrumb bg-white float-end m-0 ps-0 pe-0">
+				<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+				<li class="breadcrumb-item active">Deals Dashboard</li>
+			</ul>
+		</div>
+	</div>
+	<!-- /Page Header -->
+
+
+	<div class="row graphs">
+		<div class="col-md-6">
+			<div class="card h-100">
+				<div class="card-body">
+					<h3 class="card-title">Sales Overview</h3>
+					<div id="line-charts"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			
+			<div class="card h-100">
+				<div class="card-body">
+					<h3 class="card-title">Total Sales</h3>
+					<div id="chartContainer" class="chartContainer"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row graphs">
+		<div class="col-md-6">
+			<div class="card h-100">
+				<div class="card-body">
+				<h3 class="card-title">Total Lead</h3>
+					<canvas id="myChart" width="400" height="280"></canvas>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card h-100">
+				<div class="card-body">
+					<h3 class="card-title">Number of Employees</h3>
+					<canvas id="myChart1" width="400" height="280"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row graphs">
+		<div class="col-md-6 mb-0"> 
+			<div class="card h-100">
+				<div class="card-body">
+					<h3 class="card-title">Total Projects</h3>
+					<canvas id="barChart" width="400" height="280"></canvas>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 mb-0">
+			<div class="card h-100">
+				<div class="card-body">
+					<h3 class="card-title">Total Revenue</h3>
+					<div id="bar-charts"></div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+</div>
+{% endblock main %}

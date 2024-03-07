@@ -1,6 +1,8 @@
 from django.urls import path
 from .views  import CreateOrganizationView, ListOrganizationView, DetailOrganizationView, UpdateOrganizationView, DeleteOrganizationView
 
+app_name = "organizations"
+
 urlpatterns = [
     path('', ListOrganizationView.as_view(), name="list_organizations"),
     path('create_organization/', CreateOrganizationView.as_view(), name="create_organization"),

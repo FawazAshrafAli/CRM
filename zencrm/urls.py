@@ -21,12 +21,13 @@ from  django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('authentication/', include('authentication.urls')), # User authentication and registration
-    path('contacts/', include('contacts.urls')), # contact CRUD and listing
-    path('organizations/', include('organizations.urls')), # organization CRUD and listing
-    path('leads/', include('leads.urls')),  # lead management
-    path('deals/', include('deals.urls')),  # deal management
-    path('tasks/', include('tasks.urls')),   # task management    
-    path('projects/', include('projects.urls')),   # project management    
-    path('activities/', include('activities.urls')),   # activity management    
+    path('', include('dashboard.urls', namespace="dashboard")), # dashboard interface
+    path('authentication/', include('authentication.urls', namespace="authentication")), # User authentication and registration
+    path('contacts/', include('contacts.urls', namespace="contacts")), # contact CRUD and listing
+    path('organizations/', include('organizations.urls', namespace="organizations")), # organization CRUD and listing
+    path('leads/', include('leads.urls', namespace="leads")),  # lead management
+    path('deals/', include('deals.urls', namespace="deals")),  # deal management
+    path('tasks/', include('tasks.urls', namespace="tasks")),   # task management    
+    path('projects/', include('projects.urls', namespace="projects")),   # project management    
+    path('activities/', include('activities.urls', namespace="activities")),   # activity management    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
