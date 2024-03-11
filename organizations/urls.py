@@ -4,7 +4,7 @@ from .views  import CreateOrganizationView, ListOrganizationView, DetailOrganiza
 app_name = "organizations"
 
 urlpatterns = [
-    path('', ListOrganizationView.as_view(), name="list_organizations"),
+    path('', ListOrganizationView.as_view(), name="list"),
     path('create_organization/', CreateOrganizationView.as_view(), name="create_organization"),
     path('detail_organization/<pk>', DetailOrganizationView.as_view(), name="detail_organization"),
     path('update_organization/<pk>', UpdateOrganizationView.as_view(), name="update_organization"),

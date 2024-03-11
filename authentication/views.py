@@ -49,7 +49,7 @@ class RegisterUserView(TemplateView):
                     else:
                         messages.success(request, "User creation successful")
                         login(request, user)
-                        return redirect(reverse('dashboard:home'))
+                        return redirect(reverse('dashboard:deals_dashboard'))
                 except IntegrityError:
                     message = "User with the given username already exists"
                     context.update({"repeat_password": repeat_password})
@@ -63,7 +63,7 @@ class LoginView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect(reverse('dashboard:home'))
+            return redirect(reverse('dashboard:deals_dashboard'))
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
@@ -73,7 +73,7 @@ class LoginView(View):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request,user)
-                return redirect(reverse('dashboard:home'))
+                return redirect(reverse('dashboard:deals_dashboard'))
             else:
                 messages.error(request, 'Invalid username or password')                
 

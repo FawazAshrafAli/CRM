@@ -6,27 +6,37 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from datetime import datetime
 from django.http import Http404
-from .forms import ContactCreationForm, ContactUpdationForm
 
 class BaseTaskView(LoginRequiredMixin):
     model = Task
-    login_url = 'login'
+    login_url = 'authentication:login'
 
-class CreateTaskView(BaseTaskView, CreateView):
-    template_name = 'tasks/create.html'    
-    # fields='__all__'
-    form_class = ContactCreationForm
-    success_url = reverse_lazy('create_task')
+class TaskCreateView(BaseTaskView, CreateView):
+    template_name = 'tasks/tasks.html'    
+    fields=["name", "assigned_to", "category", "due_date", "start_date", "reminder_date", "progress", "priority", "status", "related_to", "description", "permission"]
+    success_url = reverse_lazy('tasks:list')
+    raise_exception = True
 
     def form_valid(self,form):
         response = super().form_valid(form)
         messages.success(self.request,"New task created")
         return response
+    
+    def form_invalid(self, form):
+        # Iterate through form errors and add them as messages
+        for field, errors in form.errors.items():
+            for error in errors:
+                print(f"Error in {field}: {error}")
+
+        messages.error(self.request, "Failed to create task.")
+        return super().form_invalid(form)
+    
+    
 
 
-class UpdateTaskView(BaseTaskView, UpdateView):
+class TaskUpdateView(BaseTaskView, UpdateView):
     template_name = 'tasks/update.html'
-    form_class = ContactUpdationForm    
+    fields='__all__'
     query_pk_and_slug = 'pk'    
 
     def get_object(self, queryset=None):
@@ -46,30 +56,31 @@ class UpdateTaskView(BaseTaskView, UpdateView):
         return response
 
     def get_success_url(self):
-        return reverse_lazy('detail_task', kwargs={'pk': self.object.pk})
+        return reverse_lazy('tasks:detail', kwargs={'pk': self.object.pk})
 
 
-class ListTaskView(BaseTaskView, ListView):
+class TaskListView(BaseTaskView, ListView):
     template_name = 'tasks/tasks.html'
     queryset = Task.objects.all()
     context_object_name = 'tasks'
 
 
-class DetailTaskView(BaseTaskView, DetailView):
+
+class TaskDetailView(BaseTaskView, DetailView):
     template_name = 'tasks/detail.html'
     query_pk_and_slug = 'pk'
 
 
-class DeleteTaskView(BaseTaskView, DeleteView):
+class TaskDeleteView(BaseTaskView, DeleteView):
     template_name = 'tasks/confirm_deletion.html'
     query_pk_and_slug = 'pk'
-    success_url = reverse_lazy('list_tasks')
+    success_url = reverse_lazy('tasks:list')
     
     def get(self, request, *args, **kwargs):
         try:
             return super().get(request, *args, **kwargs)
         except Http404:
-            return redirect(reverse_lazy('list_tasks'))
+            return redirect(reverse_lazy('tasks:list'))
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)

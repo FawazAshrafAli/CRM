@@ -4,7 +4,7 @@ from .views  import CreateDealView, UpdateDealView, ListDealView, DetailDealView
 app_name = "deals"
 
 urlpatterns = [
-    path('', ListDealView.as_view(), name='list_deals'),
+    path('', ListDealView.as_view(), name='list'),
     path('create_deal/', CreateDealView.as_view(), name='create_deal'),
     path('detail_deal/<pk>', DetailDealView.as_view(), name="detail_deal"),
     path('update_deal/<pk>', UpdateDealView.as_view(), name= 'update_deal'),

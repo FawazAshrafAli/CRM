@@ -41,7 +41,7 @@ class UpdateDealView(BaseDealView, UpdateView):
     
 
 class ListDealView(BaseDealView, ListView):
-    template_name = "deals/list.html"
+    template_name = "deals/deals.html"
     queryset = Deal.objects.all()
     context_object_name = 'deals'
 

@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import  CreateView, ListView, DetailView, UpdateView, DeleteView
-# from  .models import Company
+from  .models import Company
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+
 class BaseOrganizationView(LoginRequiredMixin):
-    # model = Company
+    model = Company
     login_url = 'login'
 
 
@@ -22,9 +23,10 @@ class CreateOrganizationView(BaseOrganizationView, CreateView):
 
 
 class ListOrganizationView(BaseOrganizationView, ListView):    
-    template_name = "organizations/list_organizations.html"
+    template_name = "companies/companies.html"
     # queryset = Company.objects.all()
     context_object_name = "organizations"
+    queryset = Company.objects.all()
 
 
 class DetailOrganizationView(BaseOrganizationView, DetailView):    

@@ -45,7 +45,7 @@ class UpdateLeadView(BaseLeadView, UpdateView):
 
 
 class ListLeadView(BaseLeadView, ListView):
-    template_name = 'leads/list.html'
+    template_name = 'leads/leads.html'
     queryset = Lead.objects.all()
     context_object_name = 'leads'
 
