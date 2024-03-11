@@ -31,6 +31,15 @@
 		<!-- Chart CSS -->
 		<link rel="stylesheet" href="{% static 'assets/plugins/morris/morris.css' %}">
 
+        <!-- Select2 CSS -->
+		<link rel="stylesheet" href="{% static 'assets/css/select2.min.css' %}">
+
+        <!-- Datetimepicker CSS -->
+		<link rel="stylesheet" href="{% static 'assets/css/bootstrap-datetimepicker.min.css' %}">
+
+        <!-- Datatable CSS -->
+		<link rel="stylesheet" href="{% static 'assets/css/dataTables.bootstrap4.min.css' %}">
+
 		<!-- Theme CSS -->
         <link rel="stylesheet" href="{% static 'assets/css/theme-settings.css' %}">
 		
@@ -370,7 +379,7 @@
 									<li><a href="{% url 'dashboard:leads_dashboard' %}" id="leads_dashboard">Leads Dashboard</a></li>
 								</ul>                                						
 							<li> 
-								<a href="tasks.html"><i class="feather-check-square"></i> <span>Tasks</span></a>
+								<a href="{% url 'tasks:list_tasks' %}"><i class="feather-check-square"></i> <span>Tasks</span></a>
 							</li>
 							<li> 
 								<a href="contacts.html"><i class="feather-smartphone"></i> <span>Contacts</span></a>
@@ -758,7 +767,24 @@
 		<script src="{% static 'assets/plugins/raphael/raphael.min.js' %}"></script>
 		<script src="{% static 'assets/js/chart.js' %}"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-		<script src="{% static 'assets/js/chartsLine.js' %}"> </script>
+		<script src="{% static 'assets/js/chartsLine.js' %}"> </script>        								
+        		
+		<script src="{% static 'assets/js/linebar.min.js' %}"></script>
+		<script src="{% static 'assets/js/piechart.js' %}"></script>
+		<script src="{% static 'assets/js/apex.min.js' %}"></script>
+        				
+
+        <!-- Select2 JS -->
+		<script src="{% static 'assets/js/select2.min.js' %}"></script>
+
+		<!-- Datatable JS -->
+		<script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+		<script src="{% static 'assets/js/dataTables.bootstrap4.min.js' %}"></script>
+
+		<!-- Datetimepicker JS -->
+		<script src="{% static 'assets/js/moment.min.js' %}"></script>
+		<script src="{% static 'assets/js/bootstrap-datetimepicker.min.js' %}"></script>
+
 
 		 <!-- Custom JS -->
 		<!-- theme JS -->
@@ -767,7 +793,7 @@
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
 
-        <script src="{% static 'assets\js\dynamicActive.js' %}"></script>
+        <script src="{% static 'assets/js/dynamicActive.js' %}"></script>
 		
     </body>
 </html>

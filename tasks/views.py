@@ -50,7 +50,7 @@ class UpdateTaskView(BaseTaskView, UpdateView):
 
 
 class ListTaskView(BaseTaskView, ListView):
-    template_name = 'tasks/list.html'
+    template_name = 'tasks/tasks.html'
     queryset = Task.objects.all()
     context_object_name = 'tasks'
 

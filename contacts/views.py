@@ -26,7 +26,7 @@ class CreateContactView(BaseContactView, CreateView):
 
 
 class ListContactView(BaseContactView, ListView):
-    template_name = 'contacts/list_contacts.html'
+    template_name = 'contacts/contacts.html'
     queryset = Contact.objects.all()
     context_object_name = "contacts"
 
