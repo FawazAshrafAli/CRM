@@ -563,15 +563,7 @@
 			                <span class="page-title-icon bg-gradient-primary text-white me-2">
 			                  <i class="feather-check-square"></i>
 			                </span> Tasks </h3>
-                		</div>
-						{% if messages %}
-							<ul class="messages">
-								{% for message in messages %}
-									<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-								{% endfor %}
-							</ul>
-						{% endif %}
-
+                		</div>												
                 		<div class="col p-0 text-end">
                 			<ul class="breadcrumb bg-white float-end m-0 ps-0 pe-0">
 								<li class="breadcrumb-item"><a href="{% url 'dashboard:deals_dashboard' %}">Dashboard</a></li>
@@ -579,7 +571,17 @@
 							</ul>
                 		</div>
                 	</div>
-					
+					<!-- Message start -->
+					<div id="message-div">
+						{% if messages %}
+							<ul class="messages">
+								{% for message in messages %}
+									<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+					<!-- Message start end -->
 					<!-- Page Header -->
 					<div class="page-header pt-3 mb-0 ">
 						<div class="row">
@@ -1137,7 +1139,7 @@
 			                                <tbody>
 				                                <tr>
 				                                    <td class="border-0">Description</td>
-				                                    <td class="border-0 description-fetched">Lorem Ipsum</td>
+				                                    <td class="border-0 task-description">Lorem Ipsum</td>
 				                                </tr>
 			                                </tbody>
 			                              </table>
@@ -1785,23 +1787,23 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Due Date</span>
-	                        <p class="due-date">03-Jul-2020</p>
+	                        <p class="task-due-date">03-Jul-2020</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Priority</span>
-	                        <p class="priority">Medium</p>
+	                        <p class="task-priority">Medium</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Status</span>
-	                        <p class="status-s">Not Started</p>
+	                        <p class="task-status">Not Started</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Progress</span>
-	                        <p class="progress">0</p>
+	                        <p class="task-progress">0</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Assigned To</span>
-	                        <p class="assigned-to">John Doe</p>
+	                        <p class="task-assigned-to">John Doe</p>
 	                      </div>
 	                    </div>
 	                </div>
@@ -1852,7 +1854,7 @@
 				                            <tbody>
 				                                <tr>
 				                                  <td class="border-0">Record ID</td>
-				                                  <td class="border-0">124192692</td>
+				                                  <td class="border-0 task-id">124192692</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Task Name</td>
@@ -1860,15 +1862,15 @@
 				                                </tr>
 				                                <tr>
 				                                  <td>Assigned To</td>
-				                                  <td class="assigned-to">John Doe</td>
+				                                  <td class="task-assigned-to">John Doe</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Category</td>
-				                                  <td><label class="badge badge-gradient-danger category">Get Started</label></td>
+				                                  <td><label class="badge badge-gradient-danger task-category">Get Started</label></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Date Due</td>
-				                                  <td class="due-date">07/12/2000</td>
+				                                  <td class="task-due-date">07/12/2000</td>
 				                                </tr>
 				                            </tbody>
 				                        </table>
@@ -1885,11 +1887,11 @@
 				                            <tbody>
 				                                <tr>
 				                                  <td>Start Date</td>
-				                                  <td class="start-date">05/10/2012</td>
+				                                  <td class="task-start-date">05/10/2012</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Reminder Date</td>
-				                                  <td class="reminder-date">05/01/2012</td>
+				                                  <td class="task-reminder-date">05/01/2012</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Repeats</td>
@@ -1897,23 +1899,23 @@
 				                                </tr>
 				                                <tr>
 				                                  <td>Progress</td>
-				                                  <td class="progress">0%</td>
+				                                  <td class="task-progress">0%</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Priority</td>
-				                                  <td class="priority">Medium</td>
+				                                  <td class="task-priority">Medium</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Status</td>
-				                                  <td class="status-s">Not Started</td>
+				                                  <td class="task-status">Not Started</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Last Updated</td>
-				                                  <td>04-Jun-20</td>
+				                                  <td class="task-updated-at">04-Jun-20</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Created</td>
-				                                  <td>03-Jun-20 1:14 AM</td>
+				                                  <td class="task-created-at">03-Jun-20 1:14 AM</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Task Created By</td>
@@ -1937,7 +1939,7 @@
 								     		<tbody>
 				                                <tr>
 				                                  <td>Related To</td>
-				                                  <td class="related-to">Lorem Ipsum</td>
+				                                  <td class="task-related-to">Lorem Ipsum</td>
 				                                </tr>
 			                            	</tbody>
 								     	</table>
@@ -1953,7 +1955,7 @@
 			                                <tbody>
 				                                <tr>
 				                                    <td class="border-0">Description</td>
-				                                    <td class="border-0 description-fetched">Lorem Ipsum</td>
+				                                    <td class="border-0 task-description">Lorem Ipsum</td>
 				                                </tr>
 			                                </tbody>
 			                              </table>
@@ -2502,70 +2504,65 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
-	function loadTaskDetails(taskId) {
-		// Make an AJAX request to the Django view
+	function loadTaskDetails(taskId) {	
         $.ajax({
 			url: 'http://127.0.0.1:6600/tasks/detail/' + taskId,  // Update the URL to match your actual URL
             type: 'GET',
             dataType: 'json',
             success: function(data) {				
                 // Handle the JSON response
+				$('.task-id').each(function() {                    
+                    $(this).html(data.id); 
+                });
 				$('.task-name').each(function() {                    
                     $(this).html(data.name); 
                 });
 
-				$('.assigned-to').each(function() {                    
+				$('.task-assigned-to').each(function() {                    
                     $(this).html(data.assigned_to); 
                 });
 
-				$('.category').each(function() {                    
+				$('.task-category').each(function() {                    
                     $(this).html(data.category); 
                 });
 
-				$('.due-date').each(function() {                    
+				$('.task-due-date').each(function() {                    
                     $(this).html(data.due_date); 
                 });
 
-				$('.start-date').each(function() {                    
+				$('.task-start-date').each(function() {                    
                     $(this).html(data.start_date); 
                 });
 
-				$('.reminder-date').each(function() {                    
+				$('.task-reminder-date').each(function() {                    
                     $(this).html(data.reminder_date); 
                 });
 
-				$('.progress').each(function() {                    
+				$('.task-progress').each(function() {                    
                     $(this).html(data.progress); 
                 });
 							
-				$('.priority').each(function() {                    
+				$('.task-priority').each(function() {                    
                     $(this).html(data.priority); 
                 });
 
-				$('.status-s').each(function() {                    
+				$('.task-status').each(function() {                    
                     $(this).html(data.status); 
                 });
 					
-				$('.related-to').each(function() {                    
+				$('.task-related-to').each(function() {                    
                     $(this).html(data.related_to); 
                 });
 
-				$('.description-fetched').each(function() {                    
+				$('.task-description').each(function() {                    
                     $(this).html(data.description); 
                 });
-
-                // var taskDetailsContainer = $('#task-details-container');
-
-                // Build the HTML using the received data
-                // var html = '<p>Name: ' + data.name + '</p>';
-                // html += '<p>Description: ' + data.description + '</p>';
-                // Add other fields as needed
-
-                // Set the HTML content of the modal body
-                // taskDetailsContainer.html(html);
-
-                // Show the modal
-                $('#task-details-modal').modal('show');
+				$('.task-created-at').each(function() {                    
+                    $(this).html(data.created_at); 
+                });
+				$('.task-updated-at').each(function() {                    
+                    $(this).html(data.updated_at); 
+                });
             },
             error: function(error) {
                 console.log('Error:', error);

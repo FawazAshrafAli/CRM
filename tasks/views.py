@@ -74,6 +74,7 @@ class TaskDetailView(BaseTaskView, DetailView):
         task = context['object']
 
         serialized_data = {
+            'id': task.id,
             'name': task.name,
             'assigned_to' : task.assigned_to,
             'category' : task.category,
@@ -85,7 +86,9 @@ class TaskDetailView(BaseTaskView, DetailView):
             'status' : task.status,
             'related_to' : task.related_to,
             'description': task.description,
-            'permission': task.permission
+            'permission': task.permission,
+            'created_at': task.created_at.strftime("%d %b %Y %I:%M %p"),
+            'updated_at': task.updated_at.strftime("%d %b %Y %I:%M %p")
         }
 
         return JsonResponse(serialized_data)

@@ -24,3 +24,7 @@ class Task(models.Model):
     permission = models.CharField(max_length=150, blank=False, null=False)
       
     task_owner = models.CharField(max_length=150, blank=True, null=True)
+
+    #  Creation and Updation Details
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
