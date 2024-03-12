@@ -5,8 +5,8 @@ app_name = "organizations"
 
 urlpatterns = [
     path('', ListOrganizationView.as_view(), name="list"),
-    path('create_organization/', CreateOrganizationView.as_view(), name="create_organization"),
-    path('detail_organization/<pk>', DetailOrganizationView.as_view(), name="detail_organization"),
-    path('update_organization/<pk>', UpdateOrganizationView.as_view(), name="update_organization"),
-    path('delete_organization/<pk>', DeleteOrganizationView.as_view(), name="delete_organization")
+    path('create/', CreateOrganizationView.as_view(), name="create"),
+    path('detail/<pk>', DetailOrganizationView.as_view(), name="detail"),
+    path('update/<pk>', UpdateOrganizationView.as_view(), name="update"),
+    path('delete/<pk>', DeleteOrganizationView.as_view(), name="delete")
 ]

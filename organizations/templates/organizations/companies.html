@@ -572,7 +572,17 @@
 							</ul>
                 		</div>
                 	</div>
-					
+					<!-- Message start -->
+					<div id="message-div">
+						{% if messages %}
+							<ul class="messages">
+								{% for message in messages %}
+									<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+					<!-- Message start end -->
 					<!-- Page Header -->
 					<div class="page-header pt-3 mb-0 ">
 						<div class="row">
@@ -637,6 +647,7 @@
 												</tr>
 											</thead>
 											<tbody>
+												{% for organization in organizations %}
 												<tr>
 													<td class="checkBox">
 														<label class="container-checkbox">
@@ -646,15 +657,15 @@
 													</td>
 													<td>
 														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Clampett Oil and Gas Corp.</a>
+														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-task-id="{{ organization.pk }}" onclick="loadOrganizationDetails({{ organization.pk }}); return false;">{{organization.name}}</a>
 													</td>
-													<td>8754554531</td>
+													<td>{{organization.phone}}</td>
 													<td>
-													 Escalon Street	
+													 {{organization.billing_address}}	
 													</td>
-													<td>Palo Alto</td>
-													<td>CA</td>
-													<td>United States</td>
+													<td>{{organization.billing_city}}</td>
+													<td>{{organization.billing_state}}</td>
+													<td>{{organization.billing_country}}</td>
 						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
 						                            <td class="text-center">
 														<div class="dropdown dropdown-action">
@@ -677,246 +688,7 @@
 														</div>
 													</td>
 												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo.png' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Acme Corporation</a>
-													</td>
-													<td>8754554531</td>
-													<td>
-														1000 Escalon Street	
-													</td>
-													<td>Palo Alto</td>
-													<td>CA</td>
-													<td>USA</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Company</a>
-								                                <a class="dropdown-item" href="#">Change Organization Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Organization</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Organization</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Contact For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Organization</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo3.png' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Soylent Corp</a>
-													</td>
-													<td>8754554531</td>
-													<td>
-														Havier Street	
-													</td>
-													<td>Soylent Corp</td>
-													<td>CA</td>
-													<td>India</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Company</a>
-								                                <a class="dropdown-item" href="#">Change Organization Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Organization</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Organization</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Contact For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Organization</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox"> 
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Umbrella </a>
-													</td>
-													<td>8754554531</td>
-													<td>
-														1000 Escalon Street	
-													</td>
-													<td> Umbrella</td>
-													<td>CA</td>
-													<td>Europe</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Company</a>
-								                                <a class="dropdown-item" href="#">Change Organization Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Organization</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Organization</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Contact For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Organization</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo.png' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Clampett Oil and Gas Corp.</a>
-													</td>
-													<td>8754554531</td>
-													<td>
-													  Nephew Street	
-													</td>
-													<td>Palo Alto</td>
-													<td>CA</td>
-													<td>United States</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Company</a>
-								                                <a class="dropdown-item" href="#">Change Organization Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Organization</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Organization</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Contact For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Organization</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Silicon Valley</a>
-													</td>
-													<td>8754554531</td>
-													<td>
-													 Albert Street	
-													</td>
-													<td>Palo Alto</td>
-													<td>-</td>
-													<td>India</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Company</a>
-								                                <a class="dropdown-item" href="#">Change Organization Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Organization</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Organization</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Contact For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Organization</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox"> 
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo3.png' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Fringe </a>
-													</td>
-													<td>8754554531</td>
-													<td>
-														RVN Road	
-													</td>
-													<td> Umbrella</td>
-													<td>CA</td>
-													<td>USA</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Company</a>
-								                                <a class="dropdown-item" href="#">Change Organization Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Organization</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Organization</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Contact For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Opportunity For Organization</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Organization</a>
-															</div>
-														</div>
-													</td>
-												</tr>
+												{% endfor %}												
 												
 											</tbody>
 										</table>
@@ -997,24 +769,35 @@
 						<div class="modal-body">
 							<div class="row">
 						        <div class="col-md-12">
-						            <form>
+						            <form method="POST" action="{% url 'organizations:create' %}">
+										{% csrf_token %}
 						            	<h4>Organization Name</h4>
 						            	<div class="form-group row">
 				                            <div class="col-md-12">
 				                            	<label class="col-form-label">Organization Name <span class="text-danger">*</span></label>
-                              					<input class="form-control" type="text" placeholder="Organization Name" name="organization" >
+                              					<input class="form-control" type="text" placeholder="Organization Name" name="name" required>
 				                            </div>
 				                        </div>
 						                <div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Organization</label>
-					                            <select class="form-control">
+					                            <select class="form-control" name="organization" required>
 					                                <option>Select</option>
+													<option value="Company/Corporation">Company/Corporation</option>
+													<option value="Small Business">Small Business</option>
+													<option value="Nonprofit Organization">Nonprofit Organization</option>
+													<option value="Government">Government</option>
+													<option value="Educational Institution">Educational Institution</option>
+													<option value="Healthcare Organization">Healthcare Organization</option>
+													<option value="Retail">Retail</option>
+													<option value="Manufacturing">Manufacturing</option>
+													<option value="Service Provider">Service Provider</option>
+													<option value="Other">Other</option>			
 					                            </select>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Title</label>
-                            					<input type="text" class="form-control"  name="title" placeholder="Title">
+                            					<input type="text" class="form-control"  name="title" placeholder="Title" required>
 											</div>
 										</div>
 										<h4>Organization Contact Details</h4>
@@ -1022,7 +805,7 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Phone</label>
-                            					<input type="text" class="form-control" name="phone" placeholder="Phone">
+                            					<input type="text" class="form-control" name="phone" placeholder="Phone" required>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Fax</label>
@@ -1042,7 +825,7 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Facebook</label>
-                            					<input type="text" class="form-control"  name="fb" placeholder="Facebook">
+                            					<input type="text" class="form-control"  name="facebook" placeholder="Facebook">
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Twitter</label>
@@ -1052,7 +835,7 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Email Domains</label>
-                            					<input type="text" class="form-control"  name="domains" placeholder="Email Domains">
+                            					<input type="text" class="form-control"  name="email_domains" placeholder="Email Domains" required>
 											</div>
 											
 										</div>
@@ -1060,25 +843,25 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Billing Address</label>
-                            					<textarea class="form-control" rows="3" name="billing-address" placeholder="Billing Address"></textarea>
+                            					<textarea class="form-control" rows="3" name="billing_address" placeholder="Billing Address" required></textarea>
 											</div>
 											<div class="col-sm-6 mt-3">
 												<label class="col-form-label"></label><br>
-                            					<input type="text" class="form-control" placeholder="Billing City" name="billing-city">
+                            					<input type="text" class="form-control" placeholder="Billing City" name="billing_city" required>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Billing State" name="billing-state">
+												<input type="text" class="form-control" placeholder="Billing State" name="billing_state" required>
 											</div>
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Billing Postal code" name="billing-postal-code">
+												<input type="text" class="form-control" placeholder="Billing Postal code" name="billing_postal_code" required>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Billing Country</label>
-					                            <select class="form-control">
+					                            <select class="form-control" name="billing_country" required>
 					                                <option>India</option>
 					                                <option>US</option>
 					                                <option>Japan</option>
@@ -1086,23 +869,23 @@
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Shipping Address</label>
-                            					<textarea class="form-control" rows="3" name="shipping-address" placeholder="Shipping Address"></textarea>
+                            					<textarea class="form-control" rows="3" name="shipping_address" placeholder="Shipping Address"></textarea>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Shipping City" name="shipping-city">
+												<input type="text" class="form-control" placeholder="Shipping City" name="shipping_city">
 											</div>
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Shipping State" name="shipping-state">
+												<input type="text" class="form-control" placeholder="Shipping State" name="shipping_state">
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control"  placeholder="Shipping Postal code" name="shipping-postal-code">
+												<input type="text" class="form-control"  placeholder="Shipping Postal code" name="shipping_postal_code">
 											</div>
 											<div class="col-sm-6">
-												<select class="form-control">
+												<select class="form-control" name="shipping_country">
 					                                <option>India</option>
 					                                <option>US</option>
 					                                <option>Japan</option>
@@ -1113,7 +896,7 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Dates To Remember <span class="text-danger">*</span></label>
-				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" placeholder="MM/DD/YY"></div>
+				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_to_remember" placeholder="MM/DD/YY"></div>
 											</div>
 										</div>
 										
@@ -1121,21 +904,21 @@
 										<div class="form-group row">
 											<div class="col-sm-12">
 												<label class="col-form-label">Description </label>
-				                            	<textarea class="form-control" rows="3" id="description" placeholder="Description"></textarea>
+				                            	<textarea class="form-control" rows="3" id="description" name="description" placeholder="Description"></textarea>
 											</div>
 										</div>
 										<h4>Tag Information</h4>
 										<div class="form-group row">
 											<div class="col-sm-12">
 												<label class="col-form-label">Tag List</label>
-                            					<input type="text" class="form-control" name="tag-name" placeholder="Tag List">
+                            					<input type="text" class="form-control" name="tag_name" placeholder="Tag List">
 											</div>
 										</div>
 										<h4>Permissions</h4>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Permission</label>
-					                        	<select class="form-control">
+					                        	<select class="form-control" name="permission">
 					                                <option>Task Visibility</option>
 					                                <option>Private Task</option>
 					                         	</select>
@@ -1143,7 +926,7 @@
 											
 										</div>
 						                <div class="text-center py-3">
-						                	<button type="button" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
 						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
 						                </div>
 						            </form>
@@ -1171,7 +954,7 @@
                   		</div>
                   		<div>
                   			<p class="mb-0">Company</p>
-                  			<span class="modal-title">Clampett Oil and Gas Corp</span>
+                  			<span class="modal-title organization-name">Clampett Oil and Gas Corp</span>
                     		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
                     		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   		</div>
@@ -1210,19 +993,19 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Title</span>
-	                        <p>Enquiry</p>
+	                        <p class="organization-title">Enquiry</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Companies</span>
-	                        <p>Acme Corp</p>
+	                        <p class="organization-name">Acme Corp</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Phone</span>
-	                        <p>9876764875</p>
+	                        <p class="organization-phone">9876764875</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Email</span>
-	                        <p>johndoe@gmail.com</p>
+	                        <p class="organization-email-domains">johndoe@gmail.com</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Contact owner</span>
@@ -1252,11 +1035,11 @@
 				                                <tbody>
 				                                  <tr>
 				                                    <td class="border-0">Record ID</td>
-				                                    <td class="border-0">124192692</td>
+				                                    <td class="border-0 organization-id">None</td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Organization Name</td>
-				                                    <td>Clampett Oil and Gas Corp.</td>
+				                                    <td class="organization-name">None</td>
 				                                  </tr>
 				                                </tbody>
 				                            </table>
@@ -1271,31 +1054,31 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Phone</td>
-			                                    <td class="border-0">(626) 847-1294</td>
+			                                    <td class="border-0 organization-phone">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Fax</td>
-			                                    <td>1234</td>
+			                                    <td class="organization-fax">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Website</td>
-			                                    <td>google.com</td>
+			                                    <td class="organization-website">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>LinkedIn</td>
-			                                    <td>Lorem ipsum</td>
+			                                    <td class="organization-linkedin">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Facebook</td>
-			                                    <td>lorem Ipsum</td>
+			                                    <td class="organization-facebook">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Twitter</td>
-			                                    <td>Not Started</td>
+			                                    <td class="organization-twitter">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Email Domains</td>
-			                                    <td>abc@gmail.com</td>
+			                                    <td class="organization-email-domains">None</td>
 			                                  </tr>
 			                                </tbody>
 			                              </table>
@@ -1310,11 +1093,11 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Billing Address</td>
-			                                    <td class="border-0">1000 Escalon Street, Palo Alto, CA, 94020, United States map</td>
+			                                    <td class="border-0 organization-billing-address">None</td>
 			                                  </tr>
 			                                  <tr>
-			                                    <td>Shipping Addres</td>
-			                                    <td>United States</td>
+			                                    <td>Shipping Address</td>
+			                                    <td class="organization-shipping-address">None</td>
 			                                  </tr>
 			                                </tbody>
 		                                </table>
@@ -1330,11 +1113,11 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td>Dates to remember</td>
-			                                    <td>09/12/2005</td>
+			                                    <td class="organization-date-to-remember">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Organization Created</td>
-			                                    <td>03-Jun-20 1:14 AM</td>
+			                                    <td class="organization-created-at">None</td>
 			                                  </tr>
 			                                   <tr>
 			                                    <td>Date of Next Activity </td>
@@ -1342,7 +1125,7 @@
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Date of Last Activity </td>
-			                                    <td>27/01/2006</td>
+			                                    <td class="organization-updated-at">None</td>
 			                                  </tr>
 			                                </tbody>
 			                             </table>
@@ -2177,5 +1960,115 @@
 		<script src="{% static 'assets/js/app.js' %}"></script>
 
 		
+		<script>
+			function loadOrganizationDetails(taskId) {	
+				$.ajax({
+					url: 'http://127.0.0.1:6600/organizations/detail/' + taskId,  // Update the URL to match your actual URL
+					type: 'GET',
+					dataType: 'json',
+					success: function(data) {				
+						// Handle the JSON response
+						if (data.id != null && data.id != ""){
+							$('.organization-id').each(function() {
+								$(this).html(data.id);
+							});
+						};
+
+						if (data.name != null && data.name != ""){
+							$('.organization-name').each(function() {
+								$(this).html(data.name); 
+							});
+						};
+		
+						if (data.organization != null && data.organization != ""){
+							$('.organization-organization').each(function() {
+								$(this).html(data.organization); 
+							});
+						};
+		
+						if (data.title != null && data.title != ""){
+							$('.organization-title').each(function() {
+								$(this).html(data.title); 
+							});
+						};
+		
+						if (data.phone != null && data.phone != ""){
+							$('.organization-phone').each(function() {
+								$(this).html(data.phone); 
+							});
+						};
+		
+						if (data.fax != null && data.fax != ""){                  
+							$('.organization-fax').each(function() {  
+								$(this).html(data.fax); 
+							});
+						};
+		
+						if (data.website != null && data.website != ""){
+							$('.organization-website').each(function() {
+								$(this).html(data.website); 
+							});
+						};
+		
+						if (data.linkedin != null && data.linkedin != ""){
+							$('.organization-linkedin').each(function() {
+								$(this).html(data.linkedin); 
+							});
+						};
+									
+						if (data.facebook != null && data.facebook != ""){                    
+							$('.organization-facebook').each(function() {
+								$(this).html(data.facebook); 
+							});
+						};
+		
+						if (data.twitter != null && data.twitter != ""){
+						$('.organization-twitter').each(function() {
+							$(this).html(data.twitter); 
+							});
+						};       
+							
+						if (data.email_domains != null && data.email_domains != ""){
+							$('.organization-email-domains').each(function() {
+								$(this).html(data.email_domains);
+							});
+						};
+		
+						if (data.billing_address != null && data.billing_address != ""){
+							$('.organization-billing-address').each(function() {
+								$(this).html(data.billing_address);
+							});
+						};
+
+						if (data.date_to_remember != null && data.date_to_remember != ""){
+							$('.organization-date-to-remember').each(function() {
+								$(this).html(data.date_to_remember);
+							});
+						};
+
+						if (data.shipping_address != null && data.shipping_address != ""){
+							$('.organization-shipping-address').each(function() {
+								$(this).html(data.shipping_address);
+							});
+						};
+
+						if (data.created != null && data.created != ""){
+							$('.organization-created-at').each(function() {
+								$(this).html(data.created);
+							});
+						};
+
+						if (data.updated != null && data.updated != ""){							
+							$('.organization-updated-at').each(function() {
+								$(this).html(data.updated);
+							});
+						};
+					},
+					error: function(error) {
+						console.log('Error:', error);
+					}
+				});
+			}
+		</script>
     </body>
 </html>
