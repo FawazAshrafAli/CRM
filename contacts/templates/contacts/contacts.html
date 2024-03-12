@@ -57,8 +57,8 @@
 				<!-- Logo -->
                 <div class="header-left">
                     <a href="{% url 'dashboard:deals_dashboard' %}" class="logo">
-						<img src="{% static 'assets/img/logo.png' %}"  alt="Logo" class="sidebar-logo">
-						<img src="{% static 'assets/img/s-logo.png' %}"  alt="Logo" class="mini-sidebar-logo">
+						<img src="{% static 'images/zencrm_logo.png' %}"  alt="Logo" class="sidebar-logo">
+						<img src="{% static 'images/zencrm_logo.png' %}"  alt="Logo" class="mini-sidebar-logo">
 					</a>
                 </div>
 				<!-- /Logo -->
@@ -639,6 +639,7 @@
 												</tr>
 											</thead>
 											<tbody>
+												{% for contact in contacts %}
 												<tr>
 													<td class="checkBox">
 														<label class="container-checkbox">
@@ -648,14 +649,14 @@
 													</td>
 													<td>
 														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-11.jpg' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user">Wilmer Deluna</a>
+														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user">{{contact.first_name}} {{contact.last_name}}</a>
 													</td>
-													<td>Facility Manager	</td>
+													<td>{{contact.title}}</td>
 													<td>
-														875455453
+														{{contact.phone}}
 													</td>
-													<td>wilmer@gmail.com	</td>
-													<td><span class="badge badge-gradient-success">Sample_data</span></td>
+													<td>{{contact.email}}</td>
+													<td><span class="badge badge-gradient-success">{{contact.tag_list}}</span></td>
 						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
 						                            <td class="text-center">
 														<div class="dropdown dropdown-action">
@@ -679,246 +680,7 @@
 														</div>
 													</td>
 												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-10.jpg' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user">John Doe</a>
-													</td>
-													<td>Manager</td>
-													<td>
-														875455453
-													</td>
-													<td>john@gmail.com	</td>
-													<td><span class="badge badge-gradient-info">Sample_data</span></td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Contact Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Contact</a>
-								                                <a class="dropdown-item" href="#">Clone This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Contact To Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Contact</a>
-								                                <a class="dropdown-item" href="#">Email This Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Contact</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Deal For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Contact</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-25.jpg' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user">John Smith</a>
-													</td>
-													<td>CMO</td>
-													<td>
-														875455453
-													</td>
-													<td>smith@gmail.com	</td>
-													<td><span class="badge badge-gradient-danger">Sample_data</span></td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Contact Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Contact</a>
-								                                <a class="dropdown-item" href="#">Clone This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Contact To Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Contact</a>
-								                                <a class="dropdown-item" href="#">Email This Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Contact</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Deal For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Contact</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-26.jpg' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user">Wilmer Deluna</a>
-													</td>
-													<td>Property Manager</td>
-													<td>
-														875455453
-													</td>
-													<td>john@gmail.com</td>
-													<td><span class="badge badge-gradient-warning">Sample_data</span></td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Contact Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Contact</a>
-								                                <a class="dropdown-item" href="#">Clone This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Contact To Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Contact</a>
-								                                <a class="dropdown-item" href="#">Email This Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Contact</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Deal For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Contact</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-11.jpg' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user">Wilmer Deluna</a>
-													</td>
-													<td>Facility Manager	</td>
-													<td>
-														875455453
-													</td>
-													<td>wilmer@gmail.com	</td>
-													<td><span class="badge badge-gradient-success">Sample_data</span></td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Contact Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Contact</a>
-								                                <a class="dropdown-item" href="#">Clone This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Contact To Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Contact</a>
-								                                <a class="dropdown-item" href="#">Email This Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Contact</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Deal For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Contact</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-10.jpg' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user">John Doe</a>
-													</td>
-													<td>Manager</td>
-													<td>
-														875455453
-													</td>
-													<td>john@gmail.com	</td>
-													<td><span class="badge badge-gradient-info">Sample_data</span></td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Contact Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Contact</a>
-								                                <a class="dropdown-item" href="#">Clone This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Contact To Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Contact</a>
-								                                <a class="dropdown-item" href="#">Email This Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Contact</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Deal For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Contact</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-11.jpg' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user">Vinson Jk</a>
-													</td>
-													<td>Facility Manager</td>
-													<td>
-														875455453
-													</td>
-													<td>wilmer@gmail.com	</td>
-													<td><span class="badge badge-gradient-warning">Sample_data</span></td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Contact Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Contact</a>
-								                                <a class="dropdown-item" href="#">Clone This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Contact To Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Contact</a>
-								                                <a class="dropdown-item" href="#">Email This Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Contact</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Deal For Contact</a>
-								                                <a class="dropdown-item" href="#">Add New Project For Contact</a>
-															</div>
-														</div>
-													</td>
-												</tr>
+												{% endfor %}												
 												
 											</tbody>
 										</table>
@@ -1019,6 +781,9 @@
 												<label class="col-form-label">Organization</label>
 					                            <select class="form-control" name="organization" required>
 					                                <option>Select</option>
+													{% for organization in organizations %}
+													<option value="{{organization.pk}}">{{organization.name}}</option>
+													{% endfor %}
 					                            </select>
 											</div>
 											<div class="col-sm-6">
@@ -1030,7 +795,7 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Email</label>
-                            					<input type="text" class="form-control"  name="email" placeholder="Email" required>
+                            					<input type="email" class="form-control"  name="email" placeholder="Email" required>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Email Opted out</label>
@@ -1291,19 +1056,19 @@
 				                                <tbody>
 				                                  <tr>
 				                                    <td class="border-0">Record ID</td>
-				                                    <td class="border-0">124192692</td>
+				                                    <td class="border-0 contact-id">None</td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td class="border-0">Name</td>
-				                                    <td class="border-0">John Doe</td>
+				                                    <td class="border-0 contact-full-name">None</td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Company</td>
-				                                    <td>Umbrella</td>
+				                                    <td class="contact-organization">None</td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Title</td>
-				                                    <td>Lorem ipsum</td>
+				                                    <td class="contact-title">None</td>
 				                                  </tr>
 				                                </tbody>
 				                            </table>
