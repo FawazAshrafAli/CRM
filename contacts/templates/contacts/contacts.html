@@ -999,43 +999,44 @@
 						<div class="modal-body">
 							<div class="row">
 						        <div class="col-md-12">
-						            <form>
+						            <form method="POST" action="{% url 'contacts:create' %}">
+										{% csrf_token %}
 						            	<h4>Name & Occupation</h4>
 						            	<div class="form-group row">
 				                            <div class="col-md-12"><label class="col-form-label">Name <span class="text-danger">*</span></label></div>
 				                            <div class="col-md-4">
-				                                <input class="form-control" type="text" placeholder="Prefix" name="prefix">
+				                                <input class="form-control" type="text" placeholder="Prefix" name="prefix" required>
 				                            </div>
 				                            <div class="col-md-4">
-				                                <input class="form-control" type="text" placeholder="First name" name="prefix-name">
+				                                <input class="form-control" type="text" placeholder="First name" name="first_name" required>
 				                            </div>
 				                            <div class="col-md-4">
-				                                <input class="form-control" type="text" placeholder="Last name" name="last-name">
+				                                <input class="form-control" type="text" placeholder="Last name" name="last_name">
 				                            </div>
 				                        </div>
 						                <div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Organization</label>
-					                            <select class="form-control">
+					                            <select class="form-control" name="organization" required>
 					                                <option>Select</option>
 					                            </select>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Title</label>
-                            					<input type="text" class="form-control"  name="title" placeholder="Title">
+                            					<input type="text" class="form-control"  name="title" placeholder="Title" required>
 											</div>
 										</div>
 										<h4>Contact Details</h4>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Email</label>
-                            					<input type="text" class="form-control"  name="email" placeholder="Email">
+                            					<input type="text" class="form-control"  name="email" placeholder="Email" required>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Email Opted out</label>
 					                            <div >
 					                            <label class="container-checkbox">
-												  	<input type="checkbox">
+												  	<input type="checkbox" name="email_opted_out">
 												  	<span class="checkmark"></span>
 												</label>
 					                            </div>
@@ -1048,27 +1049,27 @@
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Home Phone</label>
-                            					<input type="text" class="form-control"  name="h-phone" placeholder="Phone">
+                            					<input type="text" class="form-control"  name="home_phone" placeholder="Home Phone">
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Mobile Phone</label>
-                            					<input type="text" class="form-control" name="m-phone" placeholder="Phone">
+                            					<input type="text" class="form-control" name="mobile_phone" placeholder="Mobile Phone" required>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Other Phone</label>
-                            					<input type="text" class="form-control" id="o-phone" name="o-phone" placeholder="Phone">
+                            					<input type="text" class="form-control" id="o-phone" name="other_phone" placeholder="Other Phone">
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Assistant Phone</label>
-                            					<input type="text" class="form-control" name="assistant-phone" placeholder="Phone">
+                            					<input type="text" class="form-control" name="assistant_phone" placeholder="Assistant Phone">
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Assistant Name</label>
-                            					<input type="text" class="form-control"  name="assistant-name" placeholder="Assistant Name">
+                            					<input type="text" class="form-control"  name="assistant_name" placeholder="Assistant Name">
 											</div>
 										</div>
 										<div class="form-group row">
@@ -1084,7 +1085,7 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Facebook</label>
-                            					<input type="text" class="form-control"  name="fb" placeholder="Facebook">
+                            					<input type="text" class="form-control"  name="facebook" placeholder="Facebook">
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Twitter</label>
@@ -1095,25 +1096,25 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Mailing Address</label>
-                            					<textarea class="form-control" rows="3" name="mailing-address" placeholder="Address"></textarea>
+                            					<textarea class="form-control" rows="3" name="mailing_address" placeholder="Mailing Address"></textarea>
 											</div>
 											<div class="col-sm-6 mt-3">
 												<label class="col-form-label"></label><br>
-                            					<input type="text" class="form-control" placeholder="Mailing City" name="mailing-city">
+                            					<input type="text" class="form-control" placeholder="Mailing City" name="mailing_city">
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Mailing State" name="mailing-state">
+												<input type="text" class="form-control" placeholder="Mailing State" name="mailing_state">
 											</div>
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Mailing Postal code" name="mailing-postal-code">
+												<input type="text" class="form-control" placeholder="Mailing Postal code" name="mailing_postal_code">
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Mailing Country</label>
-					                            <select class="form-control">
+					                            <select class="form-control" name="mailing_country">
 					                                <option>India</option>
 					                                <option>US</option>
 					                                <option>Japan</option>
@@ -1121,23 +1122,23 @@
 											</div>
 											<div class="col-sm-6 mt-3">
 												<label class="col-form-label">Other Address</label>
-                            					<textarea class="form-control" rows="3" name="other-address" placeholder="Address"></textarea>
+                            					<textarea class="form-control" rows="3" name="other_address" placeholder="Other Address"></textarea>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Other City" name="other-city">
+												<input type="text" class="form-control" placeholder="Other City" name="other_city">
 											</div>
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Other State" name="other-state">
+												<input type="text" class="form-control" placeholder="Other State" name="other_state">
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control"  placeholder="Other Postal code" name="other-postal-code">
+												<input type="text" class="form-control"  placeholder="Other Postal code" name="other_postal_code">
 											</div>
 											<div class="col-sm-6">
-												<select class="form-control">
+												<select class="form-control" name="other_country">
 					                                <option>India</option>
 					                                <option>US</option>
 					                                <option>Japan</option>
@@ -1148,11 +1149,11 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Due Date <span class="text-danger">*</span></label>
-				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" placeholder="MM/DD/YY"></div>
+				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="due_date" placeholder="MM/DD/YY"></div>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Date of Birth <span class="text-danger">*</span></label>
-				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" placeholder="MM/DD/YY"></div>
+				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_birth" placeholder="MM/DD/YY"></div>
 											</div>
 										</div>
 										
@@ -1167,14 +1168,14 @@
 										<div class="form-group row">
 											<div class="col-sm-12">
 												<label class="col-form-label">Tag List</label>
-                            					<input type="text" class="form-control" name="tag-name" placeholder="Tag List">
+                            					<input type="text" class="form-control" name="tag_list" placeholder="Tag List">
 											</div>
 										</div>
 										<h4>Permissions</h4>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Permission</label>
-					                        	<select class="form-control">
+					                        	<select class="form-control" name="task_visibility">
 					                                <option>Task Visibility</option>
 					                                <option>Private Task</option>
 					                         	</select>
@@ -1182,7 +1183,7 @@
 											
 										</div>
 						                <div class="text-center py-3">
-						                	<button type="button" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
 						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
 						                </div>
 						            </form>

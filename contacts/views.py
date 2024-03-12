@@ -5,8 +5,6 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.http  import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import ContactCreationForm, ContactUpdationForm
-
 
 class BaseContactView(LoginRequiredMixin):
     login_url = 'authentication:login'
@@ -15,8 +13,14 @@ class BaseContactView(LoginRequiredMixin):
 
 class CreateContactView(BaseContactView, CreateView):    
     template_name = 'contacts/create_contact.html'
-    # fields = "__all__"
-    form_class = ContactCreationForm
+    fields = [
+        "prefix", "first_name", "last_name", "organization", "title", "email", "email_opted_out",
+        "phone", "home_phone", "mobile_phone", "other_phone", "assistant_phone", "assistant_name",
+        "fax", "linkedin", "facebook", "twitter", "mailing_address", "mailing_city", "mailing_state",
+        "mailing_postal_code", "mailing_country", "other_address", "other_city", "other_state",
+        "other_postal_code", "other_country", "due_date", "date_of_birth", "description", "permission",
+        "tag_list", "task_visibility"
+    ]
     success_url = reverse_lazy('create_contact')    
 
     def form_valid(self, form):
@@ -39,8 +43,7 @@ class DetailContactView(BaseContactView, DetailView):
 
 class UpdateContactView(BaseContactView, UpdateView):
     template_name = 'contacts/update_contact.html'
-    # fields = "__all__"
-    form_class = ContactUpdationForm
+    fields = "__all__"
     pk_url_kwarg = 'pk'
     context_object_name = "contact"
     

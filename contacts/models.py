@@ -48,7 +48,7 @@ class Contact(models.Model):
     tag_list = models.CharField(max_length=150)
 
     # permissions
-    task_visibility = models.CharField(max_length=150)
+    permissions = models.CharField(max_length=150)
 
 
     created_at = models.DateTimeField(auto_now_add=True)
