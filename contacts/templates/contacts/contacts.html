@@ -649,7 +649,7 @@
 													</td>
 													<td>
 														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-11.jpg' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user">{{contact.first_name}} {{contact.last_name}}</a>
+														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user" data-contact-id={{contact.pk}} onclick="loadContactDetails({{ contact.pk }}); return false;">{{contact.first_name}} {{contact.last_name}}</a>
 													</td>
 													<td>{{contact.title}}</td>
 													<td>
@@ -1083,7 +1083,7 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Email</td>
-			                                    <td class="border-0">johndoe@gmail.com</td>
+			                                    <td class="border-0 contact-email">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Email Opted out</td>
@@ -1096,43 +1096,43 @@
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Phone</td>
-			                                    <td>9866667775</td>
+			                                    <td class="contact-email">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Home Phone</td>
-			                                    <td>0422-656565</td>
+			                                    <td class="contact-home-phone">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Mobile Phone</td>
-			                                    <td>9887876556</td>
+			                                    <td class="contact-mobile-phone">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Other Phone</td>
-			                                    <td>9786778678</td>
+			                                    <td class="contact-other-phone">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Assistant Phone</td>
-			                                    <td>9877667676</td>
+			                                    <td class="contact-assistant-phone">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Assistant Name</td>
-			                                    <td>David</td>
+			                                    <td class="contact-assistant-name">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Fax</td>
-			                                    <td>1234</td>
+			                                    <td class="contact-fax">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Linkedin</td>
-			                                    <td>Lorem Ipsum</td>
+			                                    <td class="contact-linkedin">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Facebook</td>
-			                                    <td>Lorem ipsum</td>
+			                                    <td class="contact-facebook">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Twitter</td>
-			                                    <td>David_1</td>
+			                                    <td class="contact-twitter">None</td>
 			                                  </tr>
 			                                  
 			                                </tbody>
@@ -1148,11 +1148,11 @@
 		                                <tbody>
 		                                  <tr>
 		                                    <td class="border-0">Mailling Address</td>
-		                                    <td class="border-0">USA</td>
+		                                    <td class="border-0 contact-mailing-address">None</td>
 		                                  </tr>
 		                                  <tr>
 		                                    <td>Other Address</td>
-		                                    <td>New York</td>
+		                                    <td class="contact-other-address">None</td>
 		                                  </tr>
 		                                </tbody>
 		                              </table>
@@ -2437,6 +2437,127 @@
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
 
+		<script>
+			function loadContactDetails(contactId) {	
+				$.ajax({
+					url: 'http://127.0.0.1:6600/contacts/detail/' + contactId,  // Update the URL to match your actual URL
+					type: 'GET',
+					dataType: 'json',
+					success: function(data) {				
+						// Handle the JSON response
+						if (data.id != null && data.id != ""){
+							$('.organization-id').each(function() {
+								$(this).html(data.id);
+							});
+						};
+
+						if (data.name != null && data.name != ""){
+							$('.organization-name').each(function() {
+								$(this).html(data.name); 
+							});
+						};
 		
+						if (data.organization != null && data.organization != ""){
+							$('.organization-organization').each(function() {
+								$(this).html(data.organization); 
+							});
+						};
+		
+						if (data.title != null && data.title != ""){
+							$('.organization-title').each(function() {
+								$(this).html(data.title); 
+							});
+						};
+		
+						if (data.phone != null && data.phone != ""){
+							$('.organization-phone').each(function() {
+								$(this).html(data.phone); 
+							});
+						};
+		
+						if (data.fax != null && data.fax != ""){                  
+							$('.organization-fax').each(function() {  
+								$(this).html(data.fax); 
+							});
+						};
+		
+						if (data.website != null && data.website != ""){
+							$('.organization-website').each(function() {
+								$(this).html(data.website); 
+							});
+						};
+		
+						if (data.linkedin != null && data.linkedin != ""){
+							$('.organization-linkedin').each(function() {
+								$(this).html(data.linkedin); 
+							});
+						};
+									
+						if (data.facebook != null && data.facebook != ""){                    
+							$('.organization-facebook').each(function() {
+								$(this).html(data.facebook); 
+							});
+						};
+		
+						if (data.twitter != null && data.twitter != ""){
+							$('.organization-twitter').each(function() {
+								$(this).html(data.twitter); 
+							});
+						};       
+							
+						if (data.email_domains != null && data.email_domains != ""){
+							$('.organization-email-domains').each(function() {
+								$(this).html(data.email_domains);
+							});
+						};
+		
+						if (data.billing_address != null && data.billing_address != ""){
+							$('.organization-billing-address').each(function() {
+								$(this).html(data.billing_address);
+							});
+						};
+
+						if (data.date_to_remember != null && data.date_to_remember != ""){
+							$('.organization-date-to-remember').each(function() {
+								$(this).html(data.date_to_remember);
+							});
+						};
+
+						if (data.description != null && data.description != ""){
+							$('.organization-description').each(function() {
+								$(this).html(data.description);
+							});
+						};
+
+						if (data.tag_list != null && data.tag_list != ""){
+							$('.organization-tag-list').each(function() {
+								$(this).html(data.tag_list);
+							});
+						};
+
+						if (data.shipping_address != null && data.shipping_address != ""){
+							$('.organization-shipping-address').each(function() {
+								$(this).html(data.shipping_address);
+							});
+						};
+
+						if (data.created != null && data.created != ""){
+							$('.organization-created-at').each(function() {
+								$(this).html(data.created);
+							});
+						};
+
+						if (data.updated != null && data.updated != ""){							
+							$('.organization-updated-at').each(function() {
+								$(this).html(data.updated);
+							});
+						};
+					},
+					error: function(error) {
+						console.log('Error:', error);
+					}
+				});
+			}
+		</script>
     </body>
 </html>

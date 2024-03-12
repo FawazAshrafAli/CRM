@@ -657,7 +657,7 @@
 													</td>
 													<td>
 														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-task-id="{{ organization.pk }}" onclick="loadOrganizationDetails({{ organization.pk }}); return false;">{{organization.name}}</a>
+														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-organization-id="{{ organization.pk }}" onclick="loadOrganizationDetails({{ organization.pk }}); return false;">{{organization.name}}</a>
 													</td>
 													<td>{{organization.phone}}</td>
 													<td>
@@ -1945,9 +1945,9 @@
 
 		
 		<script>
-			function loadOrganizationDetails(taskId) {	
+			function loadOrganizationDetails(organizationId) {	
 				$.ajax({
-					url: 'http://127.0.0.1:6600/organizations/detail/' + taskId,  // Update the URL to match your actual URL
+					url: 'http://127.0.0.1:6600/organizations/detail/' + organizationId,  // Update the URL to match your actual URL
 					type: 'GET',
 					dataType: 'json',
 					success: function(data) {				
