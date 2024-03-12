@@ -55,8 +55,8 @@
 				<!-- Logo -->
                 <div class="header-left">
                     <a href="{% url 'dashboard:deals_dashboard' %}" class="logo">
-						<img src="{% static 'assets/img/logo.png' %}"  alt="Logo" class="sidebar-logo">
-						<img src="{% static 'assets/img/s-logo.png' %}"  alt="Logo" class="mini-sidebar-logo">
+						<img src="{% static 'images/zencrm_logo.png' %}"  alt="Logo" class="sidebar-logo">
+						<img src="{% static 'images/zencrm_logo.png' %}"  alt="Logo" class="mini-sidebar-logo">
 					</a>
                 </div>
 				<!-- /Logo -->
@@ -1141,7 +1141,7 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td>Description</td>
-			                                    <td>Lorem ipsum </td>
+			                                    <td class="organization-description">None</td>
 			                                  </tr>
 			                                </tbody>
 			                             </table>
@@ -1157,7 +1157,7 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Tag List</td>
-			                                    <td class="border-0">Lorem Ipsum</td>
+			                                    <td class="border-0 organization-tag-list">None</td>
 			                                  </tr>
 			                                </tbody>
 			                              </table>
@@ -1244,13 +1244,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for organization in organizations %}
 																<tr>
 																	<td>
 																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Clampett Oil and Gas Corp.</a>
+																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">{{organization.name}}</a>
 																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
+																	<td>{{organization.phone}}</td>
+																	<td>{{organization.billing_country}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1262,24 +1263,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	<td>
-																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Acme Corporation</a>
-																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -2023,8 +2007,8 @@
 						};
 		
 						if (data.twitter != null && data.twitter != ""){
-						$('.organization-twitter').each(function() {
-							$(this).html(data.twitter); 
+							$('.organization-twitter').each(function() {
+								$(this).html(data.twitter); 
 							});
 						};       
 							
@@ -2043,6 +2027,18 @@
 						if (data.date_to_remember != null && data.date_to_remember != ""){
 							$('.organization-date-to-remember').each(function() {
 								$(this).html(data.date_to_remember);
+							});
+						};
+
+						if (data.description != null && data.description != ""){
+							$('.organization-description').each(function() {
+								$(this).html(data.description);
+							});
+						};
+
+						if (data.tag_list != null && data.tag_list != ""){
+							$('.organization-tag-list').each(function() {
+								$(this).html(data.tag_list);
 							});
 						};
 

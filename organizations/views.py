@@ -60,12 +60,12 @@ class DetailOrganizationView(BaseOrganizationView, DetailView):
             "twitter" : organization.twitter,
             "email_domains" : organization.email_domains,
             "billing_address" : f"{organization.billing_address}, {organization.billing_city}, {organization.billing_state}, {organization.billing_postal_code}, {organization.billing_country}.",                    
-            "date_to_remember" : organization.date_to_remember.strftime("%d %b %Y"),
+            "date_to_remember" : organization.date_to_remember.strftime("%d/%m/%Y"),
             "description" : organization.description,
             "tag_list" : organization.tag_list,
             "permission" : organization.permission,
-            "created": organization.created.strftime("%d %b %Y %I:%M %p"),
-            "updated": organization.updated.strftime("%d %b %Y %I:%M %p")
+            "created": organization.created.strftime("%d/%m/%Y"),
+            "updated": organization.updated.strftime("%d/%m/%Y")
         }
         if organization.shipping_address and organization.shipping_city and organization.shipping_state and organization.shipping_postal_code and organization.shipping_country :            
             serialized_data.update({"shipping_address" : f"{organization.shipping_address}, {organization.shipping_city}, {organization.shipping_state}, {organization.shipping_postal_code}, {organization.shipping_country}."})
