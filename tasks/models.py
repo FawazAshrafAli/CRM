@@ -10,7 +10,7 @@ class Task(models.Model):
     # additional information
     start_date = models.CharField(max_length=50, blank=True, null=True)
     reminder_date = models.CharField(max_length=50, blank=True, null=True)
-    progress = models.CharField(max_length=150, blank=True, null=True)
+    progress = models.PositiveIntegerField(default = 0)
     priority = models.CharField(max_length=150, blank=True, null=True, default="Low")
     status = models.CharField(max_length=150, default='Not Started')
 
@@ -22,6 +22,5 @@ class Task(models.Model):
 
     # Permissions
     permission = models.CharField(max_length=150, blank=False, null=False)
-
-    percentage_completed = models.PositiveIntegerField(default = 0)    
+      
     task_owner = models.CharField(max_length=150, blank=True, null=True)

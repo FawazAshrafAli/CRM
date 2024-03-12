@@ -4,8 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Task
 from django.urls import reverse_lazy
 from django.contrib import messages
-from datetime import datetime
 from django.http import Http404
+from django.http import JsonResponse
 
 class BaseTaskView(LoginRequiredMixin):
     model = Task
@@ -70,6 +70,25 @@ class TaskDetailView(BaseTaskView, DetailView):
     template_name = 'tasks/detail.html'
     query_pk_and_slug = 'pk'
 
+    def render_to_response(self, context, **response_kwargs):
+        task = context['object']
+
+        serialized_data = {
+            'name': task.name,
+            'assigned_to' : task.assigned_to,
+            'category' : task.category,
+            'due_date' : task.due_date,
+            'start_date': task.start_date,
+            'reminder_date': task.reminder_date,
+            'progress': task.progress,
+            'priority': task.priority,
+            'status' : task.status,
+            'related_to' : task.related_to,
+            'description': task.description,
+            'permission': task.permission
+        }
+
+        return JsonResponse(serialized_data)
 
 class TaskDeleteView(BaseTaskView, DeleteView):
     template_name = 'tasks/confirm_deletion.html'

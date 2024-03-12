@@ -54,8 +54,8 @@
 				<!-- Logo -->
                 <div class="header-left">
                     <a href="{% url 'dashboard:deals_dashboard' %}" class="logo">
-						<img src="{% static 'assets/img/logo.png' %}"  alt="Logo" class="sidebar-logo">
-						<img src="{% static 'assets/img/s-logo.png' %}"  alt="Logo" class="mini-sidebar-logo">
+						<img src="{% static 'images/zencrm_logo.png' %}"  alt="Logo" class="sidebar-logo">
+						<img src="{% static 'images/zencrm_logo.png' %}"  alt="Logo" class="mini-sidebar-logo">
 					</a>
                 </div>
 				<!-- /Logo -->
@@ -655,11 +655,11 @@
 													</label>
 												</td>
 												<td>
-													<a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#task-details-modal">{{task.name}}</a>
+													<a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#task-details-modal" data-task-id="{{ task.pk }}" onclick="loadTaskDetails({{ task.pk }}); return false;">{{task.name}}</a>
 												</td>
 												<td>
 													<div class="progress">
-						                                <div class="progress-bar bg-gradient-danger" role="progressbar" style="width: {{task.percentage_completed}}%" aria-valuenow="{{task.percentage_completed}}" aria-valuemin="0" aria-valuemax="100"></div>
+						                                <div class="progress-bar bg-gradient-danger" role="progressbar" style="width: {{task.progress}}%" aria-valuenow="{{task.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
 						                            </div>
 												</td>
 												<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user">{{task.assigned_to}}</a></td>
@@ -1137,7 +1137,7 @@
 			                                <tbody>
 				                                <tr>
 				                                    <td class="border-0">Description</td>
-				                                    <td class="border-0">Lorem Ipsum</td>
+				                                    <td class="border-0 description-fetched">Lorem Ipsum</td>
 				                                </tr>
 			                                </tbody>
 			                              </table>
@@ -1750,7 +1750,7 @@
 	                  		</div>
 	                  		<div>
 	                  			<p class="mb-0">Task</p>
-	                  			<span class="modal-title">Personalize your Account</span>
+	                  			<span class="modal-title task-name">Personalize your Account</span>
 	                    		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
 	                    		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
 	                  		</div>
@@ -1785,23 +1785,23 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Due Date</span>
-	                        <p>03-Jul-2020</p>
+	                        <p class="due-date">03-Jul-2020</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Priority</span>
-	                        <p>Medium</p>
+	                        <p class="priority">Medium</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Status</span>
-	                        <p>Not Started</p>
+	                        <p class="status-s">Not Started</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Progress</span>
-	                        <p>0</p>
+	                        <p class="progress">0</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Assigned To</span>
-	                        <p>John Doe</p>
+	                        <p class="assigned-to">John Doe</p>
 	                      </div>
 	                    </div>
 	                </div>
@@ -1856,19 +1856,19 @@
 				                                </tr>
 				                                <tr>
 				                                  <td>Task Name</td>
-				                                  <td>1. Personalize your account</td>
+				                                  <td class="task-name">1. Personalize your account</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Assigned To</td>
-				                                  <td>John Doe</td>
+				                                  <td class="assigned-to">John Doe</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Category</td>
-				                                  <td><label class="badge badge-gradient-danger">Get Started</label></td>
+				                                  <td><label class="badge badge-gradient-danger category">Get Started</label></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Date Due</td>
-				                                  <td>07/12/2000</td>
+				                                  <td class="due-date">07/12/2000</td>
 				                                </tr>
 				                            </tbody>
 				                        </table>
@@ -1885,11 +1885,11 @@
 				                            <tbody>
 				                                <tr>
 				                                  <td>Start Date</td>
-				                                  <td>05/10/2012</td>
+				                                  <td class="start-date">05/10/2012</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Reminder Date</td>
-				                                  <td>05/01/2012</td>
+				                                  <td class="reminder-date">05/01/2012</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Repeats</td>
@@ -1897,15 +1897,15 @@
 				                                </tr>
 				                                <tr>
 				                                  <td>Progress</td>
-				                                  <td>0%</td>
+				                                  <td class="progress">0%</td>
 				                                </tr>
 				                                <tr>
-				                                  <td>Priorit</td>
-				                                  <td>Medium</td>
+				                                  <td>Priority</td>
+				                                  <td class="priority">Medium</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Status</td>
-				                                  <td>Not Started</td>
+				                                  <td class="status-s">Not Started</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Last Updated</td>
@@ -1937,7 +1937,7 @@
 								     		<tbody>
 				                                <tr>
 				                                  <td>Related To</td>
-				                                  <td>Lorem Ipsum</td>
+				                                  <td class="related-to">Lorem Ipsum</td>
 				                                </tr>
 			                            	</tbody>
 								     	</table>
@@ -1953,7 +1953,7 @@
 			                                <tbody>
 				                                <tr>
 				                                    <td class="border-0">Description</td>
-				                                    <td class="border-0">Lorem Ipsum</td>
+				                                    <td class="border-0 description-fetched">Lorem Ipsum</td>
 				                                </tr>
 			                                </tbody>
 			                              </table>
@@ -2485,6 +2485,95 @@
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
 
-		
+		<script>
+			// Get a reference to the div
+			var timeoutDiv = document.getElementById("message-div");
+		  
+			// Set a timeout to hide the div after 5000 milliseconds (2 seconds)
+			setTimeout(function () {
+				timeoutDiv.style.display = "none"; // or use timeoutDiv.remove() to remove the div
+			}, 5000);
+		  </script>
+
+		  <!-- live fetching of detail object data -->
+		  <!-- tasks/detail.html -->
+<div id="taskDetailsContainer"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+	function loadTaskDetails(taskId) {
+		// Make an AJAX request to the Django view
+        $.ajax({
+			url: 'http://127.0.0.1:6600/tasks/detail/' + taskId,  // Update the URL to match your actual URL
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {				
+                // Handle the JSON response
+				$('.task-name').each(function() {                    
+                    $(this).html(data.name); 
+                });
+
+				$('.assigned-to').each(function() {                    
+                    $(this).html(data.assigned_to); 
+                });
+
+				$('.category').each(function() {                    
+                    $(this).html(data.category); 
+                });
+
+				$('.due-date').each(function() {                    
+                    $(this).html(data.due_date); 
+                });
+
+				$('.start-date').each(function() {                    
+                    $(this).html(data.start_date); 
+                });
+
+				$('.reminder-date').each(function() {                    
+                    $(this).html(data.reminder_date); 
+                });
+
+				$('.progress').each(function() {                    
+                    $(this).html(data.progress); 
+                });
+							
+				$('.priority').each(function() {                    
+                    $(this).html(data.priority); 
+                });
+
+				$('.status-s').each(function() {                    
+                    $(this).html(data.status); 
+                });
+					
+				$('.related-to').each(function() {                    
+                    $(this).html(data.related_to); 
+                });
+
+				$('.description-fetched').each(function() {                    
+                    $(this).html(data.description); 
+                });
+
+                // var taskDetailsContainer = $('#task-details-container');
+
+                // Build the HTML using the received data
+                // var html = '<p>Name: ' + data.name + '</p>';
+                // html += '<p>Description: ' + data.description + '</p>';
+                // Add other fields as needed
+
+                // Set the HTML content of the modal body
+                // taskDetailsContainer.html(html);
+
+                // Show the modal
+                $('#task-details-modal').modal('show');
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    }
+</script>
+
+
     </body>
 </html>
