@@ -1947,116 +1947,116 @@
 		<script>
 			function loadOrganizationDetails(organizationId) {	
 				$.ajax({
-					url: 'http://127.0.0.1:6600/organizations/detail/' + organizationId,  // Update the URL to match your actual URL
+					url: '/organizations/detail/' + organizationId,  // Update the URL to match your actual URL
 					type: 'GET',
 					dataType: 'json',
-					success: function(data) {				
+					success: function(organization) {										
 						// Handle the JSON response
-						if (data.id != null && data.id != ""){
+						if (organization.id != null && organization.id != ""){
 							$('.organization-id').each(function() {
-								$(this).html(data.id);
+								$(this).html(organization.id);
 							});
 						};
 
-						if (data.name != null && data.name != ""){
+						if (organization.name != null && organization.name != ""){
 							$('.organization-name').each(function() {
-								$(this).html(data.name); 
+								$(this).html(organization.name); 
 							});
 						};
 		
-						if (data.organization != null && data.organization != ""){
+						if (organization.organization != null && organization.organization != ""){
 							$('.organization-organization').each(function() {
-								$(this).html(data.organization); 
+								$(this).html(organization.organization); 
 							});
 						};
 		
-						if (data.title != null && data.title != ""){
+						if (organization.title != null && organization.title != ""){
 							$('.organization-title').each(function() {
-								$(this).html(data.title); 
+								$(this).html(organization.title); 
 							});
 						};
 		
-						if (data.phone != null && data.phone != ""){
+						if (organization.phone != null && organization.phone != ""){
 							$('.organization-phone').each(function() {
-								$(this).html(data.phone); 
+								$(this).html(organization.phone); 
 							});
 						};
 		
-						if (data.fax != null && data.fax != ""){                  
+						if (organization.fax != null && organization.fax != ""){                  
 							$('.organization-fax').each(function() {  
-								$(this).html(data.fax); 
+								$(this).html(organization.fax); 
 							});
 						};
 		
-						if (data.website != null && data.website != ""){
+						if (organization.website != null && organization.website != ""){
 							$('.organization-website').each(function() {
-								$(this).html(data.website); 
+								$(this).html(organization.website); 
 							});
 						};
 		
-						if (data.linkedin != null && data.linkedin != ""){
+						if (organization.linkedin != null && organization.linkedin != ""){
 							$('.organization-linkedin').each(function() {
-								$(this).html(data.linkedin); 
+								$(this).html(organization.linkedin); 
 							});
 						};
 									
-						if (data.facebook != null && data.facebook != ""){                    
+						if (organization.facebook != null && organization.facebook != ""){                    
 							$('.organization-facebook').each(function() {
-								$(this).html(data.facebook); 
+								$(this).html(organization.facebook); 
 							});
 						};
 		
-						if (data.twitter != null && data.twitter != ""){
+						if (organization.twitter != null && organization.twitter != ""){
 							$('.organization-twitter').each(function() {
-								$(this).html(data.twitter); 
+								$(this).html(organization.twitter); 
 							});
 						};       
 							
-						if (data.email_domains != null && data.email_domains != ""){
+						if (organization.email_domains != null && organization.email_domains != ""){
 							$('.organization-email-domains').each(function() {
-								$(this).html(data.email_domains);
+								$(this).html(organization.email_domains);
 							});
 						};
 		
-						if (data.billing_address != null && data.billing_address != ""){
+						if (organization.billing_address != null && organization.billing_address != ""){
 							$('.organization-billing-address').each(function() {
-								$(this).html(data.billing_address);
+								$(this).html(organization.billing_address);
 							});
 						};
 
-						if (data.date_to_remember != null && data.date_to_remember != ""){
+						if (organization.date_to_remember != null && organization.date_to_remember != ""){
 							$('.organization-date-to-remember').each(function() {
-								$(this).html(data.date_to_remember);
+								$(this).html(organization.date_to_remember);
 							});
 						};
 
-						if (data.description != null && data.description != ""){
+						if (organization.description != null && organization.description != ""){
 							$('.organization-description').each(function() {
-								$(this).html(data.description);
+								$(this).html(organization.description);
 							});
 						};
 
-						if (data.tag_list != null && data.tag_list != ""){
+						if (organization.tag_list != null && organization.tag_list != ""){
 							$('.organization-tag-list').each(function() {
-								$(this).html(data.tag_list);
+								$(this).html(organization.tag_list);
 							});
 						};
 
-						if (data.shipping_address != null && data.shipping_address != ""){
+						if (organization.shipping_address != null && organization.shipping_address != ""){
 							$('.organization-shipping-address').each(function() {
-								$(this).html(data.shipping_address);
+								$(this).html(organization.shipping_address);
 							});
 						};
 
-						if (data.created != null && data.created != ""){
+						if (organization.created != null && organization.created != ""){
 							$('.organization-created-at').each(function() {
-								$(this).html(data.created);
+								$(this).html(organization.created);
 							});
 						};
 
-						if (data.updated != null && data.updated != ""){							
+						if (organization.updated != null && organization.updated != ""){							
 							$('.organization-updated-at').each(function() {
-								$(this).html(data.updated);
+								$(this).html(organization.updated);
 							});
 						};
 					},

@@ -3,7 +3,7 @@ from django.db import models
 class Company(models.Model):
     # Organization Name
     name = models.CharField(max_length=250, blank=False, null=False)
-    organization = models.CharField(max_length=150, blank=False, null=False)
+    organization = models.CharField(max_length=150, blank=False, null=False)    
     title = models.CharField(max_length=150, blank=False, null=False)
 
     # Organization Contact Details
