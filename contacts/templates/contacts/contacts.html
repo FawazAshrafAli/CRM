@@ -1090,7 +1090,7 @@
 			                                    <td>
 			                                      <div class="form-check m-0 ps-0">
 			                                        <label class="form-check-label">
-			                                          <input class="checkbox" type="checkbox"> <i class="input-helper"></i><i class="input-helper"></i><i class="input-helper"></i></label>
+			                                          <input class="checkbox contact-email-opted-out" type="checkbox"> <i class="input-helper"></i><i class="input-helper"></i><i class="input-helper"></i></label>
 			                                      </div>
 			                                    </td>
 			                                  </tr>
@@ -1168,11 +1168,11 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Dates to Remember</td>
-			                                    <td class="border-0">09/03/2020</td>
+			                                    <td class="border-0 contact-due-date">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Date of Birth</td>
-			                                    <td>04/08/2000</td>
+			                                    <td class="contact-date-of-birth">None</td>
 			                                  </tr>
 			                                  
 			                                </tbody>
@@ -1193,7 +1193,7 @@
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Date of Last Activity</td>
-				                                    <td>04/05/2010</td>
+				                                    <td class="contact-updated">04/05/2010</td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Contact Owner</td>
@@ -1201,7 +1201,7 @@
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Contact Created</td>
-				                                    <td>Jun 20, 2020</td>
+				                                    <td class="contact-created">Jun 20, 2020</td>
 				                                  </tr>
 			                                  
 			                                	</tbody>
@@ -1218,7 +1218,7 @@
 			                                <tbody>
 				                                <tr>
 				                                    <td class="border-0">Description</td>
-				                                    <td class="border-0">Lorem Ipsum</td>
+				                                    <td class="border-0 contact-description">None</td>
 				                                </tr>
 			                                </tbody>
 			                              </table>
@@ -1233,7 +1233,7 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Tag List</td>
-			                                    <td class="border-0">Lorem Ipsum</td>
+			                                    <td class="border-0 contact-tag-list">None</td>
 			                                  </tr>
 			                                </tbody>
 			                              </table>
@@ -2433,123 +2433,167 @@
 		 
 		<!-- theme JS -->
 		<script src="{% static 'assets/js/theme-settings.js' %}"></script>
-
+		
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
 
 		<script>
 			function loadContactDetails(contactId) {	
 				$.ajax({
-					url: 'http://127.0.0.1:6600/contacts/detail/' + contactId,  // Update the URL to match your actual URL
+					url: '/contacts/detail/' + contactId,  // Update the URL to match your actual URL
 					type: 'GET',
 					dataType: 'json',
-					success: function(data) {				
+					success: function(contact) {													
 						// Handle the JSON response
-						if (data.id != null && data.id != ""){
-							$('.organization-id').each(function() {
-								$(this).html(data.id);
+						if (contact.id != null && contact.id != ""){
+							$('.contact-id').each(function() {
+								$(this).html(contact.id);
+							});
+						};
+						
+						if (contact.full_name != null && contact.full_name != ""){
+							$('.contact-full-name').each(function() {
+								$(this).html(contact.full_name);
+							});
+						};
+						
+						if (contact.organization != null && contact.organization != ""){
+							$('.contact-organization').each(function() {
+								$(this).html(contact.organization); 
+							});
+						};
+						
+						if (contact.title != null && contact.title != ""){
+							$('.contact-title').each(function() {
+								$(this).html(contact.title); 
+							});
+						};
+						
+						if (contact.email != null && contact.email != ""){                  
+							$('.contact-email').each(function() {  
+								$(this).html(contact.email); 
+							});
+						};												
+						
+						if (contact.email_opted_out != null && contact.email_opted_out != ""){							
+							$('.contact-email-opted-out').each(function() {
+								if (contact.email_opted_out == true) {
+									$(this).prop('checked', true);
+								};														
 							});
 						};
 
-						if (data.name != null && data.name != ""){
-							$('.organization-name').each(function() {
-								$(this).html(data.name); 
+						if (contact.phone != null && contact.phone != ""){
+							$('.contact-phone').each(function() {
+								$(this).html(contact.phone); 
 							});
 						};
 		
-						if (data.organization != null && data.organization != ""){
-							$('.organization-organization').each(function() {
-								$(this).html(data.organization); 
-							});
-						};
-		
-						if (data.title != null && data.title != ""){
-							$('.organization-title').each(function() {
-								$(this).html(data.title); 
-							});
-						};
-		
-						if (data.phone != null && data.phone != ""){
-							$('.organization-phone').each(function() {
-								$(this).html(data.phone); 
-							});
-						};
-		
-						if (data.fax != null && data.fax != ""){                  
-							$('.organization-fax').each(function() {  
-								$(this).html(data.fax); 
-							});
-						};
-		
-						if (data.website != null && data.website != ""){
-							$('.organization-website').each(function() {
-								$(this).html(data.website); 
-							});
-						};
-		
-						if (data.linkedin != null && data.linkedin != ""){
-							$('.organization-linkedin').each(function() {
-								$(this).html(data.linkedin); 
+						if (contact.home_phone != null && contact.home_phone != ""){
+							$('.contact-home-phone').each(function() {
+								$(this).html(contact.home_phone); 
 							});
 						};
 									
-						if (data.facebook != null && data.facebook != ""){                    
-							$('.organization-facebook').each(function() {
-								$(this).html(data.facebook); 
+						if (contact.mobile_phone != null && contact.mobile_phone != ""){                    
+							$('.contact-mobile-phone').each(function() {
+								$(this).html(contact.mobile_phone); 
 							});
 						};
 		
-						if (data.twitter != null && data.twitter != ""){
-							$('.organization-twitter').each(function() {
-								$(this).html(data.twitter); 
+						if (contact.other_phone != null && contact.other_phone != ""){
+							$('.contact-other-phone').each(function() {
+								$(this).html(contact.other_phone); 
 							});
 						};       
 							
-						if (data.email_domains != null && data.email_domains != ""){
-							$('.organization-email-domains').each(function() {
-								$(this).html(data.email_domains);
+						if (contact.assistant_phone != null && contact.assistant_phone != ""){
+							$('.contact-assistant-phone').each(function() {
+								$(this).html(contact.assistant_phone);
 							});
 						};
 		
-						if (data.billing_address != null && data.billing_address != ""){
-							$('.organization-billing-address').each(function() {
-								$(this).html(data.billing_address);
+						if (contact.assistant_name != null && contact.assistant_name != ""){
+							$('.contact-assistant-name').each(function() {
+								$(this).html(contact.assistant_name);
 							});
 						};
 
-						if (data.date_to_remember != null && data.date_to_remember != ""){
-							$('.organization-date-to-remember').each(function() {
-								$(this).html(data.date_to_remember);
+						if (contact.fax != null && contact.fax != ""){
+							$('.contact-fax').each(function() {
+								$(this).html(contact.fax);
 							});
 						};
 
-						if (data.description != null && data.description != ""){
-							$('.organization-description').each(function() {
-								$(this).html(data.description);
+						if (contact.linkedin != null && contact.linkedin != ""){
+							$('.contact-linkedin').each(function() {
+								$(this).html(contact.linkedin);
 							});
 						};
 
-						if (data.tag_list != null && data.tag_list != ""){
-							$('.organization-tag-list').each(function() {
-								$(this).html(data.tag_list);
+						if (contact.facebook != null && contact.facebook != ""){
+							$('.contact-facebook').each(function() {
+								$(this).html(contact.facebook);
 							});
 						};
 
-						if (data.shipping_address != null && data.shipping_address != ""){
-							$('.organization-shipping-address').each(function() {
-								$(this).html(data.shipping_address);
+						if (contact.twitter != null && contact.twitter != ""){
+							$('.contact-twitter').each(function() {
+								$(this).html(contact.twitter);
 							});
 						};
 
-						if (data.created != null && data.created != ""){
-							$('.organization-created-at').each(function() {
-								$(this).html(data.created);
+						if (contact.mailing_address != null && contact.mailing_address != ""){
+							$('.contact-mailing-address').each(function() {
+								$(this).html(contact.mailing_address);
 							});
 						};
 
-						if (data.updated != null && data.updated != ""){							
-							$('.organization-updated-at').each(function() {
-								$(this).html(data.updated);
+						if (contact.other_address != null && contact.other_address != ""){
+							$('.contact-other-address').each(function() {
+								$(this).html(contact.other_address);
+							});
+						};
+
+						if (contact.due_date != null && contact.due_date != ""){							
+							$('.contact-due-date').each(function() {
+								$(this).html(contact.due_date);
+							});
+						};
+
+						if (contact.date_of_birth != null && contact.date_of_birth != ""){							
+							$('.contact-date-of-birth').each(function() {
+								$(this).html(contact.date_of_birth);
+							});
+						};
+
+						if (contact.description != null && contact.description != ""){							
+							$('.contact-description').each(function() {
+								$(this).html(contact.description);
+							});
+						};
+
+						if (contact.permission != null && contact.permission != ""){							
+							$('.contact-permission').each(function() {
+								$(this).html(contact.permission);
+							});
+						};
+
+						if (contact.tag_list != null && contact.tag_list != ""){							
+							$('.contact-tag-list').each(function() {
+								$(this).html(contact.tag_list);
+							});
+						};
+
+						if (contact.created != null && contact.created != ""){							
+							$('.contact-created').each(function() {
+								$(this).html(contact.created);
+							});
+						};
+
+						if (contact.updated != null && contact.updated != ""){							
+							$('.contact-updated').each(function() {
+								$(this).html(contact.updated);
 							});
 						};
 					},
