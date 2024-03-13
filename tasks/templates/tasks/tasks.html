@@ -2497,71 +2497,68 @@
 			}, 5000);
 		  </script>
 
-		  <!-- live fetching of detail object data -->
-		  <!-- tasks/detail.html -->
-<div id="taskDetailsContainer"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
 	function loadTaskDetails(taskId) {	
         $.ajax({
-			url: 'http://127.0.0.1:6600/tasks/detail/' + taskId,  // Update the URL to match your actual URL
+			url: '/tasks/detail/' + taskId,  // Update the URL to match your actual URL
             type: 'GET',
             dataType: 'json',
-            success: function(data) {				
+            success: function(task) {				
                 // Handle the JSON response
 				$('.task-id').each(function() {                    
-                    $(this).html(data.id); 
+                    $(this).html(task.id); 
                 });
 				$('.task-name').each(function() {                    
-                    $(this).html(data.name); 
+                    $(this).html(task.name); 
                 });
 
 				$('.task-assigned-to').each(function() {                    
-                    $(this).html(data.assigned_to); 
+                    $(this).html(task.assigned_to); 
                 });
 
 				$('.task-category').each(function() {                    
-                    $(this).html(data.category); 
+                    $(this).html(task.category); 
                 });
 
 				$('.task-due-date').each(function() {                    
-                    $(this).html(data.due_date); 
+                    $(this).html(task.due_date); 
                 });
 
 				$('.task-start-date').each(function() {                    
-                    $(this).html(data.start_date); 
+                    $(this).html(task.start_date); 
                 });
 
 				$('.task-reminder-date').each(function() {                    
-                    $(this).html(data.reminder_date); 
+                    $(this).html(task.reminder_date); 
                 });
 
 				$('.task-progress').each(function() {                    
-                    $(this).html(data.progress); 
+                    $(this).html(task.progress); 
                 });
 							
 				$('.task-priority').each(function() {                    
-                    $(this).html(data.priority); 
+                    $(this).html(task.priority); 
                 });
 
 				$('.task-status').each(function() {                    
-                    $(this).html(data.status); 
+                    $(this).html(task.status); 
                 });
 					
 				$('.task-related-to').each(function() {                    
-                    $(this).html(data.related_to); 
+                    $(this).html(task.related_to); 
                 });
 
 				$('.task-description').each(function() {                    
-                    $(this).html(data.description); 
+                    $(this).html(task.description); 
                 });
 				$('.task-created-at').each(function() {                    
-                    $(this).html(data.created_at); 
+                    $(this).html(task.created_at); 
                 });
 				$('.task-updated-at').each(function() {                    
-                    $(this).html(data.updated_at); 
+                    $(this).html(task.updated_at); 
                 });
             },
             error: function(error) {
