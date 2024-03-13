@@ -1,11 +1,12 @@
 from django.db import models
+from organizations.models import Company
 
 class Lead(models.Model):
     # Lead Information
     prefix = models.CharField(max_length=25, blank=False, null=False)
     first_name = models.CharField(max_length=100, blank=False, null=False)
     last_name = models.CharField(max_length=100, blank=False, null=False)
-    organization = models.CharField(max_length=150, blank=False, null=False)
+    organization = models.ForeignKey(Company, on_delete=models.PROTECT)
     title = models.CharField(max_length=150, blank=False, null=False)
     lead_status = models.CharField(max_length=150, blank=False, null=False, default = 'OPEN - Not Contacted')
     user_responsible = models.CharField(max_length=150, blank=False, null=False)
@@ -23,11 +24,11 @@ class Lead(models.Model):
     lead_source = models.CharField(max_length=150, blank=True, null=True, default="Web")
 
     # Additional Information
-    mailing_address = models.TextField(blank=True, null=True)
-    mailing_city = models.CharField(max_length=50, blank=True, null=True)
-    mailing_state = models.CharField(max_length=50, blank=True, null=True)
-    mailing_postal_code = models.CharField(max_length=15, blank=True, null=True)
-    mailing_country = models.CharField(max_length=100, blank=True, null=True, default="India")
+    mailing_address = models.TextField(blank=False, null=False)
+    mailing_city = models.CharField(max_length=50, blank=False, null=False)
+    mailing_state = models.CharField(max_length=50, blank=False, null=False)
+    mailing_postal_code = models.CharField(max_length=15, blank=False, null=False)
+    mailing_country = models.CharField(max_length=100, blank=False, null=False, default="India")
 
     # Description Information
     description = models.TextField(blank=True, null=True)
@@ -38,6 +39,6 @@ class Lead(models.Model):
     # Permissions
     permission = models.CharField(max_length=100, blank=True, null=True)
     
-    lead_created = models.DateTimeField(auto_now_add=True)
-    lead_modified = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 

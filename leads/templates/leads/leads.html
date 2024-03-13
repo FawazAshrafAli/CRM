@@ -56,8 +56,8 @@
 				<!-- Logo -->
                 <div class="header-left">
                     <a href="{% url 'dashboard:deals_dashboard' %}" class="logo">
-						<img src="{% static 'assets/img/logo.png' %}"  alt="Logo" class="sidebar-logo">
-						<img src="{% static 'assets/img/s-logo.png' %}"  alt="Logo" class="mini-sidebar-logo">
+						<img src="{% static 'images/zencrm_logo.png' %}"  alt="Logo" class="sidebar-logo">
+						<img src="{% static 'images/zencrm_logo.png' %}"  alt="Logo" class="mini-sidebar-logo">
 					</a>
                 </div>
 				<!-- /Logo -->
@@ -661,6 +661,7 @@
 												</tr>
 											</thead>
 											<tbody>
+												{% for lead in leads %}
 												<tr>
 													<td class="checkBox">
 														<label class="container-checkbox">
@@ -669,17 +670,18 @@
 														</label>
 													</td>
 													<td>
-														<a href="#"><span class="person-circle-a person-circle">A</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details">Anne Lynch</a>
+														<a href="#"><span class="person-circle-a person-circle">{{lead.first_name|slice:":1"}}{{lead.last_name|slice:":1"}}</span></a>
+														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details" data-lead-id="{{ lead.pk }}" onclick="loadLeadDetails({{ lead.pk }}); return false;">{{lead.first_name}} {{lead.last_name}}</a>
 													</td>
-													<td>VP of Sales	</td>
+													<td>{{lead.title}}</td>
 													<td>
-														 Umbrella		
+														 {{lead.organization}}		
 													</td>
-													<td>(406) 653-3860</td>
-													<td>abc@gmail.com</td>
-													<td>OPEN - NotContacted	</td>
-													<td>03-Jun-20 1:14 AM</td>
+													<td>{{lead.phone}}</td>
+													<td>{{lead.email}}</td>
+													<td>{{lead.lead_status}}</td>
+													{% comment %} <td>03-Jun-20 1:14 AM</td> {% endcomment %}
+													<td>{{lead.created|date:"d-b-y h:i A"}}</td>
 													<td>John Doe</td>
 						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
 						                            <td class="text-center">
@@ -704,265 +706,7 @@
 														</div>
 													</td>
 												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-b person-circle">B</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details">Benneth</a>
-													</td>
-													<td>VP of Sales	</td>
-													<td>
-														Acme Corporation		
-													</td>
-													<td>(406) 653-3860</td>
-													<td>abc@gmail.com</td>
-													<td>OPEN - NotContacted	</td>
-													<td>03-Jun-20 1:14 AM</td>
-													<td>John Doe</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Lead Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Lead</a>
-								                                <a class="dropdown-item" href="#">Email This Lead</a>
-								                                <a class="dropdown-item" href="#">Clone This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Lead to Contact</a>
-								                                <a class="dropdown-item" href="#">Convert Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Lead</a>
-								                                <a class="dropdown-item" href="#">Merge Into Lead</a>
-								                                <a class="dropdown-item" href="#">SmartMerge Lead</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Lead</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Lead</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-c person-circle">C</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details">Cravo</a>
-													</td>
-													<td>VP of Sales	</td>
-													<td>
-														Acme Corporation	
-													</td>
-													<td>(406) 653-3860</td>
-													<td>abc@gmail.com</td>
-													<td>OPEN - NotContacted	</td>
-													<td>03-Jun-20 1:14 AM</td>
-													<td>John Doe</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Lead Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Lead</a>
-								                                <a class="dropdown-item" href="#">Email This Lead</a>
-								                                <a class="dropdown-item" href="#">Clone This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Lead to Contact</a>
-								                                <a class="dropdown-item" href="#">Convert Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Lead</a>
-								                                <a class="dropdown-item" href="#">Merge Into Lead</a>
-								                                <a class="dropdown-item" href="#">SmartMerge Lead</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Lead</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Lead</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-c person-circle">C</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details">Cravo</a>
-													</td>
-													<td>VP of Sales	</td>
-													<td>
-														 Soylent Corp	
-													</td>
-													<td>(406) 653-3860</td>
-													<td>abc@gmail.com</td>
-													<td>OPEN - Contacted	</td>
-													<td>03-Jun-20 1:14 AM</td>
-													<td>John Doe</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Lead Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Lead</a>
-								                                <a class="dropdown-item" href="#">Email This Lead</a>
-								                                <a class="dropdown-item" href="#">Clone This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Lead to Contact</a>
-								                                <a class="dropdown-item" href="#">Convert Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Lead</a>
-								                                <a class="dropdown-item" href="#">Merge Into Lead</a>
-								                                <a class="dropdown-item" href="#">SmartMerge Lead</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Lead</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Lead</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-d person-circle">D</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details">Des Ignayshun</a>
-													</td>
-													<td>VP of Sales	</td>
-													<td>
-														Howe-Blanda LLC		
-													</td>
-													<td>(406) 653-3860</td>
-													<td>abc@gmail.com</td>
-													<td>OPEN - Contacted	</td>
-													<td>03-Jun-20 1:14 AM</td>
-													<td>John Doe</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Lead Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Lead</a>
-								                                <a class="dropdown-item" href="#">Email This Lead</a>
-								                                <a class="dropdown-item" href="#">Clone This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Lead to Contact</a>
-								                                <a class="dropdown-item" href="#">Convert Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Lead</a>
-								                                <a class="dropdown-item" href="#">Merge Into Lead</a>
-								                                <a class="dropdown-item" href="#">SmartMerge Lead</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Lead</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Lead</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-j person-circle">J</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details">Jen Tile</a>
-													</td>
-													<td>VP of Sales	</td>
-													<td>
-														Howe-Blanda LLC		
-													</td>
-													<td>(406) 653-3860</td>
-													<td>abc@gmail.com</td>
-													<td>OPEN - NotContacted	</td>
-													<td>03-Jun-20 1:14 AM</td>
-													<td>John Doe</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Lead Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Lead</a>
-								                                <a class="dropdown-item" href="#">Email This Lead</a>
-								                                <a class="dropdown-item" href="#">Clone This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Lead to Contact</a>
-								                                <a class="dropdown-item" href="#">Convert Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Lead</a>
-								                                <a class="dropdown-item" href="#">Merge Into Lead</a>
-								                                <a class="dropdown-item" href="#">SmartMerge Lead</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Lead</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Lead</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-j person-circle">J</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details">Jacob</a>
-													</td>
-													<td>Sales	</td>
-													<td>
-														Blanda		
-													</td>
-													<td>(406) 653-3860</td>
-													<td>abc@gmail.com</td>
-													<td>OPEN - Contacted</td>
-													<td>08-May-19 1:14 AM</td>
-													<td>Anderson</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Lead Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Lead</a>
-								                                <a class="dropdown-item" href="#">Email This Lead</a>
-								                                <a class="dropdown-item" href="#">Clone This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Lead to Contact</a>
-								                                <a class="dropdown-item" href="#">Convert Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Lead</a>
-								                                <a class="dropdown-item" href="#">Merge Into Lead</a>
-								                                <a class="dropdown-item" href="#">SmartMerge Lead</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Lead</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Lead</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												
+												{% endfor %}																								
 											</tbody>
 										</table>
 									</div>
@@ -1041,36 +785,40 @@
 						<div class="modal-body">
 							<div class="row">
 						        <div class="col-md-12">
-						            <form>
+						            <form method="POST" action="{% url 'leads:create' %}">
+										{% csrf_token %}
 						            	<h4>Lead Information</h4>
 						            	<div class="form-group row">
 				                            <div class="col-md-12"><label class="col-form-label">Name <span class="text-danger">*</span></label></div>
 				                            <div class="col-md-4">
-				                                <input class="form-control" type="text" placeholder="Prefix" name="prefix">
+				                                <input class="form-control" type="text" placeholder="Prefix" name="prefix" required>
 				                            </div>
 				                            <div class="col-md-4">
-				                                <input class="form-control" type="text" placeholder="First name" name="prefix-name">
+				                                <input class="form-control" type="text" placeholder="First name" name="first_name" required>
 				                            </div>
 				                            <div class="col-md-4">
-				                                <input class="form-control" type="text" placeholder="Last name" name="last-name">
+				                                <input class="form-control" type="text" placeholder="Last name" name="last_name" required>
 				                            </div>
 				                        </div>
 						                <div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Organization</label>
-					                            <select class="form-control">
+					                            <select class="form-control" name="organization" required>
 					                                <option>Select</option>
+													{% for organization in organizations %}
+													<option value="{{organization.pk}}">{{organization}}</option>
+													{% endfor %}
 					                            </select>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Title</label>
-                            					<input type="text" class="form-control"  name="title" placeholder="Title">
+                            					<input type="text" class="form-control" name="title" placeholder="Title" required>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Lead Status</label>
-					                            <select class="form-control">
+					                            <select class="form-control" name="lead_status" required>
 					                                <option>Select</option>
 					                                <option>Open - Contacted</option>
 					                                <option>Open - Not Contacted</option>
@@ -1078,7 +826,7 @@
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">User Responsible</label>
-					                            <select class="form-control">
+					                            <select class="form-control" name="user_responsible" required>
 					                                <option>Select</option>
 					                                <option>John Doe</option>
 					                            </select>
@@ -1087,7 +835,7 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Lead Rating</label>
-                            					<input type="number" class="form-control" name="rating" placeholder="Rating">
+                            					<input type="number" class="form-control" name="lead_rating" placeholder="Rating">
 											</div>
 											
 										</div>
@@ -1095,13 +843,13 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Email</label>
-                            					<input type="text" class="form-control"  name="email" placeholder="Email">
+                            					<input type="text" class="form-control"  name="email" placeholder="Email" required>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Email Opted out</label>
 					                            <div >
 					                              <label class="container-checkbox">
-												  	<input type="checkbox">
+												  	<input type="checkbox" name="email_opted_out">
 												  	<span class="checkmark"></span>
 												</label>
 					                            </div>
@@ -1114,7 +862,7 @@
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Mobile Phone</label>
-                            					<input type="text" class="form-control" name="m-phone" placeholder="Phone">
+                            					<input type="text" class="form-control" name="mobile_phone" placeholder="Mobile Phone" required>
 											</div>
 										</div>
 										<div class="form-group row">
@@ -1131,17 +879,17 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Industry</label>
-                            					<input type="text" class="form-control" name="assistant-phone" placeholder="Industry">
+                            					<input type="text" class="form-control" name="industry" placeholder="Industry">
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Number of Employees</label>
-                            					<input type="text" class="form-control"  name="employees" placeholder="Number of Employees">
+                            					<input type="text" class="form-control"  name="number_of_employees" placeholder="Number of Employees">
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Lead Source</label>
-					                            <select class="form-control">
+					                            <select class="form-control" name="lead_source" required>
 					                                <option>Web</option>
 					                                <option>Phone Enquiry</option>
 					                                <option>Partner Referral</option>
@@ -1156,23 +904,23 @@
 										<div class="form-group row">
 											<div class="col-sm-12">
 												<label class="col-form-label">Mailing Address</label>
-                            					<textarea class="form-control" rows="3" name="address" placeholder="Address"></textarea>
+                            					<textarea class="form-control" rows="3" name="mailing_address" placeholder="Address" required></textarea>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="City" name="city">
+												<input type="text" class="form-control" placeholder="City" name="mailing_city" required>
 											</div>
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="State/Provience" name="state">
+												<input type="text" class="form-control" placeholder="State/Provience" name="mailing_state" required>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Postal Code" name="postal">
+												<input type="text" class="form-control" placeholder="Postal Code" name="mailing_postal_code" required>
 											</div>
 											<div class="col-sm-6">
-					                            <select class="form-control">
+					                            <select class="form-control" name="mailing_country" required>
 					                                <option>India</option>
 					                                <option>US</option>
 					                                <option>Japan</option>
@@ -1184,21 +932,21 @@
 										<div class="form-group row">
 											<div class="col-sm-12">
 												<label class="col-form-label">Description </label>
-				                            	<textarea class="form-control" rows="3" id="description" placeholder="Description"></textarea>
+				                            	<textarea class="form-control" rows="3" id="description" name="description" placeholder="Description"></textarea>
 											</div>
 										</div>
 										<h4>Tag Information</h4>
 										<div class="form-group row">
 											<div class="col-sm-12">
 												<label class="col-form-label">Tag List</label>
-                            					<input type="text" class="form-control" name="tag-name" placeholder="Tag List">
+                            					<input type="text" class="form-control" name="tag_list" placeholder="Tag List">
 											</div>
 										</div>
 										<h4>Permissions</h4>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Permission</label>
-					                        	<select class="form-control">
+					                        	<select class="form-control" name="permission" required>
 					                                <option>Task Visibility</option>
 					                                <option>Private Task</option>
 					                         	</select>
@@ -1206,7 +954,7 @@
 											
 										</div>
 						                <div class="text-center py-3">
-						                	<button type="button" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
 						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
 						                </div>
 						            </form>
@@ -1273,19 +1021,19 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Lead Status</span>
-	                        <p>Not Contacted</p>
+	                        <p class="lead-status">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Name</span>
-	                        <p>Anne Lynch</p>
+	                        <p class="lead-full-name">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Lead Source</span>
-	                        <p>Phone Enquiry</p>
+	                        <p class="lead-source">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Lead Rating</span>
-	                        <p>0</p>
+	                        <p class="lead-rating">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Lead owner</span>
@@ -1301,27 +1049,27 @@
 	                  	<div class="col-md-12">
 	                  		<ul class="cd-breadcrumb triangle nav nav-tabs w-100 crms-steps" role="tablist">
 							    <li role="presentation">
-							        <a href="#not-contacted" class="active" aria-controls="not-contacted" role="tab" data-bs-toggle="tab" aria-expanded="true">
+							        <a href="#not-contacted" class="lead-status-indicator" aria-controls="not-contacted" role="tab" data-bs-toggle="tab" aria-expanded="true" onclick="updateLeadStatus(this.value, 'Not Contacted')">
 							              <span class="octicon octicon-light-bulb"></span>Not Contacted
 							         </a>
 							    </li>
-							    <li role="presentation" class="">
-							        <a href="#attempted-contact" aria-controls="attempted-contact" role="tab" data-bs-toggle="tab" aria-expanded="false">
+							    <li role="presentation">
+							        <a href="#attempted-contact" class="lead-status-indicator" aria-controls="attempted-contact" role="tab" data-bs-toggle="tab" aria-expanded="false">
 							            <span class="octicon octicon-diff-added"></span>Attempted Contact
 							        </a>
 							    </li>
-							    <li role="presentation" class="">
-							        <a href="#contact" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false">
-							            <span class="octicon octicon-comment-discussion"></span>Contact
+							    <li role="presentation">
+							        <a href="#contact" class="lead-status-indicator" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false">
+							            <span class="octicon octicon-comment-discussion"></span>Contacted
 							        </a>
 							    </li>
-							     <li role="presentation" class="">
-							        <a href="#converted" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false">
+							     <li role="presentation">
+							        <a href="#converted" class="lead-status-indicator" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false">
 							            <span class="octicon octicon-comment-discussion"></span>Converted
 							        </a>
 							    </li>
 							    <li role="presentation" class="d-none">
-							        <a href="#converted" aria-controls="converted" role="tab" data-bs-toggle="tab" aria-expanded="false">
+							        <a href="#converted" class="lead-status-indicator" aria-controls="converted" role="tab" data-bs-toggle="tab" aria-expanded="false">
 							            <span class="octicon octicon-verified"></span>Converted
 							       	</a>
 							    </li>
@@ -1351,51 +1099,51 @@
 							                                <tbody>
 							                                  <tr>
 							                                    <td class="border-0">Record ID</td>
-							                                    <td class="border-0">124192692</td>
+							                                    <td class="border-0 lead-id">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Name</td>
-							                                    <td>Anny Lench</td>
+							                                    <td class="lead-full-name">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Title</td>
-							                                    <td>VP of Sales</td>
+							                                    <td class="lead-title">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Organization</td>
-							                                  	<td>Howe-Blanda LLC</td>
+							                                  	<td class="lead-organization">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Status</td>
-							                                  	<td>OPEN - NotContacted</td>
+							                                  	<td class="lead-status">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>User Responsible</td>
-							                                  	<td>Williams</td>
+							                                  	<td class="lead-user-responsible">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Link Email Address</td>
-							                                  	<td>abc@gmail.com</td>
+							                                  	<td class="lead-email">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Owner</td>
-							                                  	<td>John Doe</td>
+							                                  	<td>None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Created</td>
-							                                  	<td>03-Jun-20 1:14 AM</td>
+							                                  	<td class="lead-created">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Last Activity</td>
-							                                  	<td>09/01/2020</td>
+							                                  	<td class="lead-updated">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Next Activity</td>
-							                                  	<td>09/01/2021</td>
+							                                  	<td>None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Rating</td>
-							                                  	<td>0</td>
+							                                  	<td class="lead-rating">None</td>
 							                                  </tr>
 							                                </tbody>
 							                            </table>
@@ -1410,39 +1158,39 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td>Email Address</td>
-						                                    <td>abc@gmail.com</td>
+						                                    <td class="lead-email">None</td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Email Opted Out</td>
-						                                    <td>Lorem</td>
+						                                    <td class="text-capitalize lead-email-opted-out">None</td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Phone</td>
-						                                    <td>(406) 653-3860</td>
+						                                    <td class="lead-phone">None</td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Mobile Phone</td>
-						                                    <td>9865665545</td>
+						                                    <td class="lead-mobile-phone">None</td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Fax</td>
-						                                    <td>1234</td>
+						                                    <td class="lead-fax">None</td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Website</td>
-						                                    <td>abc.com</td>
+						                                    <td class="lead-website">None</td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Industry</td>
-						                                    <td>Information Security</td>
+						                                    <td class="lead-industry">None</td>
 						                                  </tr>
 						                                  <tr>
 						                                  	<td>Number of Employees</td>
-						                                  	<td>2</td>
+						                                  	<td class="lead-number-of-employees">None</td>
 						                                  </tr>
 						                                  <tr>
 						                                  	<td>Lead Source</td>
-						                                  	<td>Phone Enquiry</td>
+						                                  	<td class="lead-source">None</td>
 						                                  </tr>
 						                                  
 						                                </tbody>
@@ -1457,8 +1205,8 @@
 											        <table class="table">
 						                                <tbody>
 							                                <tr>
-							                                    <td> Address</td>
-							                                    <td>1000 Escalon Street, Palo Alto, CA, 94020, United States map</td>
+							                                    <td>Address</td>
+							                                    <td class="lead-mailing-address">None</td>
 							                                </tr>
 						                                </tbody>
 						                            </table>
@@ -1491,7 +1239,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td class="border-0">Tag List</td>
-						                                    <td class="border-0">Lorem Ipsum</td>
+						                                    <td class="border-0 lead-tag-list">Lorem Ipsum</td>
 						                                  </tr>
 						                                </tbody>
 						                              </table>
@@ -3574,7 +3322,189 @@
 
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
-
 		
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		  
+		<!-- Fetching details single item -->
+		<script>
+			function loadLeadDetails(LeadId) {	
+				$.ajax({
+					url: '/leads/detail/' + LeadId,  // Update the URL to match your actual URL
+					type: 'GET',
+					dataType: 'json',
+					success: function(lead) {										
+						// Handle the JSON response
+						if (lead.id != null && lead.id != ""){
+							$('.lead-id').each(function() {
+								$(this).html(lead.id);
+							});
+						};
+						
+						if (lead.full_name != null && lead.full_name != ""){
+							$('.lead-full-name').each(function() {
+								$(this).html(lead.full_name);
+							});
+						};
+						
+						if (lead.organization != null && lead.organization != ""){
+							$('.lead-organization').each(function() {
+								$(this).html(lead.organization); 
+							});
+						};
+						
+						if (lead.title != null && lead.title != ""){
+							$('.lead-title').each(function() {
+								$(this).html(lead.title); 
+							});
+						};
+
+						if (lead.lead_status != null && lead.lead_status != ""){
+							$('.lead-status').each(function() {
+								$(this).html(lead.lead_status); 
+							});							
+							$('.lead-status-indicator').each(function() {								
+								if (lead.lead_status === $(this).text().trim()) {
+									$(this).addClass('active');
+								}
+								$(this).prop('value', lead.id);								
+							});									
+						};
+						
+						if (lead.user_responsible != null && lead.user_responsible != ""){
+							$('.lead-user-responsible').each(function() {
+								$(this).html(lead.user_responsible); 
+							});
+						};
+
+						if (lead.lead_rating != null && lead.lead_rating != ""){
+							$('.lead-rating').each(function() {
+								$(this).html(lead.lead_rating); 
+							});
+						};
+
+						if (lead.email != null && lead.email != ""){                  
+							$('.lead-email').each(function() {  
+								$(this).html(lead.email); 
+							});
+						};												
+						
+						if (lead.email_opted_out != null && lead.email_opted_out != ""){							
+							$('.lead-email-opted-out').each(function() {								
+								$(this).html(lead.email_opted_out);																
+							});
+						};
+
+						if (lead.phone != null && lead.phone != ""){
+							$('.lead-phone').each(function() {
+								$(this).html(lead.phone); 
+							});
+						};							
+									
+						if (lead.mobile_phone != null && lead.mobile_phone != ""){                    
+							$('.lead-mobile-phone').each(function() {
+								$(this).html(lead.mobile_phone); 
+							});
+						};								
+
+						if (lead.fax != null && lead.fax != ""){
+							$('.lead-fax').each(function() {
+								$(this).html(lead.fax);
+							});
+						};
+
+						if (lead.website != null && lead.website != ""){
+							$('.lead-website').each(function() {
+								$(this).html(lead.website);
+							});
+						};
+
+						if (lead.industry != null && lead.industry != ""){
+							$('.lead-industry').each(function() {
+								$(this).html(lead.industry);
+							});
+						};
+
+						if (lead.number_of_employees != null && lead.number_of_employees != ""){
+							$('.lead-number-of-employees').each(function() {
+								$(this).html(lead.number_of_employees);
+							});
+						};
+
+						if (lead.lead_source != null && lead.lead_source != ""){
+							$('.lead-source').each(function() {
+								$(this).html(lead.lead_source);
+							});
+						};
+
+						if (lead.mailing_address != null && lead.mailing_address != ""){
+							$('.lead-mailing-address').each(function() {
+								$(this).html(lead.mailing_address);
+							});
+						};
+
+						if (lead.description != null && lead.description != ""){
+							$('.lead-description').each(function() {
+								$(this).html(lead.description);
+							});
+						};
+
+						if (lead.tag_list != null && lead.tag_list != ""){							
+							$('.lead-tag-list').each(function() {
+								$(this).html(lead.tag_list);
+							});
+						};						
+
+						if (lead.permission != null && lead.permission != ""){							
+							$('.lead-permission').each(function() {
+								$(this).html(lead.permission);
+							});
+						};						
+
+						if (lead.created != null && lead.created != ""){							
+							$('.lead-created').each(function() {
+								$(this).html(lead.created);
+							});
+						};
+
+						if (lead.updated != null && lead.updated != ""){							
+							$('.lead-updated').each(function() {
+								$(this).html(lead.updated);
+							});
+						};
+					},
+					error: function(error) {
+						console.log('Error:', error);
+					}
+				});
+			}
+		</script>
+
+		<script>
+			// Example function to update lead status via AJAX
+			function updateLeadStatus(leadId, newStatus) {
+				$.ajax({
+					type: 'POST',
+					url: `/leads/update/${leadId}`,
+					data: {
+						new_status: newStatus,
+						csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token for security
+					},
+					success: function(response) {
+						console.log(response.message);
+						// Perform any additional actions on success
+					},
+					error: function(error) {
+						console.error('Error updating lead status:', error);
+						// Handle errors as needed
+					}
+				});
+			}
+		
+			// Example usage
+			$(document).ready(function() {
+				// Replace 'leadId' and 'newStatus' with actual values
+				updateLeadStatus(1, 'New Status');
+			});
+		</script>
     </body>
 </html>
