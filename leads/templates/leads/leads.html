@@ -313,12 +313,12 @@
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<span class="user-img"><img src="{% static 'assets/img/profiles/avatar-21.jpg' %}" alt="">
 							<span class="status online"></span></span>
-							<span>Admin</span>
+							<span class="text-capitalize">{{request.user}}</span>
 						</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="profile.html">My Profile</a>
 							<a class="dropdown-item" href="settings.html">Settings</a>
-							<a class="dropdown-item" href="login.html">Logout</a>
+							<a class="dropdown-item" href="{% url 'authentication:logout' %}">Logout</a>
 						</div>
 					</li>
 				</ul>
@@ -811,7 +811,7 @@
 					                            </select>
 											</div>
 											<div class="col-sm-6">
-												<label class="col-form-label">Title</label>
+												<label class="col-form-label" for="title">Title</label>
                             					<input type="text" class="form-control" name="title" placeholder="Title" required>
 											</div>
 										</div>
@@ -820,15 +820,19 @@
 												<label class="col-form-label">Lead Status</label>
 					                            <select class="form-control" name="lead_status" required>
 					                                <option>Select</option>
-					                                <option>Open - Contacted</option>
-					                                <option>Open - Not Contacted</option>
+					                                <option value="Not Contacted">Not Contacted</option>
+													<option value="Attempted Contact">Attempted Contact</option>
+					                                <option value="Contacted">Contacted</option>
+													<option value="Converted">Converted</option>
 					                            </select>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">User Responsible</label>
 					                            <select class="form-control" name="user_responsible" required>
 					                                <option>Select</option>
-					                                <option>John Doe</option>
+					                                {% for user in users %}
+													<option value="{{user.pk}}">{{user.name}}</option>
+													{% endfor %}
 					                            </select>
 											</div>
 										</div>
@@ -981,7 +985,7 @@
 	                  		</div>
 	                  		<div>
 	                  			<p class="mb-0">System User</p>
-	                  			<span class="modal-title">John Doe</span>
+	                  			<span class="modal-title text-capitalize">{{request.user}}</span>
 	                    		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
 	                    		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
 	                  		</div>
@@ -1054,22 +1058,22 @@
 							         </a>
 							    </li>
 							    <li role="presentation">
-							        <a href="#attempted-contact" class="lead-status-indicator" aria-controls="attempted-contact" role="tab" data-bs-toggle="tab" aria-expanded="false">
+							        <a href="#attempted-contact" class="lead-status-indicator" aria-controls="attempted-contact" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Attempted Contact')">
 							            <span class="octicon octicon-diff-added"></span>Attempted Contact
 							        </a>
 							    </li>
 							    <li role="presentation">
-							        <a href="#contact" class="lead-status-indicator" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false">
+							        <a href="#contact" class="lead-status-indicator" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Contacted')">
 							            <span class="octicon octicon-comment-discussion"></span>Contacted
 							        </a>
 							    </li>
 							     <li role="presentation">
-							        <a href="#converted" class="lead-status-indicator" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false">
+							        <a href="#converted" class="lead-status-indicator" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Converted')">
 							            <span class="octicon octicon-comment-discussion"></span>Converted
 							        </a>
 							    </li>
 							    <li role="presentation" class="d-none">
-							        <a href="#converted" class="lead-status-indicator" aria-controls="converted" role="tab" data-bs-toggle="tab" aria-expanded="false">
+							        <a href="#converted" class="lead-status-indicator" aria-controls="converted" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Converted')">
 							            <span class="octicon octicon-verified"></span>Converted
 							       	</a>
 							    </li>
@@ -1222,7 +1226,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td>Description</td>
-						                                    <td>Interested in model: Whirlygig T950 </td>
+						                                    <td class="lead-description">None</td>
 						                                  </tr>
 						                                </tbody>
 						                            </table>
@@ -1239,7 +1243,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td class="border-0">Tag List</td>
-						                                    <td class="border-0 lead-tag-list">Lorem Ipsum</td>
+						                                    <td class="border-0 lead-tag-list">None</td>
 						                                  </tr>
 						                                </tbody>
 						                              </table>
@@ -1606,51 +1610,51 @@
 							                                <tbody>
 							                                  <tr>
 							                                    <td>Record ID</td>
-							                                    <td>124192692</td>
+							                                    <td class="lead-id">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Name</td>
-							                                    <td>Anny Lench</td>
+							                                    <td class="lead-full-name">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Title</td>
-							                                    <td>VP of Sales</td>
+							                                    <td class="lead-title">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Organization</td>
-							                                  	<td>Howe-Blanda LLC</td>
+							                                  	<td class="lead-organization">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Status</td>
-							                                  	<td>OPEN - NotContacted</td>
+							                                  	<td class="lead-status">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>User Responsible</td>
-							                                  	<td>John Doe</td>
+							                                  	<td class="lead-user-responsible">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Link Email Address</td>
-							                                  	<td>abc@gmail.com</td>
+							                                  	<td class="lead-email">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Owner</td>
-							                                  	<td>John Doe</td>
+							                                  	<td class="lead-owner">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Created</td>
-							                                  	<td>03-Jun-20 1:14 AM</td>
+							                                  	<td class="lead-created">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Last Activity</td>
-							                                  	<td>09/03/2000</td>
+							                                  	<td class="lead-updated">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Next Activity</td>
-							                                  	<td>10/03/2000</td>
+							                                  	<td>None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Rating</td>
-							                                  	<td>0</td>
+							                                  	<td class="lead-rating">None</td>
 							                                  </tr>
 							                                </tbody>
 							                            </table>
@@ -1663,42 +1667,42 @@
 											    <div class="accordion-body__contents">
 											      	<table class="table">
 						                                <tbody>
-						                                  <tr>
-						                                    <td>Email Address</td>
-						                                    <td>abc@gmail.com</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Email Opted Out</td>
-						                                    <td>Lorem</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Phone</td>
-						                                    <td>(406) 653-3860</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Mobile Phone</td>
-						                                    <td>9867656756</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Fax</td>
-						                                    <td>1234</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Website</td>
-						                                    <td>Lorem ipsum</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Industry</td>
-						                                    <td>lorem ipsum</td>
-						                                  </tr>
-						                                  <tr>
-						                                  	<td>Number of Employees</td>
-						                                  	<td>2</td>
-						                                  </tr>
-						                                  <tr>
-						                                  	<td>Lead Source</td>
-						                                  	<td>Phone Enquiry</td>
-						                                  </tr>
+															<tr>
+																<td>Email Address</td>
+																<td class="lead-email">None</td>
+															  </tr>
+															  <tr>
+																<td>Email Opted Out</td>
+																<td class="text-capitalize lead-email-opted-out">None</td>
+															  </tr>
+															  <tr>
+																<td>Phone</td>
+																<td class="lead-phone">None</td>
+															  </tr>
+															  <tr>
+																<td>Mobile Phone</td>
+																<td class="lead-mobile-phone">None</td>
+															  </tr>
+															  <tr>
+																<td>Fax</td>
+																<td class="lead-fax">None</td>
+															  </tr>
+															  <tr>
+																<td>Website</td>
+																<td class="lead-website">None</td>
+															  </tr>
+															  <tr>
+																<td>Industry</td>
+																<td class="lead-industry">None</td>
+															  </tr>
+															  <tr>
+																  <td>Number of Employees</td>
+																  <td class="lead-number-of-employees">None</td>
+															  </tr>
+															  <tr>
+																  <td>Lead Source</td>
+																  <td class="lead-source">None</td>
+															  </tr>
 						                                  
 						                                </tbody>
 						                             </table>
@@ -1713,7 +1717,7 @@
 						                                <tbody>
 							                                <tr>
 							                                    <td> Address</td>
-							                                    <td>1000 Escalon Street, Palo Alto, CA, 94020, United States map</td>
+							                                    <td class="lead-mailing-address">None</td>
 							                                </tr>
 						                                </tbody>
 						                            </table>
@@ -1729,7 +1733,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td>Description</td>
-						                                    <td>Interested in model: Whirlygig T950 </td>
+						                                    <td class="lead-description">None</td>
 						                                  </tr>
 						                                </tbody>
 						                            </table>
@@ -1746,7 +1750,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td class="border-0">Tag List</td>
-						                                    <td class="border-0">Lorem Ipsum</td>
+						                                    <td class="border-0 lead-tag-list">None</td>
 						                                  </tr>
 						                                </tbody>
 						                              </table>
@@ -2113,51 +2117,51 @@
 							                                <tbody>
 							                                  <tr>
 							                                    <td>Record ID</td>
-							                                    <td>124192692</td>
+							                                    <td class="lead-id">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Name</td>
-							                                    <td>Anny Lench</td>
+							                                    <td class="lead-full-name">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Title</td>
-							                                    <td>VP of Sales</td>
+							                                    <td class="lead-title">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Organization</td>
-							                                  	<td>Howe-Blanda LLC</td>
+							                                  	<td class="lead-organization">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Status</td>
-							                                  	<td>OPEN - NotContacted</td>
+							                                  	<td class="lead-status">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>User Responsible</td>
-							                                  	<td>John Doe</td>
+							                                  	<td class="lead-user-responsible">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Link Email Address</td>
-							                                  	<td>abc@gmail.com</td>
+							                                  	<td class="lead-email">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Owner</td>
-							                                  	<td>John Doe</td>
+							                                  	<td class="lead-owner">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Created</td>
-							                                  	<td>03-Jun-20 1:14 AM</td>
+							                                  	<td class="lead-created">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Last Activity</td>
-							                                  	<td>09/02/2000</td>
+							                                  	<td class="lead-updated">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Next Activity</td>
-							                                  	<td>07/02/2010</td>
+							                                  	<td>None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Rating</td>
-							                                  	<td>0</td>
+							                                  	<td class="lead-rating">None</td>
 							                                  </tr>
 							                                </tbody>
 							                            </table>
@@ -2170,42 +2174,42 @@
 											    <div class="accordion-body__contents">
 											      	<table class="table">
 						                                <tbody>
-						                                  <tr>
-						                                    <td>Email Address</td>
-						                                    <td>abc@gmail.com</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Email Opted Out</td>
-						                                    <td>Lorem</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Phone</td>
-						                                    <td>(406) 653-3860</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Mobile Phone</td>
-						                                    <td>8987454554</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Fax</td>
-						                                    <td>1234</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Website</td>
-						                                    <td>google.com</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Industry</td>
-						                                    <td>IT</td>
-						                                  </tr>
-						                                  <tr>
-						                                  	<td>Number of Employees</td>
-						                                  	<td>2</td>
-						                                  </tr>
-						                                  <tr>
-						                                  	<td>Lead Source</td>
-						                                  	<td>Phone Enquiry</td>
-						                                  </tr>
+															<tr>
+																<td>Email Address</td>
+																<td class="lead-email">None</td>
+															  </tr>
+															  <tr>
+																<td>Email Opted Out</td>
+																<td class="text-capitalize lead-email-opted-out">None</td>
+															  </tr>
+															  <tr>
+																<td>Phone</td>
+																<td class="lead-phone">None</td>
+															  </tr>
+															  <tr>
+																<td>Mobile Phone</td>
+																<td class="lead-mobile-phone">None</td>
+															  </tr>
+															  <tr>
+																<td>Fax</td>
+																<td class="lead-fax">None</td>
+															  </tr>
+															  <tr>
+																<td>Website</td>
+																<td class="lead-website">None</td>
+															  </tr>
+															  <tr>
+																<td>Industry</td>
+																<td class="lead-industry">None</td>
+															  </tr>
+															  <tr>
+																  <td>Number of Employees</td>
+																  <td class="lead-number-of-employees">None</td>
+															  </tr>
+															  <tr>
+																  <td>Lead Source</td>
+																  <td class="lead-source">None</td>
+															  </tr>
 						                                  
 						                                </tbody>
 						                             </table>
@@ -2220,7 +2224,7 @@
 						                                <tbody>
 							                                <tr>
 							                                    <td> Address</td>
-							                                    <td>1000 Escalon Street, Palo Alto, CA, 94020, United States map</td>
+							                                    <td class="lead-mailing-address">None</td>
 							                                </tr>
 						                                </tbody>
 						                            </table>
@@ -2236,7 +2240,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td>Description</td>
-						                                    <td>Interested in model: Whirlygig T950 </td>
+						                                    <td class="lead-description">None</td>
 						                                  </tr>
 						                                </tbody>
 						                            </table>
@@ -2253,7 +2257,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td class="border-0">Tag List</td>
-						                                    <td class="border-0">Lorem Ipsum</td>
+						                                    <td class="border-0 lead-tag-list">None</td>
 						                                  </tr>
 						                                </tbody>
 						                              </table>
@@ -2620,51 +2624,51 @@
 							                                <tbody>
 							                                  <tr>
 							                                    <td>Record ID</td>
-							                                    <td>124192692</td>
+							                                    <td class="lead-id">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Name</td>
-							                                    <td>Anny Lench</td>
+							                                    <td class="lead-full-name">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Title</td>
-							                                    <td>VP of Sales</td>
+							                                    <td class="lead-title">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Organization</td>
-							                                  	<td>Howe-Blanda LLC</td>
+							                                  	<td class="lead-organization">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Status</td>
-							                                  	<td>OPEN - NotContacted</td>
+							                                  	<td class="lead-status">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>User Responsible</td>
-							                                  	<td>Williams</td>
+							                                  	<td class="lead-user-responsible">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Link Email Address</td>
-							                                  	<td>abc@gmail.com</td>
+							                                  	<td class="lead-email">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Owner</td>
-							                                  	<td>John Doe</td>
+							                                  	<td class="lead-owner">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Created</td>
-							                                  	<td>03-Jun-20 1:14 AM</td>
+							                                  	<td class="lead-created">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Last Activity</td>
-							                                  	<td>09/01/2020</td>
+							                                  	<td class="lead-updated">None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Next Activity</td>
-							                                  	<td>09/01/2020</td>
+							                                  	<td>None</td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Rating</td>
-							                                  	<td>0</td>
+							                                  	<td class="lead-rating">None</td>
 							                                  </tr>
 							                                </tbody>
 							                            </table>
@@ -2677,42 +2681,42 @@
 											    <div class="accordion-body__contents">
 											      	<table class="table">
 						                                <tbody>
-						                                  <tr>
-						                                    <td>Email Address</td>
-						                                    <td>abc@gmail.com</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Email Opted Out</td>
-						                                    <td>-</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Phone</td>
-						                                    <td>(406) 653-3860</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Mobile Phone</td>
-						                                    <td>9867657655</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Fax</td>
-						                                    <td>1234</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Website</td>
-						                                    <td>googlee.com</td>
-						                                  </tr>
-						                                  <tr>
-						                                    <td>Industry</td>
-						                                    <td>IT</td>
-						                                  </tr>
-						                                  <tr>
-						                                  	<td>Number of Employees</td>
-						                                  	<td>2</td>
-						                                  </tr>
-						                                  <tr>
-						                                  	<td>Lead Source</td>
-						                                  	<td>Phone Enquiry</td>
-						                                  </tr>
+															<tr>
+																<td>Email Address</td>
+																<td class="lead-email">None</td>
+															  </tr>
+															  <tr>
+																<td>Email Opted Out</td>
+																<td class="text-capitalize lead-email-opted-out">None</td>
+															  </tr>
+															  <tr>
+																<td>Phone</td>
+																<td class="lead-phone">None</td>
+															  </tr>
+															  <tr>
+																<td>Mobile Phone</td>
+																<td class="lead-mobile-phone">None</td>
+															  </tr>
+															  <tr>
+																<td>Fax</td>
+																<td class="lead-fax">None</td>
+															  </tr>
+															  <tr>
+																<td>Website</td>
+																<td class="lead-website">None</td>
+															  </tr>
+															  <tr>
+																<td>Industry</td>
+																<td class="lead-industry">None</td>
+															  </tr>
+															  <tr>
+																  <td>Number of Employees</td>
+																  <td class="lead-number-of-employees">None</td>
+															  </tr>
+															  <tr>
+																  <td>Lead Source</td>
+																  <td class="lead-source">None</td>
+															  </tr>
 						                                  
 						                                </tbody>
 						                             </table>
@@ -2727,7 +2731,7 @@
 						                                <tbody>
 							                                <tr>
 							                                    <td> Address</td>
-							                                    <td>1000 Escalon Street, Palo Alto, CA, 94020, United States map</td>
+							                                    <td class="lead-mailing-address">None</td>
 							                                </tr>
 						                                </tbody>
 						                            </table>
@@ -2743,7 +2747,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td>Description</td>
-						                                    <td>Interested in model: Whirlygig T950 </td>
+						                                    <td class="lead-description">None</td>
 						                                  </tr>
 						                                </tbody>
 						                            </table>
@@ -2760,7 +2764,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td class="border-0">Tag List</td>
-						                                    <td class="border-0">Lorem Ipsum</td>
+						                                    <td class="border-0 lead-tag-list">None</td>
 						                                  </tr>
 						                                </tbody>
 						                              </table>
@@ -3386,11 +3390,11 @@
 							$('.lead-email').each(function() {  
 								$(this).html(lead.email); 
 							});
-						};												
-						
-						if (lead.email_opted_out != null && lead.email_opted_out != ""){							
+						};	
+						var email_opted_out = '' + lead.email_opted_out + ''
+						if (email_opted_out != null && email_opted_out != ""){							
 							$('.lead-email-opted-out').each(function() {								
-								$(this).html(lead.email_opted_out);																
+								$(this).html(email_opted_out);																
 							});
 						};
 
@@ -3484,13 +3488,13 @@
 			function updateLeadStatus(leadId, newStatus) {
 				$.ajax({
 					type: 'POST',
-					url: `/leads/update/${leadId}`,
+					url: `/leads/update_lead_status/${leadId}`,
 					data: {
 						new_status: newStatus,
 						csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token for security
 					},
 					success: function(response) {
-						console.log(response.message);
+						loadLeadDetails(leadId)						
 						// Perform any additional actions on success
 					},
 					error: function(error) {
@@ -3499,12 +3503,6 @@
 					}
 				});
 			}
-		
-			// Example usage
-			$(document).ready(function() {
-				// Replace 'leadId' and 'newStatus' with actual values
-				updateLeadStatus(1, 'New Status');
-			});
 		</script>
     </body>
 </html>
