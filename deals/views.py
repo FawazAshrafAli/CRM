@@ -5,6 +5,8 @@ from django.urls import  reverse_lazy
 from django.contrib import messages
 from django.http import Http404
 from .models import Deal
+from authentication.models import CrmUser
+from organizations.models import Company
 
 
 class BaseDealView(LoginRequiredMixin):
@@ -13,19 +15,26 @@ class BaseDealView(LoginRequiredMixin):
 
 
 class CreateDealView(BaseDealView, CreateView):
-    template_name = "deals/create.html"
-    success_url = reverse_lazy('list_deals')
-    fields = ["deal_name", "company", "forecast_close_date", "user_responsible", "deal_value"]
+    template_name = "deals/deals.html"
+    success_url = reverse_lazy('deals:list')
+    fields = "__all__"
 
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, 'Deal Created.')
         return response
     
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        for field, errors in form.errors.items():
+            for error in errors:
+                print(f"Error on {field}: {error}")
+        return response
+    
 
 class UpdateDealView(BaseDealView, UpdateView):
     template_name = "deals/update.html"
-    success_url = reverse_lazy("detail_deal")
+    success_url = reverse_lazy("deals:detail")
 
     def get(self, request, *args, **kwargs):
         try:
@@ -44,6 +53,14 @@ class ListDealView(BaseDealView, ListView):
     template_name = "deals/deals.html"
     queryset = Deal.objects.all()
     context_object_name = 'deals'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'users': CrmUser.objects.all(),
+            'organizations': Company.objects.all()
+            })
+        return context
 
 
 class DetailDealView(BaseDealView, DetailView):
