@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -10,27 +11,27 @@
         <title>Register - CRMS admin template</title>
 		
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.png' %}">
 		
 		<!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
 		
 		<!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
 
         <!-- Feathericon CSS -->
-		<link rel="stylesheet" href="assets/css/feather.css">
+		<link rel="stylesheet" href="{% static 'assets/css/feather.css' %}">
 
         <!--font style-->
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 		
 		<!-- Main CSS -->
-        <link rel="stylesheet" href="assets/css/style.css" class="themecls">
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" class="themecls">
 		
-		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- HTML5 shim and Respond.js' %} IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.min.js"></script>
-			<script src="assets/js/respond.min.js"></script>
+			<script src="{% static 'assets/js/html5shiv.min.js' %}"></script>
+			<script src="{% static 'assets/js/respond.min.js' %}"></script>
 		<![endif]-->
     </head>
     <body class="account-page">
@@ -43,7 +44,7 @@
 				
 					<!-- Account Logo -->
 					<div class="account-logo">
-						<a href="index.html"><img src="assets/img/logo.png" alt="Dreamguy's Technologies"></a>
+						<a href="index.html"><img src="{% static 'images/zencrm_logo.png' %}" alt="ZENCRM Logo"></a>
 					</div>
 					<!-- /Account Logo -->
 					
@@ -52,25 +53,36 @@
 							<h3 class="account-title">Register</h3>
 							<p class="account-subtitle">Access to our dashboard</p>
 							
+							<div class="message-div">
+								{% if messages %}
+									<ul class="messages">
+										{% for message in messages %}
+										<li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
+										{% endfor %}
+									</ul>									
+								{% endif %}
+							</div>
+
 							<!-- Account Form -->
-							<form action="index.html">
+							<form method="POST" action="{% url 'authentication:register' %}">
+								{% csrf_token %}
 								<div class="form-group">
-									<label>Email</label>
-									<input class="form-control" type="text" name="email">
+									<label>Email*</label>
+									<input class="form-control" type="text" name="email" required>
 								</div>
 								<div class="form-group">
-									<label>Password</label>
-									<input class="form-control" type="password" name="password">
+									<label>Password*</label>
+									<input class="form-control" type="password" name="password" required>
 								</div>
 								<div class="form-group">
-									<label>Repeat Password</label>
-									<input class="form-control" type="password" name="repeat_password">
+									<label>Repeat Password*</label>
+									<input class="form-control" type="password" name="repeat_password" required>
 								</div>
 								<div class="form-group text-center">
 									<button class="btn btn-primary account-btn" type="submit">Register</button>
 								</div>
 								<div class="account-footer">
-									<p>Already have an account? <a href="login.html">Login</a></p>
+									<p>Already have an account? <a href="{% url 'authentication:login' %}">Login</a></p>
 								</div>
 							</form>
 							<!-- /Account Form -->
@@ -261,17 +273,17 @@
         </div>
 		
 		<!-- jQuery -->
-        <script src="assets/js/jquery-3.6.0.min.js"></script>
+        <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
 		
 		<!-- Bootstrap Core JS -->
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
 		
 		<!-- Custom JS -->
 		<!-- theme JS -->
-		<script src="assets/js/theme-settings.js"></script>
+		<script src="{% static 'assets/js/theme-settings.js' %}"></script>
 
 		<!-- Custom JS -->
-		<script src="assets/js/app.js"></script>
+		<script src="{% static 'assets/js/app.js' %}"></script>
 		
     </body>
 </html>
