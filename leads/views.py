@@ -5,16 +5,17 @@ from .models import Lead
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
-
 from django.http import Http404, JsonResponse
 from organizations.models import Company
+from django.views.decorators.csrf import csrf_exempt
+from authentication.models import CrmUser
 
 class BaseLeadView(LoginRequiredMixin):
     model = Lead
     login_url = 'authentication:login'
 
 class CreateLeadView(BaseLeadView, CreateView):
-    template_name = 'leads/create.html'    
+    template_name = 'leads/leads.html'    
     fields = "__all__"
     success_url = reverse_lazy('leads:list')
     raise_exception = True
@@ -29,33 +30,9 @@ class CreateLeadView(BaseLeadView, CreateView):
         for field, errors in form.errors.items():
             for error in errors:
                 print(f"Error on {field}: {error}")
-        return response
+        return response    
+
     
-
-
-class UpdateLeadView(BaseLeadView, UpdateView):
-    template_name = 'leads/update.html'
-    pk_url_kwarg = 'pk'
-    fields = ["lead_status"]
-
-    # def form_valid(self, form):
-    #     messages.success(self.request, 'Lead updation successfull.')
-    #     return super().form_valid(form)
-    
-    def get_success_url(self):
-        return reverse_lazy('leads:detail', kwargs={'pk': self.object.id})
-    
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        data = {'message': 'Success', 'id': self.object.id}
-        return JsonResponse(data)
-
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-        data = {'message': 'Error', 'errors': form.errors}
-        return JsonResponse(data, status=400)
-
-
 class ListLeadView(BaseLeadView, ListView):
     template_name = 'leads/leads.html'
     queryset = Lead.objects.all()
@@ -63,7 +40,10 @@ class ListLeadView(BaseLeadView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['organizations'] = Company.objects.all()
+        context.update({
+            "organizations" : Company.objects.all(),
+            "users" : CrmUser.objects.all()
+        })        
         return context
 
 class DetailLeadView(BaseLeadView, DetailView):
@@ -80,7 +60,7 @@ class DetailLeadView(BaseLeadView, DetailView):
         
     def render_to_response(self, context, **response_kwargs):
         lead = context['object']
-
+                
         serialized_data = {
             "id" : lead.id,
             "prefix" : lead.prefix,
@@ -88,7 +68,7 @@ class DetailLeadView(BaseLeadView, DetailView):
             "organization" : lead.organization.name,
             "title" : lead.title,
             "lead_status" : lead.lead_status,
-            "user_responsible" : lead.user_responsible,
+            "user_responsible" : lead.user_responsible.name,
             "lead_rating" : lead.lead_rating,
             "email" : lead.email,
             "email_opted_out" : lead.email_opted_out,
@@ -111,6 +91,38 @@ class DetailLeadView(BaseLeadView, DetailView):
             serialized_data['mailing_address'] = mailing_address
 
         return JsonResponse(serialized_data)
+
+class UpdateLeadView(BaseLeadView, UpdateView):
+    template_name = 'leads/update.html'
+    pk_url_kwarg = 'pk'
+    fields = ["lead_status"]
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Lead updation successfull.')
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('leads:detail', kwargs={'pk': self.object.id})
+
+# For updating lead status using ajax
+class UpdateLeadStatusView(BaseLeadView, UpdateView):
+    template_name = 'leads/leads.html'
+    pk_url_kwarg = 'pk'
+    fields = ["lead_status"]
+
+    @csrf_exempt
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        data = {'message': 'Error'}        
+        # if request.is_ajax():
+        # Update the object fields
+        self.object.lead_status = request.POST.get('new_status')
+        self.object.save()
+
+        data = {'message': 'Success', 'id': self.object.id}
+
+        return JsonResponse(data)
+
 
 class DeleteLeadView(BaseLeadView, DeleteView):
     template_name = 'leads/confirm_deletion.html'

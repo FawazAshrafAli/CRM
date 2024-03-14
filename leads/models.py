@@ -1,5 +1,6 @@
 from django.db import models
 from organizations.models import Company
+from authentication.models import CrmUser
 
 class Lead(models.Model):
     # Lead Information
@@ -9,13 +10,16 @@ class Lead(models.Model):
     organization = models.ForeignKey(Company, on_delete=models.PROTECT)
     title = models.CharField(max_length=150, blank=False, null=False)
     lead_status = models.CharField(max_length=150, blank=False, null=False, default = 'OPEN - Not Contacted')
-    user_responsible = models.CharField(max_length=150, blank=False, null=False)
+    user_responsible = models.ForeignKey(CrmUser, on_delete=models.PROTECT, related_name="user_responsible")
     lead_rating = models.IntegerField(blank=True, null=True)
 
+    # managing
+    lead_owner = models.ForeignKey(CrmUser, on_delete=models.PROTECT, related_name="lead_owner", blank=True, null=True)
+
     # Additional Information
-    email = models.EmailField(max_length=254, blank=False, null=False)
+    email = models.EmailField(max_length=254, blank=False, null=False, unique=True)
     email_opted_out = models.BooleanField(default=False)
-    phone = models.CharField(max_length=20, blank=False, null=False)
+    phone = models.CharField(max_length=20, blank=False, null=False, unique=True)
     mobile_phone = models.CharField(max_length=20, blank=True, null=True)
     fax = models.CharField(max_length=20, blank=True, null=True)
     website = models.CharField(max_length=150, blank=True, null=True)
