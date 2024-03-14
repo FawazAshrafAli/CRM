@@ -12,20 +12,17 @@ from .models import CrmUser
 from django.db.utils import IntegrityError
 
 class RegisterUserView(TemplateView):
-    template_name = 'authentication/user_registration.html'
+    template_name = 'authentication/register.html'
 
     def post(self, request, *args, **kwargs):
         context = {}
         message = None
-
-        username = request.POST.get("username")
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        phone = request.POST.get("phone")
+                
+        email = request.POST.get("email")        
         password = request.POST.get("password")
         repeat_password = request.POST.get("repeat_password")
 
-        required_fields = ["username", "name", "email", "phone", "password", "repeat_password"]
+        required_fields = ["email", "password", "repeat_password"]
 
         for field in required_fields:
             if not locals()[field]:
@@ -41,8 +38,8 @@ class RegisterUserView(TemplateView):
 
             if not message:
                 try:
-                    user = User.objects.create_user(username=username, password=password)
-                    crm_user = CrmUser.objects.create(user=user, name=name, email=email, phone=phone)
+                    user = User.objects.create_user(username=email, password=password)
+                    crm_user = CrmUser.objects.create(user=user, email=email)
 
                     if not crm_user:
                         user.delete()
@@ -51,7 +48,7 @@ class RegisterUserView(TemplateView):
                         login(request, user)
                         return redirect(reverse('dashboard:deals_dashboard'))
                 except IntegrityError:
-                    message = "User with the given username already exists"
+                    message = "User with the given email id already exists"
                     context.update({"repeat_password": repeat_password})
 
         if message:
