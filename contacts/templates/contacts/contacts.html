@@ -861,25 +861,25 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Mailing Address</label>
-                            					<textarea class="form-control" rows="3" name="mailing_address" placeholder="Mailing Address"></textarea>
+                            					<textarea class="form-control" rows="3" name="mailing_address" placeholder="Mailing Address" required></textarea>
 											</div>
 											<div class="col-sm-6 mt-3">
 												<label class="col-form-label"></label><br>
-                            					<input type="text" class="form-control" placeholder="Mailing City" name="mailing_city">
+                            					<input type="text" class="form-control" placeholder="Mailing City" name="mailing_city" required>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Mailing State" name="mailing_state">
+												<input type="text" class="form-control" placeholder="Mailing State" name="mailing_state" required>
 											</div>
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Mailing Postal code" name="mailing_postal_code">
+												<input type="text" class="form-control" placeholder="Mailing Postal code" name="mailing_postal_code" required>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Mailing Country</label>
-					                            <select class="form-control" name="mailing_country">
+					                            <select class="form-control" name="mailing_country" required>
 					                                <option>India</option>
 					                                <option>US</option>
 					                                <option>Japan</option>
@@ -2436,6 +2436,14 @@
 		
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
+
+		<script>
+			var timeOutDiv = document.getElementById('message-div');
+			
+			setTimeout(function () {
+				timeOutDiv.style.display = "none";
+			}, 5000);
+		</script>
 
 		<script>
 			function loadContactDetails(contactId) {	
