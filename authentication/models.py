@@ -5,8 +5,7 @@ class CrmUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name =  models.CharField(max_length=100, null=True, blank=True)
     title = models.CharField(max_length=100, null=True, blank=True)
-    email = models.EmailField(max_length=254, null=False, blank=False)
-    phone = models.CharField(max_length=16, null=True, blank=True)
+    email = models.EmailField(max_length=254, null=False, blank=False, unique=True)    
     birthday = models.DateField(blank=True, null=True)
     address = models.CharField(max_length=150, null=True, blank=True)
     address_city = models.CharField(max_length=150, null=True, blank=True)
@@ -17,9 +16,9 @@ class CrmUser(models.Model):
     reports_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reports_to", blank=True, null=True)
 
     # Personal Information
-    passport_number = models.CharField(max_length=25, null=True, blank=True)
+    passport_number = models.CharField(max_length=25, null=True, blank=True, unique=True)
     passport_expiry_date = models.CharField(max_length=50, null=True, blank=True)
-    phone = models.CharField(max_length=25, null=True, blank=True)
+    phone = models.CharField(max_length=16, null=True, blank=True, unique=True)
     nationality = models.CharField(max_length=100, null=True, blank=True)
     religion = models.CharField(max_length=100, null=True, blank=True)
     maritial_status = models.CharField(max_length=75, null=True, blank=True)
