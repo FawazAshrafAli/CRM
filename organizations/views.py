@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from contacts.models import Contact
 
 
 class BaseOrganizationView(LoginRequiredMixin):
@@ -37,6 +38,12 @@ class ListOrganizationView(BaseOrganizationView, ListView):
     # queryset = Company.objects.all()
     context_object_name = "organizations"
     queryset = Company.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["contacts"] = Contact.objects.all()
+        return context
+    
 
 
 class DetailOrganizationView(BaseOrganizationView, DetailView):    

@@ -1391,14 +1391,14 @@
 																</tr>
 															</thead>
 															<tbody>
-																<tr>
-																	
+																{% for contact in contacts %}
+																<tr>																	
 																	<td>
-																		Wilmer Deluna
+																		{{contact.first_name}} {{contact.last_name}}
 																	</td>
-																	<td>Call Enquiry</td>
-																	<td>987675656</td>
-																	<td>william@gmail.com</td>
+																	<td>{{contact.title}}</td>
+																	<td>{{contact.phone}}</td>
+																	<td>{{contact.email}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1410,25 +1410,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		John Doe
-																	</td>
-																	<td>Enquiry</td>
-																	<td>987675656</td>
-																	<td>john@gmail.com</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1943,6 +1925,13 @@
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
 
+		<script>
+			var timeOutDiv = document.getElementById('message-div');
+			
+			setTimeout(function () {
+				timeOutDiv.style.display = "none";
+			}, 5000);
+		</script>
 		
 		<script>
 			function loadOrganizationDetails(organizationId) {	
