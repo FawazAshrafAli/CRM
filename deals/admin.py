@@ -1,3 +1,5 @@
 from django.contrib import admin
+from deals.models import Deal, PipelineStage
 
-# Register your models here.
+admin.site.register(Deal)
+admin.site.register(PipelineStage)

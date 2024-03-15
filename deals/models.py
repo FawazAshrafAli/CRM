@@ -1,5 +1,12 @@
 from django.db import models
 from organizations.models import Company
+from authentication.models import CrmUser
+
+class PipelineStage(models.Model):
+    stage = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.stage
 
 class Deal(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False)    
@@ -10,7 +17,7 @@ class Deal(models.Model):
     probability_of_winning = models.CharField(max_length=150, blank=True, null=True, default="Email")
     forecast_close_date = models.CharField(max_length=150, blank=True, null=True)
     actual_close_date = models.CharField(max_length=150, blank=True, null=True)
-    user_responsible = models.CharField(max_length=150, blank=False, null=False)
+    user_responsible = models.ForeignKey(CrmUser, on_delete=models.PROTECT)
     deal_value = models.CharField(max_length=100, blank=False, null=False)
     bid_amount = models.CharField(max_length=50, blank=False, null=False)
     bid_type = models.CharField(max_length=100, blank=False, null=False, default="Fixed Bid")
@@ -22,8 +29,8 @@ class Deal(models.Model):
     tag_list = models.CharField(max_length=150)
 
     # Pipeline and Stages
-    pipeline = models.CharField(max_length=150, blank=False, null=False)
-    stage = models.JSONField(blank=True, null=True)
+    pipeline = models.CharField(max_length=150, blank=False, null=False)    
+    stage = models.ManyToManyField(PipelineStage)
 
     # Permissions
     visibility = models.CharField(max_length=150, blank=False, null=False)
@@ -31,3 +38,6 @@ class Deal(models.Model):
     # Created and Updated Datetime
     created = models.DateTimeField(auto_now_add=True)
     updated  = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name

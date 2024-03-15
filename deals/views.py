@@ -3,21 +3,36 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import  reverse_lazy
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from .models import Deal
 from authentication.models import CrmUser
 from organizations.models import Company
+from deals.models import PipelineStage
 
 
 class BaseDealView(LoginRequiredMixin):
-    login_url = 'login'
+    login_url = 'authentication:login'
     model = Deal
 
 
 class CreateDealView(BaseDealView, CreateView):
     template_name = "deals/deals.html"
     success_url = reverse_lazy('deals:list')
-    fields = "__all__"
+    fields = [
+        "name","company","category","probability_of_winning","forecast_close_date",
+        "actual_close_date","user_responsible","deal_value","bid_amount","bid_type",
+        "description","tag_list","pipeline","visibility"
+    ]
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        
+        stage = self.request.POST.getlist("stage")        
+        self.object.stage.add(*stage)
+        self.object.save()
+
+        return response
+        
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -33,7 +48,7 @@ class CreateDealView(BaseDealView, CreateView):
     
 
 class UpdateDealView(BaseDealView, UpdateView):
-    template_name = "deals/update.html"
+    template_name = "deals/deals.html"
     success_url = reverse_lazy("deals:detail")
 
     def get(self, request, *args, **kwargs):
@@ -41,7 +56,7 @@ class UpdateDealView(BaseDealView, UpdateView):
             return super().get(request, *args, **kwargs)
         except Http404:
             messages.error(self.request, 'Invalid deal.')
-            return reverse_lazy('list_deals')
+            return reverse_lazy('deals:list')
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -58,16 +73,42 @@ class ListDealView(BaseDealView, ListView):
         context = super().get_context_data(**kwargs)
         context.update({
             'users': CrmUser.objects.all(),
-            'organizations': Company.objects.all()
+            'organizations': Company.objects.all(),
+            'stages': PipelineStage.objects.all()
             })
         return context
 
 
 class DetailDealView(BaseDealView, DetailView):
-    template_name = "deals/detail.html"
+    template_name = "deals/deals.html"
     context_object_name = 'deal'
     pk_url_kwarg = 'pk'
 
+    def render_to_response(self, context, **response_kwargs):
+        deal = context['object']
+
+        serialized_data = {
+            'id' : deal.id,
+            'name' : deal.name,
+            'company' : deal.company.name,
+            'category' : deal.category,
+            'probability_of_winning' : deal.probability_of_winning,
+            'forecast_close_date' : deal.forecast_close_date,
+            'actual_close_date' : deal.actual_close_date,
+            'user_responsible' : deal.user_responsible.name,
+            'deal_value' : deal.deal_value,
+            'bid_amount' : deal.bid_amount,
+            'bid_type' : deal.bid_type,
+            'description' : deal.description,
+            'tag_list' : deal.tag_list,
+            'pipeline' : deal.pipeline,
+            'stage' :  [deal_stage.stage for deal_stage in deal.stage.all()],
+            'visibility' : deal.visibility,
+            'created' : deal.created,
+            'updated' : deal.updated
+        }
+
+        return JsonResponse(serialized_data)
 
 class DeleteDealView(BaseDealView, DeleteView):
     template_name = "deals/confirm_deletion.html"
@@ -80,7 +121,7 @@ class DeleteDealView(BaseDealView, DeleteView):
             return super().get(request, *args, **kwargs)
         except Http404:
             messages.error(self.request, 'Invalid Deal.')
-            return reverse_lazy('list_deal')
+            return reverse_lazy('deals:list')
         
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
