@@ -31,4 +31,4 @@ urlpatterns = [
     path('projects/', include('projects.urls', namespace="projects")),   # project management    
     path('activities/', include('activities.urls', namespace="activities")),   # activity management    
     path('reports/', include('reports.urls', namespace="reports")),   # activity management    
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
