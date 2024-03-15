@@ -52,4 +52,4 @@ class CrmUser(models.Model):
     modified = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        self.user.username
+        return self.name
