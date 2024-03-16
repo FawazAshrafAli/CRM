@@ -64,6 +64,111 @@ function loadDealDetails(dealId){
                     $(this).html(deal.bid_amount);
                 });
             };
+
+            if (deal.bid_type != null && deal.bid_type != "") {
+                $('.deal-bid-type').each(function (){
+                    $(this).html(deal.bid_type);
+                });
+            };
+
+            if (deal.description != null && deal.description != "") {
+                $('.deal-description').each(function (){
+                    $(this).html(deal.description);
+                });
+            };
+
+            if (deal.tag_list != null && deal.tag_list != "") {
+                $('.deal-tag-list').each(function (){
+                    $(this).html(deal.tag_list);
+                });
+            };
+
+            if (deal.pipeline != null && deal.pipeline != "") {
+                $('.deal-pipeline').each(function (){
+                    $(this).html(deal.pipeline);
+                });
+            };
+
+            if (deal.stages != null && deal.stages != "") {                                        
+                var array = deal.stages
+                if (!array.includes("Prospecting")) {                                
+                    $('.deal-stage-prospecting').each(function (){ 
+                        $(this).addClass("planning")
+                    })                
+                } else {
+                    $('.deal-stage-prospecting').each(function (){ 
+                        $(this).removeClass("planning")
+                    })
+                }
+
+                if (!array.includes("Qualification")) {                    
+                    $('.deal-stage-qualification').each(function (){                                         
+                        $(this).addClass("planning")
+                    })
+                } else {
+                    $('.deal-stage-qualification').each(function (){ 
+                        $(this).removeClass("planning")
+                    })
+                }
+
+                if (!array.includes("Needs Analysis")) {                    
+                    $('.deal-stage-needs-analysis').each(function (){
+                        $(this).addClass("planning")
+                    })
+                } else {
+                    $('.deal-stage-needs-analysis').each(function (){ 
+                        $(this).removeClass("planning")
+                    })
+                }
+
+                if (!array.includes("Proposal")) {                    
+                    $('.deal-stage-proposal').each(function (){
+                        $(this).addClass("planning")
+                    })
+                } else {
+                    $('.deal-stage-proposal').each(function (){ 
+                        $(this).removeClass("planning")
+                    })
+                }
+
+                if (!array.includes("Negotiation")) {                    
+                    $('.deal-stage-negotiation').each(function (){
+                        $(this).addClass("planning")
+                    })
+                } else {
+                    $('.deal-stage-negotiation').each(function (){ 
+                        $(this).removeClass("planning")
+                    })
+                }
+
+                if (!array.includes("Closed Won")) {                    
+                    $('.deal-stage-closed-won').each(function (){
+                        $(this).addClass("planning")
+                    })
+                } else {
+                    $('.deal-stage-closed-won').each(function (){ 
+                        $(this).removeClass("planning")
+                    })
+                }
+            };
+
+            if (deal.stage != null && deal.stage != "") {
+                $('.deal-stage').each(function (){
+                    $(this).html(deal.stage);
+                });
+            };
+
+            if (deal.visibility != null && deal.visibility != "") {
+                $('.deal-visibility').each(function (){
+                    $(this).html(deal.visibility);
+                });
+            };
+
+            if (deal.updated != null && deal.updated != "") {
+                $('.deal-updated').each(function (){
+                    $(this).html(deal.updated);
+                });
+            };
         },
         error: function(error) {
             console.log('Error:', error);
