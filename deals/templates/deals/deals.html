@@ -653,7 +653,7 @@
 														<a href="#"><span class="person-circle-a person-circle">{{deal.name|slice:":1"}}</span></a>
 														<a href="#" data-bs-toggle="modal" data-bs-target="#deal-details" data-deal-id="{{ deal.pk }}" onclick="loadDealDetails({{ deal.pk }}); return false;">{{deal.name}}</a>
 													</td>
-													<td><a href="#" data-bs-toggle="modal" data-bs-target="#company-details">{{deal.company}}</a></td>
+													<td><a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-organization-id="{{ deal.company.pk }}" onclick="loadOrganizationDetails({{ deal.company.pk }}); return false;">{{deal.company}}</a></td>
 													<td>
 														<div class="pipeline-small flat">
 															{% for stage in stages %}
@@ -666,26 +666,7 @@
 																		<span class="stretched-link" data-bs-toggle="modal" data-bs-target="#deal-details"></span>
 																	</a>
 																{% endif %}
-															{% endfor %}
-															
-							                                {% comment %} <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="stage: Prospecting">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#deal-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top planning" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="stage: Qualification">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#deal-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top"  data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="stage: Needs Analysis">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#deal-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top planning" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="stage: Proposal">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#deal-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="stage: Negotiation">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#deal-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="stage: Closed Won">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#deal-details"></span>
-							                                </a>															 {% endcomment %}
+															{% endfor %}																						                                
 							                            </div>
 													</td>
 													<td>{{deal.forecast_close_date}}</td>
@@ -942,7 +923,7 @@
                   		</div>
                   		<div>
                   			<p class="mb-0">Company</p>
-                  			<span class="modal-title deal-name">None</span>
+                  			<span class="modal-title organization-name">None</span>
                     		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
                     		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   		</div>
@@ -981,19 +962,19 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Title</span>
-	                        <p>Lorem ipsum</p>
+	                        <p class="organization-title">None</p>
 	                      </div>
 	                      <div class="col">
-	                        <span>Companies</span>
-	                        <p>Claimpett Corp</p>
+	                        <span>Company</span>
+	                        <p class="organization-name">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Phone</span>
-	                        <p>9876764875</p>
+	                        <p class="organization-phone">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Email</span>
-	                        <p>johndoe@gmail.com</p>
+	                        <p class="organization-email-domains">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Contact owner</span>
@@ -1022,12 +1003,12 @@
 										    <table class="table">
 				                                <tbody>
 				                                  <tr>
-				                                    <td class="border-0">Record ID</td>
-				                                    <td class="border-0">124192692</td>
+				                                    <td class="border-0">None</td>
+				                                    <td class="border-0 organization-id">124192692</td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Organization Name</td>
-				                                    <td>Clampett Oil and Gas Corp.</td>
+				                                    <td class="organization-name">None</td>
 				                                  </tr>
 				                                </tbody>
 				                            </table>
@@ -1042,31 +1023,31 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Phone</td>
-			                                    <td class="border-0">(626) 847-1294</td>
+			                                    <td class="border-0 organization-phone">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Fax</td>
-			                                    <td>1234</td>
+			                                    <td class="organization-fax">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Website</td>
-			                                    <td>google.com</td>
+			                                    <td class="organization-website">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>LinkedIn</td>
-			                                    <td>Lorem Ipsum</td>
+			                                    <td class="organization-linkedin">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Facebook</td>
-			                                    <td>Lorem ipsum</td>
+			                                    <td class="organization-facebook">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Twitter</td>
-			                                    <td>Not Started</td>
+			                                    <td class="organization-twitter">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Email Domains</td>
-			                                    <td>abc@gmail.com</td>
+			                                    <td class="organization-email-domains">None</td>
 			                                  </tr>
 			                                </tbody>
 			                              </table>
@@ -1081,11 +1062,11 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Billing Address</td>
-			                                    <td class="border-0">1000 Escalon Street, Palo Alto, CA, 94020, United States map</td>
+			                                    <td class="border-0 organization-billing-address">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Shipping Addres</td>
-			                                    <td>Escalon Street</td>
+			                                    <td class="organization-shipping-address">None</td>
 			                                  </tr>
 			                                </tbody>
 		                                </table>
@@ -1101,19 +1082,19 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td>Dates to remember</td>
-			                                    <td>09/01/2020</td>
+			                                    <td class="organization-date-to-remember">None</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Organization Created</td>
-			                                    <td>03-Jun-20 1:14 AM</td>
+			                                    <td class="organization-created-at">None</td>
 			                                  </tr>
 			                                   <tr>
 			                                    <td>Date of Next Activity </td>
-			                                    <td>03/03/2018</td>
+			                                    <td class="">03/03/2018</td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Date of Last Activity </td>
-			                                    <td>03/03/2020</td>
+			                                    <td class="organization-updated-at">None</td>
 			                                  </tr>
 			                                </tbody>
 			                             </table>
@@ -1129,7 +1110,7 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td>Description</td>
-			                                    <td>Lorem ipsum </td>
+			                                    <td class="organization-description">None</td>
 			                                  </tr>
 			                                </tbody>
 			                             </table>
@@ -1145,7 +1126,7 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Tag List</td>
-			                                    <td class="border-0">Lorem Ipsum</td>
+			                                    <td class="border-0 organization-tag-list">None</td>
 			                                  </tr>
 			                                </tbody>
 			                              </table>
@@ -1163,7 +1144,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Companies</h4>
-		                                  <span>2</span>
+		                                  <span>{{organizations|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1172,7 +1153,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Deals</h4>
-		                                  <span>2</span>
+		                                  <span>{{deals|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1181,7 +1162,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Projects</h4>
-		                                  <span>1</span>
+		                                  <span>{{projects|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1192,7 +1173,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-		                                  <span>2</span>
+		                                  <span>{{contacts|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1232,13 +1213,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for organization in organizations %}
 																<tr>
 																	<td>
 																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Clampett Oil and Gas Corp.</a>
+																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">{{organization.name}}</a>
 																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
+																	<td>{{organization.phone}}</td>
+																	<td>{{organization.billing_country}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1250,24 +1232,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	<td>
-																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Acme Corporation</a>
-																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1291,14 +1256,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for deal in deals %}
 																<tr>
-																	
 																	<td>
-																		Bensolet
+																		{{deal.name}}
 																	</td>
-																	<td>Globex</td>
-																	<td>John Doe</td>
-																	<td>USD $‎180</td>
+																	<td>{{deal.company.name}}</td>
+																	<td>{{deal.user_responsible.name}}</td>
+																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
 										                            <td class="text-center">
@@ -1312,27 +1277,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		Ansanio tech
-																	</td>
-																	<td>Lecto</td>
-																	<td>John Smith</td>
-																	<td>USD $‎180</td>
-																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
-																	
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1395,14 +1340,14 @@
 																</tr>
 															</thead>
 															<tbody>
-																<tr>
-																	
+																{% for contact in contacts %}
+																<tr>																	
 																	<td>
-																		Wilmer Deluna
+																		{{contact.first_name}} {{contact.last_name}}
 																	</td>
-																	<td>Call Enquiry</td>
-																	<td>987675656</td>
-																	<td>william@gmail.com</td>
+																	<td>{{contact.title}}</td>
+																	<td>{{contact.phone}}</td>
+																	<td>{{contact.email}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1414,25 +1359,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		John Doe
-																	</td>
-																	<td>Enquiry</td>
-																	<td>987675656</td>
-																	<td>john@gmail.com</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1752,7 +1679,7 @@
                   		</div>
                   		<div>
                   			<p class="mb-0">Deal</p>
-                  			<span class="modal-title deal-company">None</span>
+                  			<span class="modal-title deal-name">None</span>
                     		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
                     		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   		</div>
@@ -1790,19 +1717,19 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Title</span>
-	                        <p>Phone Call</p>
+	                        <p class="deal-company-title">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Companies</span>
-	                        <p>Claimpett Corp</p>
+	                        <p class="deal-company-name">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Phone</span>
-	                        <p>9876764875</p>
+	                        <p class="deal-company-phone">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Email</span>
-	                        <p>johndoe@gmail.com</p>
+	                        <p class="deal-company-email">None</p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Contact owner</span>
@@ -1823,12 +1750,12 @@
                     </div>
                   	<div class="row">
                   		<div class="pipeline-small flat ps-3 pe-3 w-100">
-		                    <a class="won noselect tipped-top text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Prospecting</span></a>
-		                    <a class="won noselect tipped-top bg-gray text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Qualification</span></a>
-		                    <a class="won noselect tipped-top text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Needs Analysis</span></a>
-		                    <a class="won noselect tipped-top text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Proposals</span></a>
-		                    <a class="won noselect tipped-top text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Nogatiation</span></a>
-		                    <a class="won noselect tipped-top text-white padding" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;closed win</a>
+		                    <a class="won noselect tipped-top text-white deal-stage-prospecting" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Prospecting</span></a>
+		                    <a class="won noselect tipped-top bg-gray text-white deal-stage-qualification" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Qualification</span></a>
+		                    <a class="won noselect tipped-top text-white deal-stage-needs-analysis" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Needs Analysis</span></a>
+		                    <a class="won noselect tipped-top text-white deal-stage-proposal" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Proposal</span></a>
+		                    <a class="won noselect tipped-top text-white deal-stage-negotiation" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Negotiation</span></a>
+		                    <a class="won noselect tipped-top text-white padding deal-stage-closed-won" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;Closed Won</a>
 	                    </div>
                   	</div>
                     <div class="task-infos pt-3">
@@ -1841,26 +1768,22 @@
 							<div class="tab-pane show active" id="pipeline-task-details">
 								<div class="crms-tasks">
 							  	<div class="tasks__item crms-task-item active">
-							    	<div class="accordion-header js-accordion-header">Task Details</div> 
+							    	<div class="accordion-header js-accordion-header">Lead Details</div> 
 								  	<div class="accordion-body js-accordion-body">
 									    <div class="accordion-body__contents">
 										    <table class="table">
 				                                <tbody>
 				                                    <tr>
 				                                      <td class="border-0">Record ID</td>
-				                                      <td class="border-0">124192692</td>
+				                                      <td class="border-0 deal-id">124192692</td>
 				                                    </tr>
 				                                    <tr>
-				                                      <td>Task Name</td>
-				                                      <td>1. Personalize your account</td>
+				                                      <td>Deal Name</td>
+				                                      <td class="deal-name">1. Personalize your account</td>
 				                                    </tr>
 				                                    <tr>
-				                                      <td>Assigned To</td>
-				                                      <td>John Doe</td>
-				                                    </tr>
-				                                    <tr>
-				                                      <td>Date Due</td>
-				                                      <td>02/01/2020</td>
+				                                      <td>Company</td>
+				                                      <td class="deal-company">John Doe</td>
 				                                    </tr>
 				                                </tbody>
 				                            </table>
@@ -1874,32 +1797,32 @@
 								      	<table class="table">
 			                                <tbody>
 			                                    <tr>
-			                                      <td class="border-0">Start Date</td>
-			                                      <td class="border-0">04/01/2013</td>
+			                                      <td class="border-0">Category</td>
+			                                      <td class="border-0 deal-category">04/01/2013</td>
 			                                    </tr>
 			                                    <tr>
-			                                      <td>Reminder Date</td>
-			                                      <td>07/01/2013</td>
+			                                      <td>Probability Of Winning</td>
+			                                      <td class="probability-of-winning">07/01/2013</td>
 			                                    </tr>
 			                                    <tr>
-			                                      <td>Repeats</td>
-			                                      <td>Lorem</td>
+			                                      <td>Forecast Close Date</td>
+			                                      <td class="forecast-close-date">Lorem</td>
 			                                    </tr>
 			                                    <tr>
-			                                      <td>Progress</td>
-			                                      <td>0%</td>
+			                                      <td>Actual Close Date</td>
+			                                      <td class="actual-close-date">0%</td>
 			                                    </tr>
 			                                    <tr>
-			                                      <td>Priorit</td>
-			                                      <td>Medium</td>
+			                                      <td>User Responsible</td>
+			                                      <td class="user-responsible">Medium</td>
 			                                    </tr>
 			                                    <tr>
-			                                      <td>Status</td>
-			                                      <td>Not Started</td>
+			                                      <td>Deal Value</td>
+			                                      <td class="deal-value">Not Started</td>
 			                                    </tr>
 			                                    <tr>
-			                                      <td>Last Updated</td>
-			                                      <td>04-Jun-20</td>
+			                                      <td>Bid Amount</td>
+			                                      <td class="deal-amount">04-Jun-20</td>
 			                                    </tr>
 			                                    <tr>
 			                                      <td>Created</td>
@@ -1985,7 +1908,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Companies</h4>
-		                                  <span>2</span>
+		                                  <span>{{organizations|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1994,7 +1917,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Deals</h4>
-		                                  <span>2</span>
+		                                  <span>{{deals|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2014,7 +1937,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-		                                  <span>2</span>
+		                                  <span>{{contacts|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2054,13 +1977,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for organization in organizations %}
 																<tr>
 																	<td class="border-0">
 																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Clampett Oil and Gas Corp.</a>
+																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-organization-id="{{organization.pk}}" onclick="loadOrganizationDetails({{organization.pk}}); return false;">{{organization.name}}</a>
 																	</td>
-																	<td class="border-0">8754554531</td>
-																	<td>United States</td>
+																	<td class="border-0">{{organization.phone}}</td>
+																	<td>{{organization.billing_country}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -2072,24 +1996,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	<td>
-																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Acme Corporation</a>
-																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -2113,14 +2020,15 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for deal in deals %}
 																<tr>
 																	
 																	<td>
-																		Bensolet
+																		{{deal.name}}
 																	</td>
-																	<td>Globex</td>
-																	<td>John Doe</td>
-																	<td>USD $‎180</td>
+																	<td>{{deal.global}}</td>
+																	<td>{{deal.user_responsible.name}}</td>
+																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
 										                            <td class="text-center">
@@ -2134,27 +2042,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		Ansanio tech
-																	</td>
-																	<td>Lecto</td>
-																	<td>John Smith</td>
-																	<td>USD $‎180</td>
-																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
-																	
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -2217,14 +2105,15 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for contact in contacts %}
 																<tr>
 																	
 																	<td>
-																		Wilmer Deluna
+																		{{contact.first_name}} {{contact.last_name}}
 																	</td>
-																	<td>Call Enquiry</td>
-																	<td>987675656</td>
-																	<td>william@gmail.com</td>
+																	<td>{{contact.title}}</td>
+																	<td>{{contact.phone}}</td>
+																	<td>{{contact.email}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -2236,25 +2125,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		John Doe
-																	</td>
-																	<td>Enquiry</td>
-																	<td>987675656</td>
-																	<td>john@gmail.com</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -2610,5 +2481,8 @@
 
 		<!-- Deal Detail js -->
 		<script src="{% static 'js/loadDealDetails.js' %}"></script>
+
+		<!-- Fetch Organization Detail -->
+		<script src="{% static 'js/loadOrganizationDetails.js' %}"></script>
     </body>
 </html>

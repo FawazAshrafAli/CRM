@@ -7,7 +7,8 @@ from django.http import Http404, JsonResponse
 from .models import Deal
 from authentication.models import CrmUser
 from organizations.models import Company
-from deals.models import PipelineStage
+from .models import PipelineStage
+from contacts.models import Contact
 
 
 class BaseDealView(LoginRequiredMixin):
@@ -74,7 +75,8 @@ class ListDealView(BaseDealView, ListView):
         context.update({
             'users': CrmUser.objects.all(),
             'organizations': Company.objects.all(),
-            'stages': PipelineStage.objects.all()
+            'stages': PipelineStage.objects.all(),
+            'contacts': Contact.objects.all()
             })
         return context
 
@@ -91,6 +93,9 @@ class DetailDealView(BaseDealView, DetailView):
             'id' : deal.id,
             'name' : deal.name,
             'company' : deal.company.name,
+            'company_title' : deal.company.title,            
+            'company_phone' : deal.company.phone,
+            'company_email' : deal.company.email_domains,           
             'category' : deal.category,
             'probability_of_winning' : deal.probability_of_winning,
             'forecast_close_date' : deal.forecast_close_date,
@@ -102,7 +107,7 @@ class DetailDealView(BaseDealView, DetailView):
             'description' : deal.description,
             'tag_list' : deal.tag_list,
             'pipeline' : deal.pipeline,
-            'stage' :  [deal_stage.stage for deal_stage in deal.stage.all()],
+            'stages' :  [deal_stage.stage for deal_stage in deal.stage.all()],
             'visibility' : deal.visibility,
             'created' : deal.created,
             'updated' : deal.updated
