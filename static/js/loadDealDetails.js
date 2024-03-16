@@ -1,174 +1,196 @@
-function loadDealDetails(dealId){
+function loadDealDetails(dealId){    
     $.ajax({
         url: '/deals/detail/' + dealId,
         type: 'GET',
         dataType: 'json',
         success: function(deal) {						
-            if (deal.id != null && deal.id != "") {
-                $('.deal-id').each(function() {  
+            $('.deal-id').each(function() {  
+                if (deal.id != null && deal.id != "") {
                     $(this).html(deal.id);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.name != null && deal.name != "") {
-                $('.deal-name').each(function (){
+            $('.deal-name').each(function (){
+                if (deal.name != null && deal.name != "") {
                     $(this).html(deal.name);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.company != null && deal.company != "") {
-                $('.deal-company').each(function (){
+            $('.deal-company').each(function (){
+                if (deal.company != null && deal.company != "") {
                     $(this).html(deal.company);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.category != null && deal.category != "") {
-                $('.deal-category').each(function (){
+            $('.deal-category').each(function (){
+                if (deal.category != null && deal.category != "") {
                     $(this).html(deal.category);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.probability_of_winning != null && deal.probability_of_winning != "") {
-                $('.deal-probability-of-winning').each(function (){
+            $('.deal-probability-of-winning').each(function (){
+                if (deal.probability_of_winning != null && deal.probability_of_winning != "") {
                     $(this).html(deal.probability_of_winning);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.forecast_close_date != null && deal.forecast_close_date != "") {
-                $('.deal-forecast-close-date').each(function (){
+            $('.deal-forecast-close-date').each(function (){
+                if (deal.forecast_close_date != null && deal.forecast_close_date != "") {
                     $(this).html(deal.forecast_close_date);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.actual_close_date != null && deal.actual_close_date != "") {
-                $('.deal-actual-close-date').each(function (){
+            $('.deal-actual-close-date').each(function (){
+                if (deal.actual_close_date != null && deal.actual_close_date != "") {
                     $(this).html(deal.actual_close_date);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.user_responsible != null && deal.user_responsible != "") {
-                $('.deal-user_responsible').each(function (){
+            $('.deal-user_responsible').each(function (){
+                if (deal.user_responsible != null && deal.user_responsible != "") {
                     $(this).html(deal.user_responsible);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
             
 
-            if (deal.deal_value != null && deal.deal_value != "") {
-                $('.deal-value').each(function (){
+            $('.deal-value').each(function (){
+                if (deal.deal_value != null && deal.deal_value != "") {
                     $(this).html(deal.deal_value);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.bid_amount != null && deal.bid_amount != "") {
-                $('.deal-bid-amount').each(function (){
+            $('.deal-bid-amount').each(function (){
+                if (deal.bid_amount != null && deal.bid_amount != "") {
                     $(this).html(deal.bid_amount);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.bid_type != null && deal.bid_type != "") {
-                $('.deal-bid-type').each(function (){
+            $('.deal-bid-type').each(function (){
+                if (deal.bid_type != null && deal.bid_type != "") {
                     $(this).html(deal.bid_type);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.description != null && deal.description != "") {
-                $('.deal-description').each(function (){
+            $('.deal-description').each(function (){
+                if (deal.description != null && deal.description != "") {
                     $(this).html(deal.description);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.tag_list != null && deal.tag_list != "") {
-                $('.deal-tag-list').each(function (){
+            $('.deal-tag-list').each(function (){
+                if (deal.tag_list != null && deal.tag_list != "") {
                     $(this).html(deal.tag_list);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.pipeline != null && deal.pipeline != "") {
-                $('.deal-pipeline').each(function (){
+            $('.deal-pipeline').each(function (){
+                if (deal.pipeline != null && deal.pipeline != "") {
                     $(this).html(deal.pipeline);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
+            var array = deal.stages
             if (deal.stages != null && deal.stages != "") {                                        
-                var array = deal.stages
-                if (!array.includes("Prospecting")) {                                
-                    $('.deal-stage-prospecting').each(function (){ 
+                $('.deal-stage-prospecting').each(function (){ 
+                    if (!array.includes("Prospecting")) {                                
                         $(this).addClass("planning")
-                    })                
-                } else {
-                    $('.deal-stage-prospecting').each(function (){ 
+                    } else {
                         $(this).removeClass("planning")
-                    })
-                }
+                    }
+                })                    
 
-                if (!array.includes("Qualification")) {                    
-                    $('.deal-stage-qualification').each(function (){                                         
+                $('.deal-stage-qualification').each(function (){                                         
+                    if (!array.includes("Qualification")) {                    
                         $(this).addClass("planning")
-                    })
-                } else {
-                    $('.deal-stage-qualification').each(function (){ 
+                    } else {                    
                         $(this).removeClass("planning")
-                    })
-                }
+                    }
+                })                    
 
-                if (!array.includes("Needs Analysis")) {                    
-                    $('.deal-stage-needs-analysis').each(function (){
+                $('.deal-stage-needs-analysis').each(function (){
+                    if (!array.includes("Needs Analysis")) {                    
                         $(this).addClass("planning")
-                    })
-                } else {
-                    $('.deal-stage-needs-analysis').each(function (){ 
-                        $(this).removeClass("planning")
-                    })
-                }
+                    } else {                        
+                            $(this).removeClass("planning")                    
+                    }
+                })
 
-                if (!array.includes("Proposal")) {                    
-                    $('.deal-stage-proposal').each(function (){
+                $('.deal-stage-proposal').each(function (){
+                    if (!array.includes("Proposal")) {                    
                         $(this).addClass("planning")
-                    })
-                } else {
-                    $('.deal-stage-proposal').each(function (){ 
-                        $(this).removeClass("planning")
-                    })
-                }
+                    } else {                    
+                        $(this).removeClass("planning")                    
+                    }
+                })
 
-                if (!array.includes("Negotiation")) {                    
-                    $('.deal-stage-negotiation').each(function (){
-                        $(this).addClass("planning")
-                    })
-                } else {
-                    $('.deal-stage-negotiation').each(function (){ 
+                $('.deal-stage-negotiation').each(function (){
+                    if (!array.includes("Negotiation")) {                    
+                        $(this).addClass("planning")                    
+                    } else {                    
                         $(this).removeClass("planning")
-                    })
-                }
+                    }
+                })
 
-                if (!array.includes("Closed Won")) {                    
-                    $('.deal-stage-closed-won').each(function (){
-                        $(this).addClass("planning")
-                    })
-                } else {
-                    $('.deal-stage-closed-won').each(function (){ 
+                $('.deal-stage-closed-won').each(function (){
+                    if (!array.includes("Closed Won")) {                    
+                        $(this).addClass("planning")                    
+                    } else {                    
                         $(this).removeClass("planning")
-                    })
-                }
-            };
+                    }
+                })
+            }
 
-            if (deal.stage != null && deal.stage != "") {
-                $('.deal-stage').each(function (){
+            $('.deal-stage').each(function (){
+                if (deal.stage != null && deal.stage != "") {
                     $(this).html(deal.stage);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
 
-            if (deal.visibility != null && deal.visibility != "") {
-                $('.deal-visibility').each(function (){
+            $('.deal-visibility').each(function (){
+                if (deal.visibility != null && deal.visibility != "") {
                     $(this).html(deal.visibility);
-                });
-            };
-
-            if (deal.updated != null && deal.updated != "") {
-                $('.deal-updated').each(function (){
+                } else {
+                    $(this).html("None");
+                }
+            });
+                
+            $('.deal-updated').each(function (){
+                if (deal.updated != null && deal.updated != "") {
                     $(this).html(deal.updated);
-                });
-            };
+                } else {
+                    $(this).html("None");
+                }
+            });
         },
         error: function(error) {
             console.log('Error:', error);
