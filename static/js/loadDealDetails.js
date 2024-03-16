@@ -28,6 +28,30 @@ function loadDealDetails(dealId){
                 }
             });
 
+            $('.deal-company-title').each(function (){
+                if (deal.company_title != null && deal.company_title != "") {
+                    $(this).html(deal.company_title);
+                } else {
+                    $(this).html("None");
+                }
+            });
+
+            $('.deal-company-phone').each(function (){
+                if (deal.company_phone != null && deal.company_phone != "") {
+                    $(this).html(deal.company_phone);
+                } else {
+                    $(this).html("None");
+                }
+            });
+
+            $('.deal-company-email').each(function (){
+                if (deal.company_email != null && deal.company_email != "") {
+                    $(this).html(deal.company_email);
+                } else {
+                    $(this).html("None");
+                }
+            });
+
             $('.deal-category').each(function (){
                 if (deal.category != null && deal.category != "") {
                     $(this).html(deal.category);
