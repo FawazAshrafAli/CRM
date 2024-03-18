@@ -1056,19 +1056,19 @@
 				                                <tbody>
 				                                  <tr>
 				                                    <td class="border-0">Record ID</td>
-				                                    <td class="border-0 contact-id">None</td>
+				                                    <td class="border-0 contact-id"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td class="border-0">Name</td>
-				                                    <td class="border-0 contact-full-name">None</td>
+				                                    <td class="border-0 contact-full-name"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Company</td>
-				                                    <td class="contact-organization">None</td>
+				                                    <td class="contact-organization"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Title</td>
-				                                    <td class="contact-title">None</td>
+				                                    <td class="contact-title"></td>
 				                                  </tr>
 				                                </tbody>
 				                            </table>
@@ -1083,7 +1083,7 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Email</td>
-			                                    <td class="border-0 contact-email">None</td>
+			                                    <td class="border-0 contact-email"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Email Opted out</td>
@@ -1096,43 +1096,43 @@
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Phone</td>
-			                                    <td class="contact-email">None</td>
+			                                    <td class="contact-email"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Home Phone</td>
-			                                    <td class="contact-home-phone">None</td>
+			                                    <td class="contact-home-phone"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Mobile Phone</td>
-			                                    <td class="contact-mobile-phone">None</td>
+			                                    <td class="contact-mobile-phone"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Other Phone</td>
-			                                    <td class="contact-other-phone">None</td>
+			                                    <td class="contact-other-phone"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Assistant Phone</td>
-			                                    <td class="contact-assistant-phone">None</td>
+			                                    <td class="contact-assistant-phone"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Assistant Name</td>
-			                                    <td class="contact-assistant-name">None</td>
+			                                    <td class="contact-assistant-name"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Fax</td>
-			                                    <td class="contact-fax">None</td>
+			                                    <td class="contact-fax"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Linkedin</td>
-			                                    <td class="contact-linkedin">None</td>
+			                                    <td class="contact-linkedin"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Facebook</td>
-			                                    <td class="contact-facebook">None</td>
+			                                    <td class="contact-facebook"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Twitter</td>
-			                                    <td class="contact-twitter">None</td>
+			                                    <td class="contact-twitter"></td>
 			                                  </tr>
 			                                  
 			                                </tbody>
@@ -1148,11 +1148,11 @@
 		                                <tbody>
 		                                  <tr>
 		                                    <td class="border-0">Mailling Address</td>
-		                                    <td class="border-0 contact-mailing-address">None</td>
+		                                    <td class="border-0 contact-mailing-address"></td>
 		                                  </tr>
 		                                  <tr>
 		                                    <td>Other Address</td>
-		                                    <td class="contact-other-address">None</td>
+		                                    <td class="contact-other-address"></td>
 		                                  </tr>
 		                                </tbody>
 		                              </table>
@@ -1168,11 +1168,11 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Dates to Remember</td>
-			                                    <td class="border-0 contact-due-date">None</td>
+			                                    <td class="border-0 contact-due-date"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Date of Birth</td>
-			                                    <td class="contact-date-of-birth">None</td>
+			                                    <td class="contact-date-of-birth"></td>
 			                                  </tr>
 			                                  
 			                                </tbody>
@@ -1218,7 +1218,7 @@
 			                                <tbody>
 				                                <tr>
 				                                    <td class="border-0">Description</td>
-				                                    <td class="border-0 contact-description">None</td>
+				                                    <td class="border-0 contact-description"></td>
 				                                </tr>
 			                                </tbody>
 			                              </table>
@@ -1233,7 +1233,7 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Tag List</td>
-			                                    <td class="border-0 contact-tag-list">None</td>
+			                                    <td class="border-0 contact-tag-list"></td>
 			                                  </tr>
 			                                </tbody>
 			                              </table>
@@ -1251,7 +1251,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Companies</h4>
-		                                  <span>2</span>
+		                                  <span>{{organizations|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1260,7 +1260,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Deals</h4>
-		                                  <span>2</span>
+		                                  <span>{{deals|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1269,7 +1269,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Projects</h4>
-		                                  <span>1</span>
+		                                  <span>{{projects|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1280,7 +1280,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-		                                  <span>2</span>
+		                                  <span>{{contacts|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1320,13 +1320,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for organization in organizations %}
 																<tr>
 																	<td>
 																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Clampett Oil and Gas Corp.</a>
+																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">{{organization.name}}</a>
 																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
+																	<td>{{organization.phone}}</td>
+																	<td>{{organization.billing_country}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1338,24 +1339,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	<td>
-																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Acme Corporation</a>
-																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1379,14 +1363,15 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for deal in deals %}
 																<tr>
 																	
 																	<td>
-																		Bensolet
+																		{{deal.name}}
 																	</td>
-																	<td>Globex</td>
-																	<td>John Doe</td>
-																	<td>USD $‎180</td>
+																	<td>{{deal.organization.name}}</td>
+																	<td>{{deal.user_responsible.name}}</td>
+																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
 										                            <td class="text-center">
@@ -1400,27 +1385,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		Ansanio tech
-																	</td>
-																	<td>Lecto</td>
-																	<td>John Smith</td>
-																	<td>USD $‎180</td>
-																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
-																	
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1443,13 +1408,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for project in projects %}
 																<tr>
 																	<td>
-																		Wilmer Deluna
+																		{{project.name}}
 																	</td>
-																	<td>Completed</td>
-																	<td>Williams</td>
-																	<td>13-Jul-20 11:37 PM</td>
+																	<td>{{project.status}}</td>
+																	<td>{{project.user_responsible.name}}</td>																	
+																	<td>{{project.created|date:"d-m-y h:i A"}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1461,6 +1427,7 @@
 																		</div>
 																	</td>
 																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
@@ -1483,14 +1450,15 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for contact in contacts %}
 																<tr>
 																	
 																	<td>
-																		Wilmer Deluna
+																		{{contact.first_name}} {{contact.last_name}}
 																	</td>
-																	<td>Call Enquiry</td>
-																	<td>987675656</td>
-																	<td>william@gmail.com</td>
+																	<td>{{contact.title}}</td>
+																	<td>{{contact.phone}}</td>
+																	<td>{{contact.email}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1502,25 +1470,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		John Doe
-																	</td>
-																	<td>Enquiry</td>
-																	<td>987675656</td>
-																	<td>john@gmail.com</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -2047,7 +1997,7 @@
 	                                <div class="card-body">
 	                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 	                                  <h4 class="font-weight-normal mb-3">Companies</h4>
-	                                  <span>1</span>
+	                                  <span>{{organizations|length}}</span>
 	                                </div>
 	                              </div>
 	                            </div>
@@ -2056,7 +2006,7 @@
 	                                <div class="card-body">
 	                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 	                                  <h4 class="font-weight-normal mb-3">Deals</h4>
-	                                  <span>1</span>
+	                                  <span>{{deals|length}}</span>
 	                                </div>
 	                              </div>
 	                            </div>
@@ -2065,7 +2015,7 @@
 	                                <div class="card-body">
 	                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 	                                  <h4 class="font-weight-normal mb-3">Projects</h4>
-	                                  <span>1</span>
+	                                  <span>{{projects|length}}</span>
 	                                </div>
 	                              </div>
 	                            </div>
@@ -2076,7 +2026,7 @@
 	                                <div class="card-body">
 	                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 	                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-	                                  <span></span>
+	                                  <span>{{contacts|length}}</span>
 	                                </div>
 	                              </div>
 	                            </div>
@@ -2437,179 +2387,11 @@
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
 
-		<script>
-			var timeOutDiv = document.getElementById('message-div');
-			
-			setTimeout(function () {
-				timeOutDiv.style.display = "none";
-			}, 5000);
-		</script>
+		<!-- Contact Detail Funciton -->
+		<script src="{% static 'js/loadContactDetails.js' %}"></script>
 
-		<script>
-			function loadContactDetails(contactId) {	
-				$.ajax({
-					url: '/contacts/detail/' + contactId,  // Update the URL to match your actual URL
-					type: 'GET',
-					dataType: 'json',
-					success: function(contact) {													
-						// Handle the JSON response
-						if (contact.id != null && contact.id != ""){
-							$('.contact-id').each(function() {
-								$(this).html(contact.id);
-							});
-						};
-						
-						if (contact.full_name != null && contact.full_name != ""){
-							$('.contact-full-name').each(function() {
-								$(this).html(contact.full_name);
-							});
-						};
-						
-						if (contact.organization != null && contact.organization != ""){
-							$('.contact-organization').each(function() {
-								$(this).html(contact.organization); 
-							});
-						};
-						
-						if (contact.title != null && contact.title != ""){
-							$('.contact-title').each(function() {
-								$(this).html(contact.title); 
-							});
-						};
-						
-						if (contact.email != null && contact.email != ""){                  
-							$('.contact-email').each(function() {  
-								$(this).html(contact.email); 
-							});
-						};												
-						
-						if (contact.email_opted_out != null && contact.email_opted_out != ""){							
-							$('.contact-email-opted-out').each(function() {
-								if (contact.email_opted_out == true) {
-									$(this).prop('checked', true);
-								};														
-							});
-						};
+		<!-- Message TimeOut Function -->
+		<script src="{% static 'js/messageTimeOut.js' %}"></script>
 
-						if (contact.phone != null && contact.phone != ""){
-							$('.contact-phone').each(function() {
-								$(this).html(contact.phone); 
-							});
-						};
-		
-						if (contact.home_phone != null && contact.home_phone != ""){
-							$('.contact-home-phone').each(function() {
-								$(this).html(contact.home_phone); 
-							});
-						};
-									
-						if (contact.mobile_phone != null && contact.mobile_phone != ""){                    
-							$('.contact-mobile-phone').each(function() {
-								$(this).html(contact.mobile_phone); 
-							});
-						};
-		
-						if (contact.other_phone != null && contact.other_phone != ""){
-							$('.contact-other-phone').each(function() {
-								$(this).html(contact.other_phone); 
-							});
-						};       
-							
-						if (contact.assistant_phone != null && contact.assistant_phone != ""){
-							$('.contact-assistant-phone').each(function() {
-								$(this).html(contact.assistant_phone);
-							});
-						};
-		
-						if (contact.assistant_name != null && contact.assistant_name != ""){
-							$('.contact-assistant-name').each(function() {
-								$(this).html(contact.assistant_name);
-							});
-						};
-
-						if (contact.fax != null && contact.fax != ""){
-							$('.contact-fax').each(function() {
-								$(this).html(contact.fax);
-							});
-						};
-
-						if (contact.linkedin != null && contact.linkedin != ""){
-							$('.contact-linkedin').each(function() {
-								$(this).html(contact.linkedin);
-							});
-						};
-
-						if (contact.facebook != null && contact.facebook != ""){
-							$('.contact-facebook').each(function() {
-								$(this).html(contact.facebook);
-							});
-						};
-
-						if (contact.twitter != null && contact.twitter != ""){
-							$('.contact-twitter').each(function() {
-								$(this).html(contact.twitter);
-							});
-						};
-
-						if (contact.mailing_address != null && contact.mailing_address != ""){
-							$('.contact-mailing-address').each(function() {
-								$(this).html(contact.mailing_address);
-							});
-						};
-
-						if (contact.other_address != null && contact.other_address != ""){
-							$('.contact-other-address').each(function() {
-								$(this).html(contact.other_address);
-							});
-						};
-
-						if (contact.due_date != null && contact.due_date != ""){							
-							$('.contact-due-date').each(function() {
-								$(this).html(contact.due_date);
-							});
-						};
-
-						if (contact.date_of_birth != null && contact.date_of_birth != ""){							
-							$('.contact-date-of-birth').each(function() {
-								$(this).html(contact.date_of_birth);
-							});
-						};
-
-						if (contact.description != null && contact.description != ""){							
-							$('.contact-description').each(function() {
-								$(this).html(contact.description);
-							});
-						};
-
-						if (contact.permission != null && contact.permission != ""){							
-							$('.contact-permission').each(function() {
-								$(this).html(contact.permission);
-							});
-						};
-
-						if (contact.tag_list != null && contact.tag_list != ""){							
-							$('.contact-tag-list').each(function() {
-								$(this).html(contact.tag_list);
-							});
-						};
-
-						if (contact.created != null && contact.created != ""){							
-							$('.contact-created').each(function() {
-								$(this).html(contact.created);
-							});
-						};
-
-						if (contact.updated != null && contact.updated != ""){							
-							$('.contact-updated').each(function() {
-								$(this).html(contact.updated);
-							});
-						};
-					},
-					error: function(error) {
-						console.log('Error:', error);
-					}
-				});
-			}
-		</script>
     </body>
 </html>
