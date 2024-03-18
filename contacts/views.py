@@ -7,6 +7,9 @@ from django.http  import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from organizations.models import Company
 from django.http import JsonResponse
+from organizations.models import Company
+from deals.models import Deal
+from projects.models import Project
 
 class BaseContactView(LoginRequiredMixin):
     login_url = 'authentication:login'
@@ -46,7 +49,12 @@ class ListContactView(BaseContactView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['organizations'] = Company.objects.all()
+        context.update({
+            'organizations' : Company.objects.all(),
+            'contacts': Contact.objects.all(),
+            'deals': Deal.objects.all(),
+            'projects': Project.objects.all(),
+        })
         return context
 
 
@@ -57,35 +65,30 @@ class DetailContactView(BaseContactView, DetailView):
     def render_to_response(self, context, **response_kwargs):
         contact = context['object']
 
-        serialized_data = {
-            'id' : contact.id,
-            'full_name' : f"{contact.first_name} {contact.last_name}",            
-            'organization' : contact.organization.name,
-            'title' : contact.title,
-            'email' : contact.email,
-            'email_opted_out' : contact.email_opted_out,
-            'phone' : contact.phone,
-            'home_phone' : contact.home_phone,
-            'mobile_phone' : contact.mobile_phone,
-            'other_phone' : contact.other_phone,
-            'assistant_phone' : contact.assistant_phone,
-            'assistant_name' : contact.assistant_name,
-            'fax' : contact.fax,
-            'linkedin' : contact.linkedin,
-            'facebook' : contact.facebook,
-            'twitter' : contact.twitter,                                    
-            'description' : contact.description,
-            'permission' : contact.permission,
-            'tag_list' : contact.tag_list,
-            'permissions' : contact.permissions,
-            'created' : contact.created.strftime("%b %d, %Y"),
-            'updated' : contact.updated.strftime("%d/%m/%Y")
-        }
+        serialized_data = {}
 
+        # Auto dictionary creation using field name in a model and their respective value
+        for field in contact._meta.fields:
+            field_name = field.name
+            if field_name not in ("organization", "created", "updated"):
+                field_value = getattr(contact, field_name)
+                serialized_data[field_name] = field_value        
+
+        # Compining names together to form full name
+        if contact.first_name and contact.last_name:
+            serialized_data["full_name"] = f"{contact.first_name} {contact.last_name}"
+        elif contact.first_name:
+            serialized_data["full_name"] = contact.first_name
+
+        if contact.organization:
+            serialized_data["organization"] = contact.organization.name            
+
+        # Combining all fields of mailing addres to form full mailing address
         if contact.mailing_address and contact.mailing_city and contact.mailing_state and contact.mailing_postal_code and contact.mailing_country:
             mailing_address = f"{contact.mailing_address}, {contact.mailing_city}, {contact.mailing_state}, {contact.mailing_postal_code}, {contact.mailing_country}."
             serialized_data['mailing_address'] = mailing_address
 
+        # Combining all fields of other addres to form full mailing address
         if contact.other_address and contact.other_city and contact.other_state and contact.other_postal_code and contact.other_country:
             other_address = f"{contact.other_address}, {contact.other_city}, {contact.other_state}, {contact.other_postal_code}, {contact.other_country}."
             serialized_data['other_address'] = other_address
@@ -97,6 +100,11 @@ class DetailContactView(BaseContactView, DetailView):
         if contact.date_of_birth:
             date_of_birth = contact.date_of_birth.strftime("%d/%m/%Y")
             serialized_data['date_of_birth'] = date_of_birth
+
+        serialized_data.update({
+            'created' : contact.created.strftime("%b %d, %Y"),
+            'updated' : contact.updated.strftime("%d/%m/%Y")
+            })
 
         return JsonResponse(serialized_data)
 
