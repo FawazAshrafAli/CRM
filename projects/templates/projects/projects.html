@@ -565,6 +565,15 @@
 			                  <i class="feather-grid"></i>
 			                </span> Projects </h3>
                 		</div>
+						<div id="message-div">
+							{% if messages %}
+							<ul class="messages">
+								{% for message in messages %}
+								<li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
+								{% endfor %}
+							</ul>
+							{% endif %}
+						</div>
                 		<div class="col p-0 text-end">
                 			<ul class="breadcrumb bg-white float-end m-0 ps-0 pe-0">
 								<li class="breadcrumb-item"><a href="{% url 'dashboard:deals_dashboard' %}">Dashboard</a></li>
@@ -638,6 +647,7 @@
 												</tr>
 											</thead>
 											<tbody>
+												{% for project in projects %}
 												<tr>
 													<td class="checkBox">
 														<label class="container-checkbox">
@@ -646,31 +656,30 @@
 														</label>
 													</td>
 													<td>
-														<a href="#"><span class="person-circle-a person-circle">A</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#project-details">Astronaut </a>
+														<a href="#"><span class="person-circle-a person-circle">{{project.name|slice:"0:1"}}</span></a>
+														<a href="#" data-bs-toggle="modal" data-bs-target="#project-details" data-project-id="{{project.pk}}" onclick="loadProjectDetails({{project.pk}}); return false;">{{project.name}}</a>
 													</td>
-													<td>In Progress</td>
+													<td>{{project.status}}</td>
 													
-													<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user">John Doe</a></td>
-													<td>Phone call</td>
+													<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user" data-contact-id="{{project.user_responsible.pk}}" onclick="loadContactDetails({{project.user_responsible.pk}})">{{project.user_responsible.name}}</a></td>
+													<td>{{project.category}}</td>
 													<td>
 														<div class="pipeline-small flat pipeline-project">
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">&nbsp;
+															{% for stage in stages %}
+															{% if stage in project.stage.all %}															
+							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="{{stage.stage}}" data-bsoriginal-title="Pipeline: {{project.pipeline}}, stage: {{stage.stage}}">&nbsp;
 							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
 							                                </a>
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
+															{% else %}
+															<a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="{{stage.stage}}" data-bsoriginal-title="Pipeline: {{project.pipeline}}, stage: {{stage.stage}}">&nbsp;
+																<span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
+															</a>
+															{% endif %}															
+															{% endfor %}							     
 							                              </div>
 													</td>
-													
-													<td>03-Jun-20 1:14 AM	</td>
+																										
+													<td>{{project.created|date:"d-b-y h:i A"}}</td>
 						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
 						                            <td class="text-center">
 														<div class="dropdown dropdown-action">
@@ -690,319 +699,7 @@
 														</div>
 													</td>
 												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-b person-circle">B</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#project-details">Barcelona</a>
-													</td>
-													<td>Completed</td>
-													
-													<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user">David Milton</a></td>
-													<td>-</td>
-													<td>
-														<div class="pipeline-small flat pipeline-project">
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">&nbsp;
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top " data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                              </div>
-													</td>
-													
-													<td>03-Jun-20 1:14 AM	</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Project</a>
-								                                <a class="dropdown-item" href="#">Change Project Image</a>
-								                                <a class="dropdown-item" href="#">Clone This Project</a>
-								                                <a class="dropdown-item" href="#">Delete This Project</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Project</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Project</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Project</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Project</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-c person-circle">C</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#project-details">Casanova</a>
-													</td>
-													<td>Not Started</td>
-													
-													<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user">John Doe</a></td>
-													<td>Meeting</td>
-													<td>
-														<div class="pipeline-small flat pipeline-project">
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">&nbsp;
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                              </div>
-													</td>
-													
-													<td>03-Jun-20 1:14 AM	</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Project</a>
-								                                <a class="dropdown-item" href="#">Change Project Image</a>
-								                                <a class="dropdown-item" href="#">Clone This Project</a>
-								                                <a class="dropdown-item" href="#">Delete This Project</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Project</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Project</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Project</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Project</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-c person-circle">C</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#project-details">Charming</a>
-													</td>
-													<td>Completed</td>
-													
-													<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user">Micheal</a></td>
-													<td>-</td>
-													<td>
-														<div class="pipeline-small flat pipeline-project">
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">&nbsp;
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                              </div>
-													</td>
-													
-													<td>03-Jun-20 1:14 AM	</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Project</a>
-								                                <a class="dropdown-item" href="#">Change Project Image</a>
-								                                <a class="dropdown-item" href="#">Clone This Project</a>
-								                                <a class="dropdown-item" href="#">Delete This Project</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Project</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Project</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Project</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Project</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-f person-circle">F</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#project-details">Fireball</a>
-													</td>
-													<td>In Progress</td>
-													
-													<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user">John Smith</a></td>
-													<td>Follow up</td>
-													<td>
-														<div class="pipeline-small flat pipeline-project">
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">&nbsp;
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                              </div>
-													</td>
-													
-													<td>03-Jun-20 1:14 AM	</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Project</a>
-								                                <a class="dropdown-item" href="#">Change Project Image</a>
-								                                <a class="dropdown-item" href="#">Clone This Project</a>
-								                                <a class="dropdown-item" href="#">Delete This Project</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Project</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Project</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Project</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Project</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-g person-circle">G</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#project-details">Gray Panthers</a>
-													</td>
-													<td>In Progress</td>
-													
-													<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user">Samsun David</a></td>
-													<td>Email</td>
-													<td>
-														<div class="pipeline-small flat pipeline-project">
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">&nbsp;
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                              </div>
-													</td>
-													
-													<td>03-Jun-20 1:14 AM	</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Project</a>
-								                                <a class="dropdown-item" href="#">Change Project Image</a>
-								                                <a class="dropdown-item" href="#">Clone This Project</a>
-								                                <a class="dropdown-item" href="#">Delete This Project</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Project</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Project</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Project</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Project</a>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="checkBox">
-														<label class="container-checkbox">
-														  	<input type="checkbox">
-														  	<span class="checkmark"></span>
-														</label>
-													</td>
-													<td>
-														<a href="#"><span class="person-circle-g person-circle">G</span></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#project-details">Gray Panthers</a>
-													</td>
-													<td>In Progress</td>
-													
-													<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user">Samsun David</a></td>
-													<td>Email</td>
-													<td>
-														<div class="pipeline-small flat pipeline-project">
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">&nbsp;
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline, stage: plan">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="" data-bsoriginal-title="Pipeline: Deal Pipeline">
-							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
-							                                </a>
-							                              </div>
-													</td>
-													
-													<td>03-May-20 1:14 AM	</td>
-						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
-						                            <td class="text-center">
-														<div class="dropdown dropdown-action">
-															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Project</a>
-								                                <a class="dropdown-item" href="#">Change Project Image</a>
-								                                <a class="dropdown-item" href="#">Clone This Project</a>
-								                                <a class="dropdown-item" href="#">Delete This Project</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
-								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Project</a>
-								                                <a class="dropdown-item" href="#">Add New Task For Project</a>
-								                                <a class="dropdown-item" href="#">Add New Event For Project</a>
-								                                <a class="dropdown-item" href="#">Add Activity Set To Project</a>
-															</div>
-														</div>
-													</td>
-												</tr>
+												{% endfor %}												
 											</tbody>
 										</table>
 									</div>
@@ -1077,40 +774,43 @@
 						<div class="modal-body">
 							<div class="row">
 						        <div class="col-md-12">
-						            <form>
+						            <form method="POST" action="{% url 'projects:create' %}">
+										{% csrf_token %}
 						            	<h4>Project Details</h4>
 						            	<div class="form-group row">
 				                            <div class="col-md-6">
 				                            	<label class="col-form-label">Project Name <span class="text-danger">*</span></label>
-                            					<input class="form-control" type="text" name="deal-name">
+                            					<input class="form-control" type="text" name="name" placeholder="Project Name" required>
 				                            </div>
 				                            <div class="col-md-6">
 				                            	<label class="col-form-label">Status</label>
-					                            <select class="form-control">
-					                                <option>In progress</option>
-					                                <option>Deferred</option>
-					                                <option>Cancelled</option>
-					                                <option>Abandoned</option>
-					                                <option>Completed</option>
+					                            <select class="form-control" name="status" required>
+					                                <option value="In progress">In progress</option>
+					                                <option value="Deferred">Deferred</option>
+					                                <option value="Cancelled">Cancelled</option>
+					                                <option value="Abandoned">Abandoned</option>
+					                                <option value="Completed">Completed</option>
 					                             </select>
 				                            </div>
 				                        </div>
 				                        <div class="form-group row">
 				                            <div class="col-md-6">
 				                            	<label class="col-form-label">Category</label>
-					                            <select class="form-control" id="assigned-to">
-					                                <option>Email</option>
-					                                <option>Follow up</option>
-					                                <option>Get Started</option>
-					                                <option>Meeting</option>
-					                                <option>Phone call</option>
+					                            <select class="form-control" id="assigned-to" name="category" required>
+					                                <option value="Email">Email</option>
+					                                <option value="Follow up">Follow up</option>
+					                                <option value="Get Started">Get Started</option>
+					                                <option value="Meeting">Meeting</option>
+					                                <option value="Phone call">Phone call</option>
 					                             </select>
 				                            </div>
 				                            <div class="col-md-6">
 				                            	<label class="col-form-label">User Responsible</label>
-					                            <select class="form-control">
-					                                <option>Nothing selected</option>
-					                                <option>ohn Doe</option> 
+					                            <select class="form-control" name="user_responsible" required>
+					                                <option hidden>-- select --</option>
+					                                {% for user in users %}
+													<option value="{{user.pk}}">{{user.name}}</option>
+													{% endfor %}
 					                            </select>
 				                            </div>
 				                        </div>
@@ -1118,15 +818,18 @@
 						                <div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Pipeline</label>
-					                            <select class="form-control">
-					                                <option>Nothing selected </option>
-					                                <option>Project Pipeline </option>
+					                            <select class="form-control" name="pipeline" required>
+					                                <option hidden>-- select --</option>
+					                                <option value="Project Pipeline">Project Pipeline</option>
 					                            </select>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Stage</label>
-					                            <select class="form-control">
-					                                <option>Nothing selected </option>
+					                            <select class="form-control" name="stage" multiple required>
+					                                <option hidden>-- select --</option>
+													{% for stage in stages %}
+													<option value="{{stage.pk}}">{{stage}}</option>
+													{% endfor %}
 					                            </select>
 											</div>
 										</div>
@@ -1135,14 +838,14 @@
 										<div class="form-group row">
 											<div class="col-sm-12">
 												<label class="col-form-label">Description </label>
-				                            	<textarea class="form-control" rows="3" id="description" placeholder="Description"></textarea>
+				                            	<textarea class="form-control" rows="3" id="description" name="description" placeholder="Description" required></textarea>
 											</div>
 										</div>
 										<h4>Tag Information</h4>
 										<div class="form-group row">
 											<div class="col-sm-12">
 												<label class="col-form-label">Tag List</label>
-                            					<input type="text" class="form-control" name="tag-name" placeholder="Tag List">
+                            					<input type="text" class="form-control" name="tag_list" placeholder="Tag List">
 											</div>
 										</div>
 										
@@ -1150,7 +853,7 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Visibility</label>
-					                            <select class="form-control">
+					                            <select class="form-control" name="visibility" required>
 					                                <option>Everyone</option>
 					                                <option>Select a team</option>
 					                             </select>
@@ -1158,7 +861,7 @@
 											
 										</div>
 						                <div class="text-center py-3">
-						                	<button type="button" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
 						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
 						                </div>
 						            </form>
@@ -1265,19 +968,19 @@
 				                                <tbody>
 				                                  <tr>
 				                                    <td class="border-0">Record ID</td>
-				                                    <td class="border-0">124192692</td>
+				                                    <td class="border-0 contact-id"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td class="border-0">Name</td>
-				                                    <td class="border-0">John Doe</td>
+				                                    <td class="border-0 contact-full-name"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Company</td>
-				                                    <td>Umbrella</td>
+				                                    <td class="contact-organization"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Title</td>
-				                                    <td>Lorem ipsum</td>
+				                                    <td class="contact-title"></td>
 				                                  </tr>
 				                                </tbody>
 				                            </table>
@@ -1292,56 +995,56 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Email</td>
-			                                    <td class="border-0">johndoe@gmail.com</td>
+			                                    <td class="border-0 contact-email"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Email Opted out</td>
 			                                    <td>
 			                                      <div class="form-check m-0 ps-0">
 			                                        <label class="form-check-label">
-			                                          <input class="checkbox" type="checkbox"> <i class="input-helper"></i><i class="input-helper"></i><i class="input-helper"></i></label>
+			                                          <input class="checkbox contact-email-opted-out" type="checkbox"> <i class="input-helper"></i><i class="input-helper"></i><i class="input-helper"></i></label>
 			                                      </div>
 			                                    </td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Phone</td>
-			                                    <td>9866667775</td>
+			                                    <td class="contact-phone"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Home Phone</td>
-			                                    <td>0422-656565</td>
+			                                    <td class="contact-home-phone"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Mobile Phone</td>
-			                                    <td>9887876556</td>
+			                                    <td class="contact-mobile-phone"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Other Phone</td>
-			                                    <td>9786778678</td>
+			                                    <td class="contact-other-phone"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Assistant Phone</td>
-			                                    <td>9877667676</td>
+			                                    <td class="contact-assistant-phone"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Assistant Name</td>
-			                                    <td>David</td>
+			                                    <td class="contact-assistant-name"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Fax</td>
-			                                    <td>1234</td>
+			                                    <td class="contact-fax"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Linkedin</td>
-			                                    <td>Lorem Ipsum</td>
+			                                    <td class="contact-linkedin"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Facebook</td>
-			                                    <td>Lorem ipsum</td>
+			                                    <td class="contact-facebook"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Twitter</td>
-			                                    <td>David_1</td>
+			                                    <td class="contact-twitter"></td>
 			                                  </tr>
 			                                  
 			                                </tbody>
@@ -1357,11 +1060,11 @@
 		                                <tbody>
 		                                  <tr>
 		                                    <td class="border-0">Mailling Address</td>
-		                                    <td class="border-0">USA</td>
+		                                    <td class="border-0 contact-mailing-country"></td>
 		                                  </tr>
 		                                  <tr>
 		                                    <td>Other Address</td>
-		                                    <td>New York</td>
+		                                    <td class="contact-other-country"></td>
 		                                  </tr>
 		                                </tbody>
 		                              </table>
@@ -1377,11 +1080,11 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Dates to Remember</td>
-			                                    <td class="border-0">09/03/2020</td>
+			                                    <td class="border-0 contact-date-to-remember"></td>
 			                                  </tr>
 			                                  <tr>
 			                                    <td>Date of Birth</td>
-			                                    <td>04/08/2000</td>
+			                                    <td class="contact-date-of-birth"></td>
 			                                  </tr>
 			                                  
 			                                </tbody>
@@ -1398,19 +1101,19 @@
 			                                <tbody>
 				                                  <tr>
 				                                    <td class="border-0">Date of Next Activity</td>
-				                                    <td class="border-0">04/08/2000</td>
+				                                    <td class="border-0 contact-date-of-next-activity"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Date of Last Activity</td>
-				                                    <td>04/05/2010</td>
+				                                    <td class="contact-updated"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Contact Owner</td>
-				                                    <td>John Doe</td>
+				                                    <td class="contact-owner"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Contact Created</td>
-				                                    <td>Jun 20, 2020</td>
+				                                    <td class="contact-created"></td>
 				                                  </tr>
 			                                  
 			                                	</tbody>
@@ -1427,7 +1130,7 @@
 			                                <tbody>
 				                                <tr>
 				                                    <td class="border-0">Description</td>
-				                                    <td class="border-0">Lorem Ipsum</td>
+				                                    <td class="border-0 contact-description"></td>
 				                                </tr>
 			                                </tbody>
 			                              </table>
@@ -1442,7 +1145,7 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Tag List</td>
-			                                    <td class="border-0">Lorem Ipsum</td>
+			                                    <td class="border-0 contact-tag-list"></td>
 			                                  </tr>
 			                                </tbody>
 			                              </table>
@@ -1460,7 +1163,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Companies</h4>
-		                                  <span>2</span>
+		                                  <span>{{organizations|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1469,7 +1172,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Deals</h4>
-		                                  <span>2</span>
+		                                  <span>{{deals|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1478,7 +1181,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Projects</h4>
-		                                  <span>1</span>
+		                                  <span>{{projects|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1489,7 +1192,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-		                                  <span>2</span>
+		                                  <span>{{contacts|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1529,13 +1232,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for organization in organizations %}
 																<tr>
 																	<td>
 																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Clampett Oil and Gas Corp.</a>
+																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">{{organization.name}}</a>
 																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
+																	<td>{{organization.phone}}</td>
+																	<td>{{organization.billing_country}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1547,24 +1251,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	<td>
-																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Acme Corporation</a>
-																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1588,14 +1275,14 @@
 																</tr>
 															</thead>
 															<tbody>
-																<tr>
-																	
+																{% for deal in deals %}
+																<tr>																	
 																	<td>
-																		Bensolet
+																		{{deal.name}}
 																	</td>
-																	<td>Globex</td>
-																	<td>John Doe</td>
-																	<td>USD $‎180</td>
+																	<td>{{deal.company}}</td>
+																	<td>{{deal.user_responsible}}</td>
+																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
 										                            <td class="text-center">
@@ -1609,27 +1296,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		Ansanio tech
-																	</td>
-																	<td>Lecto</td>
-																	<td>John Smith</td>
-																	<td>USD $‎180</td>
-																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
-																	
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1652,13 +1319,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for project in projects %}
 																<tr>
 																	<td>
-																		Wilmer Deluna
+																		{{project.name}}
 																	</td>
-																	<td>Completed</td>
-																	<td>Williams</td>
-																	<td>13-Jul-20 11:37 PM</td>
+																	<td>{{project.status}}</td>
+																	<td>{{project.user_responsible.name}}</td>
+																	<td>{{project.created|date:"d-b-y h:i A"}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1670,6 +1338,7 @@
 																		</div>
 																	</td>
 																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
@@ -1692,14 +1361,14 @@
 																</tr>
 															</thead>
 															<tbody>
-																<tr>
-																	
+																{% for contact in contacts %}
+																<tr>																	
 																	<td>
-																		Wilmer Deluna
+																		{{contact.first_name}} {{contact.last_name}}
 																	</td>
-																	<td>Call Enquiry</td>
-																	<td>987675656</td>
-																	<td>william@gmail.com</td>
+																	<td>{{contact.title}}</td>
+																	<td>{{contact.phone}}</td>
+																	<td>{{contact.email}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1711,25 +1380,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		John Doe
-																	</td>
-																	<td>Enquiry</td>
-																	<td>987675656</td>
-																	<td>john@gmail.com</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -2041,7 +1692,7 @@
 	                  		</div>
 	                  		<div>
 	                  			<p class="mb-0">Project</p>
-	                  			<span class="modal-title">Whirligig</span>
+	                  			<span class="modal-title project-name"></span>
 	                    		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
 	                    		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
 	                  		</div>
@@ -2134,27 +1785,19 @@
 							<div class="tab-pane show active" id="pipeline-task-details">
 								<div class="crms-tasks">
 							  	<div class="tasks__item crms-task-item active">
-							    	<div class="accordion-header js-accordion-header">Task Details</div> 
+							    	<div class="accordion-header js-accordion-header">Project Details</div> 
 								  	<div class="accordion-body js-accordion-body">
 									    <div class="accordion-body__contents">
 										    <table class="table">
 				                                <tbody>
 				                                    <tr>
 				                                      <td class="border-0">Record ID</td>
-				                                      <td class="border-0">124192692</td>
+				                                      <td class="border-0 project-id"></td>
 				                                    </tr>
 				                                    <tr>
-				                                      <td>Task Name</td>
-				                                      <td>1. Personalize your account</td>
-				                                    </tr>
-				                                    <tr>
-				                                      <td>Assigned To</td>
-				                                      <td>John Doe</td>
-				                                    </tr>
-				                                    <tr>
-				                                      <td>Date Due</td>
-				                                      <td>01/03/2020</td>
-				                                    </tr>
+				                                      <td>Project Name</td>
+				                                      <td class="project-name"></td>
+				                                    </tr>				                                    				                                    
 				                                </tbody>
 				                            </table>
 									    </div>
@@ -2165,68 +1808,32 @@
 							  	<div class="accordion-body js-accordion-body">
 								    <div class="accordion-body__contents">
 								      	<table class="table">
-			                                <tbody>
+			                                <tbody>			                                			    
 			                                    <tr>
-			                                      <td>Start Date</td>
-			                                      <td>02/02/2020</td>
-			                                    </tr>
-			                                    <tr>
-			                                      <td>Reminder Date</td>
-			                                      <td>05/02/2020</td>
-			                                    </tr>
-			                                    <tr>
-			                                      <td>Repeats</td>
-			                                      <td>Lorem ipsum</td>
-			                                    </tr>
-			                                    <tr>
-			                                      <td>Progress</td>
-			                                      <td>0%</td>
-			                                    </tr>
-			                                    <tr>
-			                                      <td>Priorit</td>
-			                                      <td>Medium</td>
-			                                    </tr>
-			                                    <tr>
-			                                      <td>Status</td>
-			                                      <td>Not Started</td>
-			                                    </tr>
+													<td>Status</td>
+													<td class="project-status"></td>
+												</tr>
+												<tr>
+													<td>Category</td>
+													<td class="project-category"></td>
+												</tr>
+												<tr>
+													<td>User Responsible</td>
+													<td class="project-user-responsible"></td>
+												  </tr>
 			                                    <tr>
 			                                      <td>Last Updated</td>
-			                                      <td>04-Jun-20</td>
+			                                      <td class="project-updated"></td>
 			                                    </tr>
 			                                    <tr>
 			                                      <td>Created</td>
-			                                      <td>03-Jun-20 1:14 AM</td>
-			                                    </tr>
-			                                    <tr>
-			                                      <td>Task Created By</td>
-			                                      <td>John Doe</td>
-			                                    </tr>
-			                                    <tr>
-			                                      <td>Task Owner</td>
-			                                      <td>John Doe</td>
-			                                    </tr>
+			                                      <td class="project-created"></td>
+			                                    </tr>			                                    
 			                                </tbody>
 			                            </table>
 								    </div>
 							    </div>
-							  </div>
-							  <div class="tasks__item crms-task-item">
-							    <div class="accordion-header js-accordion-header">Related To</div> 
-							  	<div class="accordion-body js-accordion-body">
-								    <div class="accordion-body__contents">
-								        <table class="table">
-			                                <tbody>
-			                                    <tr>
-			                                      <td>Related To</td>
-			                                      <td>Lorem ipsum</td>
-			                                    </tr>
-			                                </tbody>
-		                                </table>
-								    </div>
-								    
-							    </div>
-							  </div>
+							  </div>							  
 							  <div class="tasks__item crms-task-item">
 							    <div class="accordion-header js-accordion-header">Description Information</div> 
 							  	<div class="accordion-body js-accordion-body">
@@ -2235,7 +1842,7 @@
 		                                  	<tbody>
 			                                    <tr>
 			                                      <td>Description</td>
-			                                      <td>Lorem ipsum</td>
+			                                      <td class="project-description"></td>
 			                                    </tr>
 		                                  	</tbody>
 		                                </table>
@@ -2246,9 +1853,14 @@
 							  <div class="tasks__item crms-task-item">
 							    <div class="accordion-header js-accordion-header">Task Comments</div> 
 							  	<div class="accordion-body js-accordion-body">
-								    <div class="accordion-body__contents">
-								      	<button class="btn btn-secondary text-white w-25">Add Comments</button>
-								    </div>
+								    <table class="table">
+										<tbody>
+										  <tr>
+											<td>Tag List</td>
+											<td class="project-tag-list"></td>
+										  </tr>
+										</tbody>
+								  </table>
 							    </div>
 							  </div>
 							 
@@ -2259,8 +1871,8 @@
 								      	<table class="table">
 		                                  	<tbody>
 			                                    <tr>
-			                                      <td>Task visibility</td>
-			                                      <td>Private</td>
+			                                      <td>visibility</td>
+			                                      <td class="project-visibility"></td>
 			                                    </tr>
 		                                  	</tbody>
 		                                </table>
@@ -2278,7 +1890,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Companies</h4>
-		                                  <span>2</span>
+		                                  <span>{{organizations|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2287,7 +1899,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Deals</h4>
-		                                  <span>2</span>
+		                                  <span>{{deals|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2296,7 +1908,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Projects</h4>
-		                                  <span>1</span>
+		                                  <span>{{projects|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2307,7 +1919,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-		                                  <span>2</span>
+		                                  <span>{{contacts|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2347,13 +1959,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for organization in organizations %}
 																<tr>
 																	<td>
 																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Clampett Oil and Gas Corp.</a>
+																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">{{organization.name}}</a>
 																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
+																	<td>{{organization.phone}}</td>
+																	<td>{{organization.billing_country}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -2365,24 +1978,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	<td>
-																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Acme Corporation</a>
-																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -2406,14 +2002,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for deal in deals %}
 																<tr>
-																	
 																	<td>
-																		Bensolet
+																		{{deal.name}}
 																	</td>
-																	<td>Globex</td>
-																	<td>John Doe</td>
-																	<td>USD $‎180</td>
+																	<td>{{deal.company}}</td>
+																	<td>{{deal.user_responsible}}</td>
+																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
 										                            <td class="text-center">
@@ -2426,28 +2022,8 @@
 																			</div>
 																		</div>
 																	</td>
-																</tr>
-																<tr>
-																	
-																	<td>
-																		Ansanio tech
-																	</td>
-																	<td>Lecto</td>
-																	<td>John Smith</td>
-																	<td>USD $‎180</td>
-																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
-																	
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																</tr
+																{% endfor %}>																
 															</tbody>
 														</table>
 													</div>
@@ -2470,13 +2046,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for project in projects %}
 																<tr>
 																	<td>
-																		Wilmer Deluna
+																		{{project.name}}
 																	</td>
-																	<td>Completed</td>
-																	<td>Williams</td>
-																	<td>13-Jul-20 11:37 PM</td>
+																	<td>{{project.status}}</td>
+																	<td>{{project.user_responsible.name}}</td>
+																	<td>{{project.created|date:"d-b-y h:i A"}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -2488,6 +2065,7 @@
 																		</div>
 																	</td>
 																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
@@ -2510,14 +2088,14 @@
 																</tr>
 															</thead>
 															<tbody>
-																<tr>
-																	
+																{% for contact in contacts %}
+																<tr>																	
 																	<td>
-																		Wilmer Deluna
+																		{{contact.first_name}} {{contact.last_name}}
 																	</td>
-																	<td>Call Enquiry</td>
-																	<td>987675656</td>
-																	<td>william@gmail.com</td>
+																	<td>{{contact.title}}</td>
+																	<td>{{contact.phone}}</td>
+																	<td>{{contact.email}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -2529,25 +2107,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		John Doe
-																	</td>
-																	<td>Enquiry</td>
-																	<td>987675656</td>
-																	<td>john@gmail.com</td>
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -2936,6 +2496,18 @@
 
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
+
+		<!-- jquery -->
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+		<!-- Project Detail Funciton -->
+		<script src="{% static 'js/loadProjectDetails.js' %}"></script>
+
+		<!-- Contact Detail Funciton -->
+		<script src="{% static 'js/loadContactDetails.js' %}"></script>
+
+		<!-- Message TimeOut Function -->
+		<script src="{% static 'js/messageTimeOut.js' %}"></script>
 
 		
     </body>
