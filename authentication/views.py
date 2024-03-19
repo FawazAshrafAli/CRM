@@ -1,6 +1,6 @@
-from django.http.response import HttpResponse, HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.mixins import  LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.views.generic import View
@@ -85,11 +85,29 @@ class LogoutView(LoginRequiredMixin, View):
         return redirect(reverse('authentication:login'))
     
 
-# class HomeView(LoginRequiredMixin, TemplateView):
-#     template_name = "authentication/home.html"
-#     login_url = 'login'
-#     redirect_field_name = 'home'
-#     raise_exception = True
+class BaseCrmUserView(LoginRequiredMixin):
+    login_url = "authentication:login"
+    model = CrmUser
 
-#     def handle_no_permission(self):
-#         return redirect(reverse(self.login_url))
+
+class CrmUserDetailView(BaseCrmUserView, DetailView):    
+    context_object_name = "user"
+
+    def render_to_response(self, context, **response_kwargs):
+        user = context['object']
+
+        serialized_data = {}
+
+        for field in user._meta.fields:            
+            field_name = field.name
+            if field_name not in ('user', 'created', 'updated'):
+                field_value = getattr(user, field_name)
+                serialized_data[field_name] = field_value            
+
+            serialized_data.update({
+                'username': user.user.username,
+                'created': user.created.strftime("%b %d, %Y"),
+                'updated': user.updated.strftime("%b %d, %Y"),
+            })
+
+        return JsonResponse(serialized_data)
