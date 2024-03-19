@@ -36,6 +36,18 @@ function loadProjectDetails(projectId) {
                 }
             });
 
+            $('.deal-state').each(function () {
+                if (project.deal_state != null || project.deal_state != "") {
+                    if (project.deal_state == "Complete") {                        
+                        $(this).html("Deal State: Closed Won");
+                    } else {
+                        $(this).html("Deal State: " + project.deal_state);
+                    };
+                } else {
+                    $(this).html("Deal State: None");
+                };
+            });
+
             $('.project-user-responsible').each(function () {
                 if (project.user_responsible != null || project.user_responsible != "") {
                     $(this).html(project.user_responsible);
@@ -52,13 +64,40 @@ function loadProjectDetails(projectId) {
                 }
             });
 
-            $('.project-stage').each(function () {
-                if (project.stage != null || project.stage != "") {
-                    $(this).html(project.stage);
-                } else {
-                    $(this).html("None");
-                }
-            });
+            var array = project.stage
+            if (project.stage != null || project.stage != "") {
+                $('.project-stage-plan').each( function () {
+                    if (!array.includes("Plan")) {
+                        $(this).addClass("planning");
+                    } else {
+                        $(this).removeClass("planning");
+                    };
+                });
+
+                $('.project-stage-design').each(function () {
+                    if (!array.includes("Design")) {
+                        $(this).addClass("planning");
+                    } else {
+                        $(this).removeClass("planning");
+                    };
+                });
+
+                $('.project-stage-develop').each(function () {
+                    if (!array.includes("Develop")) {
+                        $(this).addClass("planning");
+                    } else {
+                        $(this).removeClass("planning");
+                    };
+                });
+
+                $('.project-stage-complete').each(function () {
+                    if (!array.includes("Complete")) {
+                        $(this).addClass("planning");
+                    } else {
+                        $(this.removeClass("planning"));
+                    };
+                })
+            }
 
             $('.project-description').each(function () {
                 if (project.description != null || project.description != "") {
