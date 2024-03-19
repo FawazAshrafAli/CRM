@@ -130,7 +130,7 @@ function loadProjectDetails(projectId) {
                     $(this).html("None");
                 }
             });
-
+            
             $('.project-updated').each(function () {
                 if (project.updated != null || project.updated != "") {
                     $(this).html(project.updated);
