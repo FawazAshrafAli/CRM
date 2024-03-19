@@ -664,7 +664,7 @@
 						                                <div class="progress-bar bg-gradient-danger" role="progressbar" style="width: {{task.progress}}%" aria-valuenow="{{task.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
 						                            </div>
 												</td>
-												<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user">{{task.assigned_to}}</a></td>
+												<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user" data-user-id={{task.assigned_to.pk}} onclick="loadCrmUserDetails({{task.assigned_to.pk}}); return false;">{{task.assigned_to.name}}</a></td>
 												<td>{{task.due_date}}</td>
 												<td>Task Owner</td>
 												<td><label class="badge badge-gradient-danger">{{task.status}}</label></td>
@@ -779,9 +779,10 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Assigned To</label>
 					                            <select class="form-control" name="assigned_to" required>
-					                                <option value="Me">Me</option>
-													<option value="Someone">Someone</option>
-													<option value="Anyone">Anyone</option>
+					                                <option>-- Select --</option>
+													{% for user in users %}
+													<option value="{{user.pk}}">{{user.name}}</option>
+													{% endfor %}
 					                            </select>
 											</div>
 										</div>
@@ -977,19 +978,19 @@
 				                                <tbody>
 				                                  <tr>
 				                                    <td class="border-0">Record ID</td>
-				                                    <td class="border-0">124192692</td>
+				                                    <td class="border-0 user-id"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td class="border-0">Name</td>
-				                                    <td class="border-0">John Doe</td>
+				                                    <td class="border-0 user-name"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Company</td>
-				                                    <td>Solemen</td>
+				                                    <td></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Title</td>
-				                                    <td>Phone Enquiry</td>
+				                                    <td class="user-title"></td>
 				                                  </tr>
 				                                </tbody>
 				                            </table>
@@ -1004,58 +1005,11 @@
 			                                <tbody>
 			                                  <tr>
 			                                    <td class="border-0">Email</td>
-			                                    <td class="border-0">johndoe@gmail.com</td>
-			                                  </tr>
-			                                  <tr>
-			                                    <td>Email Opted out</td>
-			                                    <td>
-			                                      <div class="form-check m-0 ps-0">
-			                                        <label class="form-check-label">
-			                                          <input class="checkbox" type="checkbox"> <i class="input-helper"></i><i class="input-helper"></i><i class="input-helper"></i></label>
-			                                      </div>
-			                                    </td>
-			                                  </tr>
-			                                  <tr>
+			                                    <td class="border-0 user-email"></td>
+			                                  </tr>			                                  
 			                                    <td>Phone</td>
-			                                    <td>9878767565</td>
-			                                  </tr>
-			                                  <tr>
-			                                    <td>Home Phone</td>
-			                                    <td>0422-453444</td>
-			                                  </tr>
-			                                  <tr>
-			                                    <td>Mobile Phone</td>
-			                                    <td>9788787888</td>
-			                                  </tr>
-			                                  <tr>
-			                                    <td>Other Phone</td>
-			                                    <td>9098686787</td>
-			                                  </tr>
-			                                  <tr>
-			                                    <td>Assistant Phone</td>
-			                                    <td>8755589866</td>
-			                                  </tr>
-			                                  <tr>
-			                                    <td>Assistant Name</td>
-			                                    <td>Williams</td>
-			                                  </tr>
-			                                  <tr>
-			                                    <td>Fax</td>
-			                                    <td>5345</td>
-			                                  </tr>
-			                                  <tr>
-			                                    <td>Linkedin</td>
-			                                    <td>Lorem ipsum</td>
-			                                  </tr>
-			                                  <tr>
-			                                    <td>Facebook</td>
-			                                    <td>Lorem ipsum</td>
-			                                  </tr>
-			                                  <tr>
-			                                    <td>Twitter</td>
-			                                    <td>will_ams</td>
-			                                  </tr>
-			                                  
+			                                    <td class="user-phone"></td>
+			                                  </tr>			                                  
 			                                </tbody>
 			                            </table>
 								    </div>
@@ -1069,12 +1023,8 @@
 		                                <tbody>
 		                                  <tr>
 		                                    <td class="border-0">Mailling Address</td>
-		                                    <td class="border-0">USA</td>
-		                                  </tr>
-		                                  <tr>
-		                                    <td>Other Address</td>
-		                                    <td>Winson Road</td>
-		                                  </tr>
+		                                    <td class="border-0 user-address-country">USA</td>
+		                                  </tr>		                                  
 		                                </tbody>
 		                              </table>
 								    </div>
@@ -1086,16 +1036,11 @@
 							  	<div class="accordion-body js-accordion-body">
 								    <div class="accordion-body__contents">
 								      <table class="table">
-			                                <tbody>
-			                                  <tr>
-			                                    <td class="border-0">Dates to Remember</td>
-			                                    <td class="border-0">09/05/2000</td>
-			                                  </tr>
+			                                <tbody>			                                  
 			                                  <tr>
 			                                    <td>Date of Birth</td>
-			                                    <td>01/01/2013</td>
-			                                  </tr>
-			                                  
+			                                    <td class="user-birht"></td>
+			                                  </tr>			                                  
 			                                </tbody>
 			                              </table>
 								    </div>
@@ -1110,19 +1055,15 @@
 			                                <tbody>
 				                                  <tr>
 				                                    <td class="border-0">Date of Next Activity</td>
-				                                    <td class="border-0">01/04/2013</td>
+				                                    <td class="border-0"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Date of Last Activity</td>
-				                                    <td>01/01/2013</td>
-				                                  </tr>
+				                                    <td class="user-updated"></td>
+				                                  </tr>				                                  
 				                                  <tr>
-				                                    <td>Contact Owner</td>
-				                                    <td>John Doe</td>
-				                                  </tr>
-				                                  <tr>
-				                                    <td>Contact Created</td>
-				                                    <td>Jun 20, 2020</td>
+				                                    <td>User Created</td>
+				                                    <td class="user-created"></td>
 				                                  </tr>
 			                                  
 			                                	</tbody>
@@ -1130,38 +1071,7 @@
 								    </div>
 								    
 							    </div>
-							  </div>
-							  <div class="tasks__item crms-task-item active">
-							    <div class="accordion-header js-accordion-header">Description Information</div> 
-							  	<div class="accordion-body js-accordion-body">
-								    <div class="accordion-body__contents">
-								      <table class="table">
-			                                <tbody>
-				                                <tr>
-				                                    <td class="border-0">Description</td>
-				                                    <td class="border-0 task-description">Lorem Ipsum</td>
-				                                </tr>
-			                                </tbody>
-			                              </table>
-								    </div>
-							    </div>
-							  </div>
-							  <div class="tasks__item crms-task-item active">
-							    <div class="accordion-header js-accordion-header">Tag List</div> 
-							  	<div class="accordion-body js-accordion-body">
-								    <div class="accordion-body__contents">
-								      <table class="table">
-			                                <tbody>
-			                                  <tr>
-			                                    <td class="border-0">Tag List</td>
-			                                    <td class="border-0">Lorem Ipsum</td>
-			                                  </tr>
-			                                </tbody>
-			                              </table>
-								    </div>
-								    
-							    </div>
-							  </div>
+							  </div>							  							  
 							</div>
 							</div>
 								
@@ -1172,7 +1082,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Companies</h4>
-		                                  <span>2</span>
+		                                  <span>{{organizations|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1181,7 +1091,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Deals</h4>
-		                                  <span>2</span>
+		                                  <span>{{deals|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1190,7 +1100,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Projects</h4>
-		                                  <span>1</span>
+		                                  <span>{{projects|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1201,7 +1111,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-		                                  <span>2</span>
+		                                  <span>{{contacts|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1241,13 +1151,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for organization in organizations %}
 																<tr>
 																	<td>
 																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Clampett Oil and Gas Corp.</a>
+																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">{{organization.name}}</a>
 																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
+																	<td>{{organization.phone}}</td>
+																	<td>{{organization.billing_country}}</td>
 										                            <td class="text-end">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1259,24 +1170,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	<td>
-																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo.png' %}"></a>
-																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">Acme Corporation</a>
-																	</td>
-																	<td>8754554531</td>
-																	<td>United States</td>
-										                            <td class="text-end">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1300,14 +1194,15 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for deal in deals %}
 																<tr>
 																	
 																	<td>
-																		Bensolet
+																		{{deal.name}}
 																	</td>
-																	<td>Globex</td>
-																	<td>John Doe</td>
-																	<td>USD $‎180</td>
+																	<td>{{deal.organization.name}}</td>
+																	<td>{{deal.user_responsible.name}}</td>
+																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
 										                            <td class="text-end">
@@ -1321,27 +1216,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		Ansanio tech
-																	</td>
-																	<td>Lecto</td>
-																	<td>John Smith</td>
-																	<td>USD $‎180</td>
-																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
-																	
-										                            <td class="text-end">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1364,13 +1239,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for project in projects %}
 																<tr>
 																	<td>
-																		Wilmer Deluna
+																		{{project.name}}
 																	</td>
-																	<td>Completed</td>
-																	<td>Williams</td>
-																	<td>13-Jul-20 11:37 PM</td>
+																	<td>{{project.status}}</td>
+																	<td>{{project.user_responsible.name}}</td>																	
+																	<td>{{project.created|date:"d-m-y h:i A"}}</td>
 										                            <td class="text-end">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1382,6 +1258,7 @@
 																		</div>
 																	</td>
 																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
@@ -1404,14 +1281,15 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for contact in contacts %}
 																<tr>
 																	
 																	<td>
-																		Wilmer Deluna
+																		{{contact.first_name}} {{contact.last_name}}
 																	</td>
-																	<td>Call Enquiry</td>
-																	<td>987675656</td>
-																	<td>william@gmail.com</td>
+																	<td>{{contact.title}}</td>
+																	<td>{{contact.phone}}</td>
+																	<td>{{contact.email}}</td>
 										                            <td class="text-end">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1423,25 +1301,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		John Doe
-																	</td>
-																	<td>Enquiry</td>
-																	<td>987675656</td>
-																	<td>john@gmail.com</td>
-										                            <td class="text-end">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1787,23 +1647,23 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Due Date</span>
-	                        <p class="task-due-date">03-Jul-2020</p>
+	                        <p class="task-due-date"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Priority</span>
-	                        <p class="task-priority">Medium</p>
+	                        <p class="task-priority"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Status</span>
-	                        <p class="task-status">Not Started</p>
+	                        <p class="task-status"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Progress</span>
-	                        <p class="task-progress">0</p>
+	                        <p class="task-progress"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Assigned To</span>
-	                        <p class="task-assigned-to">John Doe</p>
+	                        <p class="task-assigned-to"></p>
 	                      </div>
 	                    </div>
 	                </div>
@@ -1818,34 +1678,7 @@
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane show active" id="tasks-details">
-								<div class="crms-tasks">
-							  	<div class="tasks__item crms-task-item active">
-							    	<div class="accordion-header js-accordion-header">Name & Occupation</div> 
-								  	<div class="accordion-body js-accordion-body">
-									    <div class="accordion-body__contents">
-									      <table class="table">
-				                                <tbody>
-				                                  <tr>
-				                                    <td class="border-0">Record ID</td>
-				                                    <td class="border-0">124192692</td>
-				                                  </tr>
-				                                  <tr>
-				                                    <td class="border-0">Name</td>
-				                                    <td class="border-0">John Doe</td>
-				                                  </tr>
-				                                  <tr>
-				                                    <td>Company</td>
-				                                    <td>Claimpitt</td>
-				                                  </tr>
-				                                  <tr>
-				                                    <td>Title</td>
-				                                    <td>Phone Call</td>
-				                                  </tr>
-				                                </tbody>
-				                            </table>
-									    </div>
-								    </div>
-							  </div>
+								<div class="crms-tasks">					
 							  <div class="tasks__item crms-task-item">
 							    <div class="accordion-header js-accordion-header">Task Details</div> 
 							  	<div class="accordion-body js-accordion-body">
@@ -1996,7 +1829,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-		                                  <span>2</span>
+		                                  <span>{{contacts|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2005,7 +1838,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Deals</h4>
-		                                  <span>2</span>
+		                                  <span>{{deals|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2014,7 +1847,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Projects</h4>
-		                                  <span>1</span>
+		                                  <span>{{projects|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2026,7 +1859,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Companies</h4>
-		                                  <span></span>
+		                                  <span>{{organizations|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2035,7 +1868,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Leads</h4>
-		                                  <span>1</span>
+		                                  <span>{{leads|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2045,6 +1878,7 @@
 			                        	<div class="tasks__item crms-task-item active">
 										    <div class="accordion-header js-accordion-header">Contacts</div> 
 										  	<div class="accordion-body js-accordion-body">
+												{% if contacts %}
 											    <div class="accordion-body__contents">
 											    	<div class="table-responsive">
 														<table class="table table-striped table-nowrap custom-table mb-0 datatable">
@@ -2054,22 +1888,18 @@
 																	<th>Title</th>
 																	<th>phone</th>
 																	<th>Email</th>
-																	<th>Status</th>
-																	<th class="text-end">Actions</th>
+																	<th>Status</th>																	
 																</tr>
 															</thead>
 															<tbody>
-																<tr>
-																	
+																{% for contact in contacts %}
+																<tr>																	
 																	<td>
-																		Wilmer Deluna
+																		{{contact.first_name}} {{contact.last_name}}
 																	</td>
-																	<td>Call Enquiry</td>
-																	<td>987675656</td>
-																	<td>william@gmail.com</td>
-																	<td>
-																		<label class="badge badge-gradient-success">Not Started</label>
-																	</td>
+																	<td>{{contact.title}}</td>
+																	<td>{{contact.phone}}</td>
+																	<td>{{contact.email}}</td>																	
 										                            <td class="text-end">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -2081,37 +1911,22 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		John Doe
-																	</td>
-																	<td>Enquiry</td>
-																	<td>987675656</td>
-																	<td>john@gmail.com</td>
-																	<td>
-																		<label class="badge badge-gradient-info">Not Started</label>
-																	</td>
-										                            <td class="text-end">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
 											    </div>
+												{% else %}
+												<div class="accordion-body__contents">
+													<p>There are no contacts added.</p>
+												</div>
+												{% endif %}
 										    </div>
 										</div>
 										<div class="tasks__item crms-task-item">
 										    <div class="accordion-header js-accordion-header">Deals </div> 
 										  	<div class="accordion-body js-accordion-body">
+												{% if deals %}
 											    <div class="accordion-body__contents">
 											    	<div class="table-responsive">
 														<table class="table table-striped table-nowrap custom-table mb-0 datatable">
@@ -2126,13 +1941,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for deal in deals %}
 																<tr>
 																	<td>
-																		Bensolet
+																		{{deal.name}}
 																	</td>
-																	<td>Globex</td>
-																	<td>John Doe</td>
-																	<td>USD $‎180</td>
+																	<td>{{deal.organization.name}}</td>
+																	<td>{deal.user_responsible.name}</td>
+																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
 										                            <td class="text-end">
@@ -2146,36 +1962,22 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		Ansanio tech
-																	</td>
-																	<td>Lecto</td>
-																	<td>John Smith</td>
-																	<td>USD $‎180</td>
-																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
-																	
-										                            <td class="text-end">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
 											    </div>
+												{% else %}
+												<div class="accordion-body__contents">
+													<p>There are no deals added.</p>
+												</div>
+												{% endif %}
 										    </div>
 										</div>
 										<div class="tasks__item crms-task-item">
 										    <div class="accordion-header js-accordion-header">Projects </div> 
 										  	<div class="accordion-body js-accordion-body">
+												{% if projects %}
 											    <div class="accordion-body__contents">
 											    	<div class="table-responsive">
 														<table class="table table-striped table-nowrap custom-table mb-0 datatable">
@@ -2189,13 +1991,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for project in projects %}
 																<tr>
 																	<td>
-																		Wilmer Deluna
+																		{{project.name}}
 																	</td>
-																	<td>Completed</td>
-																	<td>Williams</td>
-																	<td>13-Jul-20 11:37 PM</td>
+																	<td>{{project.status}}</td>
+																	<td>{{project.user_responsible.name}}</td>
+																	<td>{{project.created|date:"d-m-y h:i A"}}</td>
 										                            <td class="text-end">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -2207,18 +2010,63 @@
 																		</div>
 																	</td>
 																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
 											    </div>
+												{% else %}
+												<div class="accordion-body__contents">
+													<p>There are no projects added.</p>
+												</div>
+												{% endif %}
 										    </div>
 										</div>
 										<div class="tasks__item crms-task-item">
 										    <div class="accordion-header js-accordion-header">Companies</div> 
 										  	<div class="accordion-body js-accordion-body">
+												  {% if organizations %}
 											    <div class="accordion-body__contents">
-											    	<p>There are no companies added.</p>
+											    	<div class="table-responsive">
+														<table class="table table-striped table-nowrap custom-table mb-0 datatable">
+															<thead>
+																<tr>
+																	<th>Company Name</th>
+																	<th>Phone</th>
+																	<th>Billing Country</th>
+																	<th class="text-end">Actions</th>
+																</tr>
+															</thead>
+															<tbody>
+																{% for organization in organizations %}
+																<tr>
+																	<td>
+																		<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
+																		<a href="#" data-bs-toggle="modal" data-bs-target="#company-details">{{organization.name}}</a>
+																	</td>
+																	<td>{{organization.phone}}</td>
+																	<td>{{organization.billing_country}}</td>
+										                            <td class="text-end">
+																		<div class="dropdown dropdown-action">
+																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+																			<div class="dropdown-menu dropdown-menu-right">
+																				<a class="dropdown-item" href="#">Edit Link</a>
+												                                <a class="dropdown-item" href="#">Delete Link</a>
+												                                
+																			</div>
+																		</div>
+																	</td>
+																</tr>
+																{% endfor %}
+															</tbody>
+														</table>
+													</div>
 											    </div>
+												{% else %}
+												<div class="accordion-body__contents">
+													<p>There are no companies added.</p>
+												</div>
+												{% endif %}														
 										    </div>
 										</div>
 										<div class="tasks__item crms-task-item">
@@ -2239,15 +2087,16 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for lead in leads %}
 																<tr>
 																	<td>
-																		Wilmer Deluna
+																		{{lead.first_name}} {{lead.last_name}}
 																	</td>
-																	<td>Howe-Blanda LLC</td>
-																	<td>978675656</td>
-																	<td>OPEN - NotContacted	</td>
-																	<td>13-Jul-20 11:37 PM</td>
-																	<td>John Doe</td>
+																	<td>{{lead.organization.name}}</td>
+																	<td>{{lead.phone}}</td>
+																	<td>{{lead.lead_status}}</td>																	
+																	<td>{{lead.created|date:"d-m-y h:i A"}}</td>
+																	<td>{{lead.lead_owner}}</td>
 										                            <td class="text-end">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -2259,6 +2108,7 @@
 																		</div>
 																	</td>
 																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
@@ -2500,74 +2350,11 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<script>
-	function loadTaskDetails(taskId) {	
-        $.ajax({
-			url: '/tasks/detail/' + taskId,  // Update the URL to match your actual URL
-            type: 'GET',
-            dataType: 'json',
-            success: function(task) {				
-                // Handle the JSON response
-				$('.task-id').each(function() {                    
-                    $(this).html(task.id); 
-                });
-				$('.task-name').each(function() {                    
-                    $(this).html(task.name); 
-                });
+<!-- Task Details Fetching Function -->
+<script src="{% static 'js/loadTaskDetails.js' %}"></script>
 
-				$('.task-assigned-to').each(function() {                    
-                    $(this).html(task.assigned_to); 
-                });
-
-				$('.task-category').each(function() {                    
-                    $(this).html(task.category); 
-                });
-
-				$('.task-due-date').each(function() {                    
-                    $(this).html(task.due_date); 
-                });
-
-				$('.task-start-date').each(function() {                    
-                    $(this).html(task.start_date); 
-                });
-
-				$('.task-reminder-date').each(function() {                    
-                    $(this).html(task.reminder_date); 
-                });
-
-				$('.task-progress').each(function() {                    
-                    $(this).html(task.progress); 
-                });
-							
-				$('.task-priority').each(function() {                    
-                    $(this).html(task.priority); 
-                });
-
-				$('.task-status').each(function() {                    
-                    $(this).html(task.status); 
-                });
-					
-				$('.task-related-to').each(function() {                    
-                    $(this).html(task.related_to); 
-                });
-
-				$('.task-description').each(function() {                    
-                    $(this).html(task.description); 
-                });
-				$('.task-created-at').each(function() {                    
-                    $(this).html(task.created_at); 
-                });
-				$('.task-updated-at').each(function() {                    
-                    $(this).html(task.updated_at); 
-                });
-            },
-            error: function(error) {
-                console.log('Error:', error);
-            }
-        });
-    }
-</script>
-
+<!-- User Details Fetching Function -->
+<script src="{% static 'js/loadCrmUserDetails.js' %}"></script>
 
     </body>
 </html>
