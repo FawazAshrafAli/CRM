@@ -667,11 +667,11 @@
 														<div class="pipeline-small flat pipeline-project">
 															{% for stage in stages %}
 															{% if stage in project.stage.all %}															
-							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="{{stage.stage}}" data-bsoriginal-title="Pipeline: {{project.pipeline}}, stage: {{stage.stage}}">&nbsp;
+							                                <a class="won noselect tipped-top" data-bs-toggle="tooltip" data-bsplacement="top" title="{{stage.stage}}" data-bsoriginal-title="Pipeline: {{project.pipeline}}, stage: {{stage.stage}}" data-project-id="{{project.pk}}" onclick="loadProjectDetails({{project.pk}})">&nbsp;
 							                                  <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
 							                                </a>
 															{% else %}
-															<a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="{{stage.stage}}" data-bsoriginal-title="Pipeline: {{project.pipeline}}, stage: {{stage.stage}}">&nbsp;
+															<a class="won noselect tipped-top planing" data-bs-toggle="tooltip" data-bsplacement="top" title="{{stage.stage}}" data-bsoriginal-title="Pipeline: {{project.pipeline}}, stage: {{stage.stage}}" data-project-id="{{project.pk}}" onclick="loadProjectDetails({{project.pk}})">&nbsp;
 																<span class="stretched-link" data-bs-toggle="modal" data-bs-target="#project-details"></span>
 															</a>
 															{% endif %}															
@@ -888,7 +888,7 @@
                   		</div>
                   		<div>
                   			<p class="mb-0">System User</p>
-                  			<span class="modal-title">John Doe</span>
+                  			<span class="modal-title">{{request.user.username}}</span>
                     		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
                     		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   		</div>
