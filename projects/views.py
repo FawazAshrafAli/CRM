@@ -62,17 +62,18 @@ class ProjectListView(BaseProjectView, ListView):
 class ProjectDetailView(BaseProjectView, DetailView):
     
     def render_to_response(self, context, **response_kwargs):
-        project = context['object']
-
+        project = context['object']        
         serialized_data = {}
 
         for field in project._meta.fields:
             field_name = field.name
-            if field_name not in ("user_responsible", "created", "updated"):
+            if field_name not in ("user_responsible", "stage", "created", "updated"):
                 field_value = getattr(project, field_name)
                 serialized_data[field_name] = field_value
             
         serialized_data.update({
+            "stage": [stage.stage for stage in project.stage.all()],
+            "deal_state": project.stage.latest('-stage').stage,
             "user_responsible": project.user_responsible.name,
             "created": project.created.strftime("%d/%m/%Y"),
             "updated": project.updated.strftime("%d/%m/%Y")
