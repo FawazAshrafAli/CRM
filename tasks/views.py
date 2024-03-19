@@ -7,6 +7,13 @@ from django.contrib import messages
 from django.http import Http404
 from django.http import JsonResponse
 
+from authentication.models import CrmUser
+from contacts.models import Contact
+from deals.models import Deal
+from projects.models import Project
+from organizations.models import Company
+from leads.models import Lead
+
 class BaseTaskView(LoginRequiredMixin):
     model = Task
     login_url = 'authentication:login'
@@ -64,7 +71,18 @@ class TaskListView(BaseTaskView, ListView):
     queryset = Task.objects.all()
     context_object_name = 'tasks'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            "users": CrmUser.objects.all(),
+            "contacts": Contact.objects.all(),
+            "deals": Deal.objects.all(),
+            "projects": Project.objects.all(),
+            "organizations": Company.objects.all(),
+            "leads": Lead.objects.all(),          
+        })
 
+        return context
 
 class TaskDetailView(BaseTaskView, DetailView):
     template_name = 'tasks/detail.html'
