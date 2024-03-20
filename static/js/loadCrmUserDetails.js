@@ -92,6 +92,14 @@ function loadCrmUserDetails(userId) {
                 }
             });
 
+            $('.user-birthday').each(function () {
+                if (user.birthday != null && user.birthday != "") {
+                    $(this).html(user.birthday);
+                } else {
+                    $(this).html("None");
+                }
+            });
+
             $('.user-created').each(function () {
                 if (user.created != null && user.created != "") {
                     $(this).html(user.created);
