@@ -94,7 +94,7 @@ class TaskDetailView(BaseTaskView, DetailView):
         serialized_data = {
             'id': task.id,
             'name': task.name,
-            'assigned_to' : task.assigned_to,
+            'assigned_to' : task.assigned_to.name,
             'category' : task.category,
             'due_date' : task.due_date,
             'start_date': task.start_date,
