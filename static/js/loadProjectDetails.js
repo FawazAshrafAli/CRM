@@ -1,4 +1,4 @@
-function loadProjectDetails(projectId) {
+function loadProjectDetails(projectId) {    
     $.ajax({
         type: "GET",
         url: "/projects/detail/" + projectId,
@@ -6,12 +6,13 @@ function loadProjectDetails(projectId) {
         success: function (project){
             $('.project-id').each(function () {                
                 if (project.id != null && project.id != ""){
-                    $(this).html(project.id);                
+                    $(this).html(project.id);
+                    $('#stage-updation-form').prop("action", "/projects/update_stage/" + project.id)              
                 } else {
                     $(this).html("None");
                 }
             });
-
+            
             $('.project-name').each(function () {
                 if (project.name != null && project.name != "") {
                     $(this).html(project.name);
@@ -19,7 +20,7 @@ function loadProjectDetails(projectId) {
                     $(this).html("None");
                 }
             });
-
+            
             $('.project-status').each(function () {
                 if (project.status != null && project.status != "") {
                     $(this).html(project.status);
@@ -27,7 +28,7 @@ function loadProjectDetails(projectId) {
                     $(this).html("None");
                 }
             });
-
+            
             $('.project-category').each(function () {
                 if (project.category != null && project.category != "") {
                     $(this).html(project.category);
@@ -35,7 +36,7 @@ function loadProjectDetails(projectId) {
                     $(this).html("None");
                 }
             });
-
+            
             $('.deal-state').each(function () {
                 if (project.deal_state != null && project.deal_state != "") {
                     if (project.deal_state == "Complete") {                        
@@ -47,7 +48,7 @@ function loadProjectDetails(projectId) {
                     $(this).html("Deal State: None");
                 };
             });
-
+            
             $('.project-user-responsible').each(function () {
                 if (project.user_responsible != null && project.user_responsible != "") {
                     $(this).html(project.user_responsible);
@@ -55,7 +56,7 @@ function loadProjectDetails(projectId) {
                     $(this).html("None");
                 }
             });
-
+            
             $('.project-pipeline-type').each(function () {
                 if (project.pipeline != null && project.pipeline != "") {
                     $(this).html(project.pipeline);
@@ -63,9 +64,9 @@ function loadProjectDetails(projectId) {
                     $(this).html("None");
                 }
             });
-
-            var array = project.stage
-            if (project.stage != null && project.stage != "") {
+            
+            var array = project.stage            
+            if (project.stage != null && project.stage != "") {                
                 $('.project-stage-plan').each( function () {
                     if (!array.includes("Plan")) {
                         $(this).addClass("planning");
@@ -73,7 +74,7 @@ function loadProjectDetails(projectId) {
                         $(this).removeClass("planning");
                     };
                 });
-
+                
                 $('.project-stage-design').each(function () {
                     if (!array.includes("Design")) {
                         $(this).addClass("planning");
@@ -81,7 +82,7 @@ function loadProjectDetails(projectId) {
                         $(this).removeClass("planning");
                     };
                 });
-
+                
                 $('.project-stage-develop').each(function () {
                     if (!array.includes("Develop")) {
                         $(this).addClass("planning");
@@ -89,16 +90,40 @@ function loadProjectDetails(projectId) {
                         $(this).removeClass("planning");
                     };
                 });
-
+                                
                 $('.project-stage-complete').each(function () {
                     if (!array.includes("Complete")) {
                         $(this).addClass("planning");
                     } else {
-                        $(this.removeClass("planning"));
+                        $(this).removeClass("planning");
                     };
-                })
-            }
+                });
+                                
+                if (array.includes('Plan')) {
+                    $('#project-stage-plan-updation').prop('selected', true);
+                } else {
+                    $('#project-stage-plan-updation').prop('selected', false);
+                };
+                
+                if (array.includes('Design')) {
+                    $('#project-stage-design-updation').prop('selected', true);
+                } else {                    
+                    $('#project-stage-design-updation').prop('selected', false);
+                };
 
+                if (array.includes('Develop')) {
+                    $('#project-stage-develop-updation').prop('selected', true);
+                } else {                    
+                    $('#project-stage-develop-updation').prop('selected', false);
+                };
+
+                if (array.includes('Complete')) {
+                    $('#project-stage-complete-updation').prop('selected', true);
+                } else {                    
+                    $('#project-stage-complete-updation').prop('selected', false);
+                };
+            }
+            
             $('.project-description').each(function () {
                 if (project.description != null && project.description != "") {
                     $(this).html(project.description);
@@ -106,7 +131,7 @@ function loadProjectDetails(projectId) {
                     $(this).html("None");
                 }
             });
-
+            
             $('.project-tag-list').each(function () {
                 if (project.tag_list != null && project.tag_list != "") {
                     $(this).html(project.tag_list);
