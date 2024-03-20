@@ -4,12 +4,13 @@ from django.shortcuts import render, redirect
 from django.urls import  reverse_lazy
 from django.contrib import messages
 from django.http import Http404, JsonResponse
+from .models import PipelineStage
+
 from .models import Deal
 from authentication.models import CrmUser
 from organizations.models import Company
-from .models import PipelineStage
 from contacts.models import Contact
-
+from projects.models import Project
 
 class BaseDealView(LoginRequiredMixin):
     login_url = 'authentication:login'
@@ -76,7 +77,8 @@ class ListDealView(BaseDealView, ListView):
             'users': CrmUser.objects.all(),
             'organizations': Company.objects.all(),
             'stages': PipelineStage.objects.all(),
-            'contacts': Contact.objects.all()
+            'contacts': Contact.objects.all(),
+            'projects': Project.objects.all()
             })
         return context
 

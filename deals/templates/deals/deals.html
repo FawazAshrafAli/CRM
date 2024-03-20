@@ -1300,13 +1300,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for project in projects %}
 																<tr>
 																	<td>
-																		Wilmer Deluna
+																		{{project.name}}
 																	</td>
-																	<td>Completed</td>
-																	<td>Williams</td>
-																	<td>13-Jul-20 11:37 PM</td>
+																	<td>{{project.status}}</td>
+																	<td>{{project.user_responsible.name}}</td>
+																	<td>{{project.created|date:"d-m-y h:i A" }}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1318,6 +1319,7 @@
 																		</div>
 																	</td>
 																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
@@ -1910,7 +1912,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Projects</h4>
-		                                  <span>1</span>
+		                                  <span>{{projects|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -2049,13 +2051,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for project in projects %}
 																<tr>
 																	<td>
-																		Wilmer Deluna
+																		{{project.name}}
 																	</td>
-																	<td>Completed</td>
-																	<td>Williams</td>
-																	<td>13-Jul-20 11:37 PM</td>
+																	<td>{{project.status}}</td>
+																	<td>{{project.user_responsible.name}}</td>
+																	<td>{{project.created|date:"d-m-y h:i A"}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -2067,6 +2070,7 @@
 																		</div>
 																	</td>
 																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
