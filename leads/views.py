@@ -114,11 +114,8 @@ class UpdateLeadStatusView(BaseLeadView, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         data = {'message': 'Error'}        
-        # if request.is_ajax():
-        # Update the object fields
         self.object.lead_status = request.POST.get('new_status')
         self.object.save()
-
         data = {'message': 'Success', 'id': self.object.id}
 
         return JsonResponse(data)
