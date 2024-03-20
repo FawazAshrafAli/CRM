@@ -1175,7 +1175,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Companies</h4>
-		                                  <span>2</span>
+		                                  <span>{{organizations|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1184,7 +1184,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Deals</h4>
-		                                  <span>2</span>
+		                                  <span>{{deals|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1193,7 +1193,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Projects</h4>
-		                                  <span>1</span>
+		                                  <span>{{projects|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1204,7 +1204,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-		                                  <span>2</span>
+		                                  <span>{{contacts|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1287,14 +1287,14 @@
 																</tr>
 															</thead>
 															<tbody>
-																<tr>
-																	
+																{% for deal in deals %}
+																<tr>																	
 																	<td>
-																		Bensolet
+																		{{deal.name}}
 																	</td>
-																	<td>Globex</td>
-																	<td>John Doe</td>
-																	<td>USD $‎180</td>
+																	<td>{{deal.organization.name}}</td>
+																	<td>{{deal.user_responsible.name}}</td>
+																	<td>{{deal.deal_value}}‎{{deal.bid_admount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
 										                            <td class="text-center">
@@ -1308,27 +1308,7 @@
 																		</div>
 																	</td>
 																</tr>
-																<tr>
-																	
-																	<td>
-																		Ansanio tech
-																	</td>
-																	<td>Lecto</td>
-																	<td>John Smith</td>
-																	<td>USD $‎180</td>
-																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
-																	
-										                            <td class="text-center">
-																		<div class="dropdown dropdown-action">
-																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-																			<div class="dropdown-menu dropdown-menu-right">
-																				<a class="dropdown-item" href="#">Edit Link</a>
-												                                <a class="dropdown-item" href="#">Delete Link</a>
-												                                
-																			</div>
-																		</div>
-																	</td>
-																</tr>
+																{% endfor %}																
 															</tbody>
 														</table>
 													</div>
@@ -1351,13 +1331,14 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for project in projects %}
 																<tr>
 																	<td>
-																		Wilmer Deluna
+																		{{project.name}}
 																	</td>
-																	<td>Completed</td>
-																	<td>Williams</td>
-																	<td>13-Jul-20 11:37 PM</td>
+																	<td>{{project.status}}</td>
+																	<td>{{project.user_responsible.name}}</td>
+																	<td>{{project.created|date:"d-m-y h:i A"}}</td>
 										                            <td class="text-center">
 																		<div class="dropdown dropdown-action">
 																			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -1369,6 +1350,7 @@
 																		</div>
 																	</td>
 																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
