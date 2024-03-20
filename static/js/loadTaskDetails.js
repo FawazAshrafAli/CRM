@@ -6,14 +6,14 @@ function loadTaskDetails(taskId) {
         success: function(task) {				
             // Handle the JSON response
             $('.task-id').each(function() {
-                if (task.id != null || task.id != "") {
+                if (task.id != null && task.id != "") {
                     $(this).html(task.id); 
                 } else {
                     $(this).html("None"); 
                 }
             });
             $('.task-name').each(function() {
-                if (task.name != null || task.name != "") {
+                if (task.name != null && task.name != "") {
                     $(this).html(task.name); 
                 } else {
                     $(this).html("None"); 
@@ -21,7 +21,7 @@ function loadTaskDetails(taskId) {
             });
 
             $('.task-assigned-to').each(function() {                                    
-                if (task.assigned_to != null || task.assigned_to != "") {
+                if (task.assigned_to != null && task.assigned_to != "") {
                     $(this).html(task.assigned_to); 
                 } else {
                     $(this).html("None"); 
@@ -29,7 +29,7 @@ function loadTaskDetails(taskId) {
             });
 
             $('.task-category').each(function() {                    
-                if (task.category != null || task.category != "") {
+                if (task.category != null && task.category != "") {
                     $(this).html(task.category); 
                 } else {
                     $(this).html("None"); 
@@ -37,7 +37,7 @@ function loadTaskDetails(taskId) {
             });
 
             $('.task-due-date').each(function() {                                    
-                if (task.due_date != null || task.due_date != "") {
+                if (task.due_date != null && task.due_date != "") {
                     $(this).html(task.due_date); 
                 } else {
                     $(this).html("None"); 
@@ -45,7 +45,7 @@ function loadTaskDetails(taskId) {
             });
 
             $('.task-start-date').each(function() {                    
-                if (task.start_date != null || task.start_date != "") {
+                if (task.start_date != null && task.start_date != "") {
                     $(this).html(task.start_date); 
                 } else {
                     $(this).html("None"); 
@@ -53,7 +53,7 @@ function loadTaskDetails(taskId) {
             });
 
             $('.task-reminder-date').each(function() {                    
-                if (task.reminder_date != null || task.reminder_date != "") {
+                if (task.reminder_date != null && task.reminder_date != "") {
                     $(this).html(task.reminder_date); 
                 } else {
                     $(this).html("None"); 
@@ -61,7 +61,7 @@ function loadTaskDetails(taskId) {
             });
 
             $('.task-progress').each(function() {                    
-                if (task.progress != null || task.progress != "") {
+                if (task.progress != null && task.progress != "") {
                     $(this).html(task.progress); 
                 } else {
                     $(this).html("None"); 
@@ -69,7 +69,7 @@ function loadTaskDetails(taskId) {
             });
                         
             $('.task-priority').each(function() {                                    
-                if (task.priority != null || task.priority != "") {
+                if (task.priority != null && task.priority != "") {
                     $(this).html(task.priority); 
                 } else {
                     $(this).html("None"); 
@@ -77,7 +77,7 @@ function loadTaskDetails(taskId) {
             });
 
             $('.task-status').each(function() {                    
-                if (task.status != null || task.status != "") {
+                if (task.status != null && task.status != "") {
                     $(this).html(task.status); 
                 } else {
                     $(this).html("None"); 
@@ -85,7 +85,7 @@ function loadTaskDetails(taskId) {
             });
                 
             $('.task-related-to').each(function() {                    
-                if (task.related_to != null || task.related_to != "") {
+                if (task.related_to != null && task.related_to != "") {
                     $(this).html(task.related_to); 
                 } else {
                     $(this).html("None"); 
@@ -93,7 +93,7 @@ function loadTaskDetails(taskId) {
             });
 
             $('.task-description').each(function() {                    
-                if (task.description != null || task.description != "") {
+                if (task.description != null && task.description != "") {
                     $(this).html(task.description); 
                 } else {
                     $(this).html("None"); 
@@ -101,7 +101,7 @@ function loadTaskDetails(taskId) {
             });
 
             $('.task-created-at').each(function() {                    
-                if (task.created_at != null || task.created_at != "") {
+                if (task.created_at != null && task.created_at != "") {
                     $(this).html(task.created_at); 
                 } else {
                     $(this).html("None"); 
@@ -109,7 +109,7 @@ function loadTaskDetails(taskId) {
             });
             
             $('.task-updated-at').each(function() {                    
-                if (task.updated_at != null || task.updated_at != "") {
+                if (task.updated_at != null && task.updated_at != "") {
                     $(this).html(task.updated_at); 
                 } else {
                     $(this).html("None"); 

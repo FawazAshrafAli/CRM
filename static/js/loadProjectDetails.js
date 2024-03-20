@@ -5,7 +5,7 @@ function loadProjectDetails(projectId) {
         dataType: 'json',
         success: function (project){
             $('.project-id').each(function () {                
-                if (project.id != null || project.id != ""){
+                if (project.id != null && project.id != ""){
                     $(this).html(project.id);                
                 } else {
                     $(this).html("None");
@@ -13,7 +13,7 @@ function loadProjectDetails(projectId) {
             });
 
             $('.project-name').each(function () {
-                if (project.name != null || project.name != "") {
+                if (project.name != null && project.name != "") {
                     $(this).html(project.name);
                 } else {
                     $(this).html("None");
@@ -21,7 +21,7 @@ function loadProjectDetails(projectId) {
             });
 
             $('.project-status').each(function () {
-                if (project.status != null || project.status != "") {
+                if (project.status != null && project.status != "") {
                     $(this).html(project.status);
                 } else {
                     $(this).html("None");
@@ -29,7 +29,7 @@ function loadProjectDetails(projectId) {
             });
 
             $('.project-category').each(function () {
-                if (project.category != null || project.category != "") {
+                if (project.category != null && project.category != "") {
                     $(this).html(project.category);
                 } else {
                     $(this).html("None");
@@ -37,7 +37,7 @@ function loadProjectDetails(projectId) {
             });
 
             $('.deal-state').each(function () {
-                if (project.deal_state != null || project.deal_state != "") {
+                if (project.deal_state != null && project.deal_state != "") {
                     if (project.deal_state == "Complete") {                        
                         $(this).html("Deal State: Closed Won");
                     } else {
@@ -49,7 +49,7 @@ function loadProjectDetails(projectId) {
             });
 
             $('.project-user-responsible').each(function () {
-                if (project.user_responsible != null || project.user_responsible != "") {
+                if (project.user_responsible != null && project.user_responsible != "") {
                     $(this).html(project.user_responsible);
                 } else {
                     $(this).html("None");
@@ -57,7 +57,7 @@ function loadProjectDetails(projectId) {
             });
 
             $('.project-pipeline-type').each(function () {
-                if (project.pipeline != null || project.pipeline != "") {
+                if (project.pipeline != null && project.pipeline != "") {
                     $(this).html(project.pipeline);
                 } else {
                     $(this).html("None");
@@ -65,7 +65,7 @@ function loadProjectDetails(projectId) {
             });
 
             var array = project.stage
-            if (project.stage != null || project.stage != "") {
+            if (project.stage != null && project.stage != "") {
                 $('.project-stage-plan').each( function () {
                     if (!array.includes("Plan")) {
                         $(this).addClass("planning");
@@ -100,7 +100,7 @@ function loadProjectDetails(projectId) {
             }
 
             $('.project-description').each(function () {
-                if (project.description != null || project.description != "") {
+                if (project.description != null && project.description != "") {
                     $(this).html(project.description);
                 } else {
                     $(this).html("None");
@@ -108,7 +108,7 @@ function loadProjectDetails(projectId) {
             });
 
             $('.project-tag-list').each(function () {
-                if (project.tag_list != null || project.tag_list != "") {
+                if (project.tag_list != null && project.tag_list != "") {
                     $(this).html(project.tag_list);
                 } else {
                     $(this).html("None");
@@ -116,7 +116,7 @@ function loadProjectDetails(projectId) {
             });
 
             $('.project-visibility').each(function () {
-                if (project.visibility != null || project.visibility != "") {
+                if (project.visibility != null && project.visibility != "") {
                     $(this).html(project.visibility);
                 } else {
                     $(this).html("None");
@@ -124,7 +124,7 @@ function loadProjectDetails(projectId) {
             });
 
             $('.project-created').each(function () {
-                if (project.created != null || project.created != "") {
+                if (project.created != null && project.created != "") {
                     $(this).html(project.created);
                 } else {
                     $(this).html("None");
@@ -132,7 +132,7 @@ function loadProjectDetails(projectId) {
             });
             
             $('.project-updated').each(function () {
-                if (project.updated != null || project.updated != "") {
+                if (project.updated != null && project.updated != "") {
                     $(this).html(project.updated);
                 } else {
                     $(this).html("None");
