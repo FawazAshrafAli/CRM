@@ -1760,17 +1760,17 @@
                     </div>
                   	<div class="row m-0">
                   		<div class="pipeline-small flat pipeline-project w-100 Prjt-pipilines">
-		                    <a class="won noselect tipped-top text-white w-25 project-stage-plan" data-bs-toggle="tooltip" data-bsplacement="top" title="Plan" data-bsoriginal-title="Plan">&nbsp;<span>Plan</span>
+		                    <a class="won noselect tipped-top planning text-white w-25 project-stage-plan" data-bs-toggle="tooltip" data-bsplacement="top" title="Plan" data-bsoriginal-title="Plan">&nbsp;<span>Plan</span>
 		                        <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#pipeline-stage" data-bs-dismiss="modal"></span>
 		                    </a>
-		                    <a class="won noselect tipped-top bg-gray text-white w-12 project-stage-design" data-bs-toggle="tooltip" data-bsplacement="top" title="Design" data-bsoriginal-title="Design">&nbsp;<span>Design</span>
+		                    <a class="won noselect tipped-top planning bg-gray text-white w-12 project-stage-design" data-bs-toggle="tooltip" data-bsplacement="top" title="Design" data-bsoriginal-title="Design">&nbsp;<span>Design</span>
 		                        <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#pipeline-stage" data-bs-dismiss="modal"></span>
 		                    </a>
-		                    <a class="won noselect tipped-top text-white w-25 project-stage-develop" data-bs-toggle="tooltip" data-bsplacement="top" title="Develop" data-bsoriginal-title="Develop">&nbsp;<span>Develop</span>
+		                    <a class="won noselect tipped-top planning text-white w-25 project-stage-develop" data-bs-toggle="tooltip" data-bsplacement="top" title="Develop" data-bsoriginal-title="Develop">&nbsp;<span>Develop</span>
 		                        <span class="stretched-link" data-bs-toggle="modal" data-bs-target="#pipeline-stage" data-bs-dismiss="modal"></span>
 		                    </a>
 		                      
-		                    <a class="won noselect tipped-top text-white padding w-25 project-stage-complete" data-bs-toggle="tooltip" data-bsplacement="top" title="Complete" data-bsoriginal-title="COmplete">&nbsp;Complete
+		                    <a class="won noselect tipped-top planning text-white padding w-25 project-stage-complete" data-bs-toggle="tooltip" data-bsplacement="top" title="Complete" data-bsoriginal-title="COmplete">&nbsp;Complete
 		                        
 		                    </a>
 		                </div>
@@ -2264,25 +2264,26 @@
                   </div>
 
                   <!-- Modal body -->
+				  <form id="stage-updation-form" method="POST">
+					{% csrf_token %}
                   <div class="modal-body">
-                     <form>
-                      <div class="form-group">
-                  <label class="col-form-label">New Stage</label>
-                    <select class="form-control" id="related-to">
-                        <option>Plan</option>
-                        <option>Design</option>
-                        <option>Develop</option>
-                        <option>Complete</option>
-                     </select>
-                  </div>
-                     </form>
-                  </div>
+						<div class="form-group">
+						<label class="col-form-label">Update Stage</label>				  
+						<select class="form-control" id="related-to" name="update_stage" multiple>
+							{% for stage in stages %}
+							<option id="project-stage-{{stage.stage|lower}}-updation" value="{{stage.pk}}">{{stage.stage}}</option>
+							{% endfor %}							
+						</select>
+                  		</div>
+				  		<span>press <button class="btn-sm disabled border-0">CTRL</button> and select for multi-selection</span>
+					</div>
+					<!-- Modal footer -->
+					<div class="modal-footer text-center">
+					  <button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded" data-bs-dismiss="modal">Save</button>&nbsp;&nbsp;
+					  <button type="button" class="btn btn-secondary btn-rounded cancel-button" data-bs-dismiss="modal">Cancel</button>
+					</div>
+				</form>
 
-                  <!-- Modal footer -->
-                  <div class="modal-footer text-center">
-                    <button type="button" class="border-0 btn btn-primary btn-gradient-primary btn-rounded" data-bs-dismiss="modal">Save</button>&nbsp;&nbsp;
-					<button type="button" class="btn btn-secondary btn-rounded cancel-button" data-bs-dismiss="modal">Cancel</button>
-                  </div>
 
 
                 </div>

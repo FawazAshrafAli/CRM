@@ -1,8 +1,13 @@
 from django.db import models
 from authentication.models import CrmUser
+from django.utils import timezone
 
 class PipelineStage(models.Model):
-    stage = models.CharField(max_length=150)
+    stage = models.CharField(max_length=150, unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+   
+    class Meta:
+        ordering = ['created']
 
     def __str__(self):
         return self.stage
@@ -30,3 +35,6 @@ class Project(models.Model):
     # Created and Updated Datetime
     created = models.DateTimeField(auto_now_add=True)
     updated  = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
