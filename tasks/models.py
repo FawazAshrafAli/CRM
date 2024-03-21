@@ -27,5 +27,5 @@ class Task(models.Model):
     task_owner = models.CharField(max_length=150, blank=True, null=True)
 
     #  Creation and Updation Details
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)

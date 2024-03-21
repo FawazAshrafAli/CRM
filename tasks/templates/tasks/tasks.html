@@ -679,12 +679,12 @@
 													<div class="dropdown dropdown-action">
 														<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 														<div class="dropdown-menu dropdown-menu-right">
-															<a class="dropdown-item" href="#">Edit this task</a>
+															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task"  data-task-id={{task.id}} onclick="fetchEditTaskDetails({{task.pk}}); return false">Edit this task</a>
 							                                <a class="dropdown-item" href="#">Complete This Task</a>
 							                                <a class="dropdown-item" href="#">Complete Task &amp; Clone</a>
 							                                <a class="dropdown-item" href="#">Change Record Owner</a>
-							                                <a class="dropdown-item" href="#">Delete This Tasks</a>
-							                                <a class="dropdown-item" href="#">Clone This Tasks</a>
+							                                <a class="dropdown-item" href="{% url 'tasks:delete' task.pk %}">Delete This Tasks</a>
+							                                <a class="dropdown-item" href="{% url 'tasks:clone' task.pk %}">Clone This Tasks</a>
 							                                <a class="dropdown-item" href="#">Print This Tasks</a>
 														</div>
 													</div>
@@ -758,130 +758,260 @@
         </div>
 
 		<!-- Modal -->
-			<div class="modal right fade" id="add_task" tabindex="-1" role="dialog" aria-modal="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-		                    <h4 class="modal-title text-center">Add Tasks</h4>
-		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
-		                  </div>
-						<div class="modal-body">
-							<div class="row">
-						        <div class="col-md-12">
-						            <form method="POST" action="{% url 'tasks:create' %}">
-										{% csrf_token %}
-						            	<h4>Task Details</h4>
-						                <div class="form-group row">
-											<div class="col-sm-6">
-												 <label class="col-form-label">Task Name <span class="text-danger">*</span></label>
-				                            	<input class="form-control" type="text" name="name" id="name" placeholder="Task Name" required>
-											</div>
-											<div class="col-sm-6">
-												<label class="col-form-label">Assigned To</label>
-					                            <select class="form-control" name="assigned_to" required>
-					                                <option>-- Select --</option>
-													{% for user in users %}
-													<option value="{{user.pk}}">{{user.name}}</option>
-													{% endfor %}
-					                            </select>
-											</div>
+		<div class="modal right fade" id="add_task" tabindex="-1" role="dialog" aria-modal="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-center">Add Tasks</h4>
+						<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+						</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<form method="POST" action="{% url 'tasks:create' %}">
+									{% csrf_token %}
+									<h4>Task Details</h4>
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Task Name <span class="text-danger">*</span></label>
+											<input class="form-control" type="text" name="name" id="name" placeholder="Task Name" required>
 										</div>
-										<div class="form-group row">
-											<div class="col-sm-6">
-												 <label class="col-form-label">Category</label>
-					                            <select class="form-control" name="category" required>
-					                                <option value="Email">Email</option>
-					                                <option value="Follow">Follow up</option>
-					                                <option value="Get">Get Started</option>
-					                                <option value="Meeting">Meeting</option>
-					                                <option value="Phone">Phone call</option>
-					                             </select>
-											</div>
-											<div class="col-sm-6">
-												<label class="col-form-label">Due Date <span class="text-danger">*</span></label>
-				                                <div class="cal-icon"><input class="form-control datetimepicker" name="due_date" type="text" placeholder="MM/DD/YY" required></div>
-											</div>
+										<div class="col-sm-6">
+											<label class="col-form-label">Assigned To</label>
+											<select class="form-control" name="assigned_to" required>
+												<option hidden>-- Select --</option>
+												{% for user in users %}
+												<option value="{{user.pk}}">{{user.name}}</option>
+												{% endfor %}
+											</select>
 										</div>
-										<h4>Additional Information</h4>
-										<div class="form-group row">
-											<div class="col-sm-6">
-												 <label class="col-form-label">Start Date <span class="text-danger">*</span></label>
-				                            	<div class="cal-icon"><input class="form-control datetimepicker" type="text" placeholder="MM/DD/YY" name="start_date" required></div>
-											</div>
-											<div class="col-sm-6">
-												<label class="col-form-label">Reminder Date <span class="text-danger">*</span></label>
-				                            	<div class="cal-icon"><input class="form-control datetimepicker" type="text" placeholder="MM/DD/YY" name="reminder_date" required></div>
-											</div>
+									</div>
+									<div class="form-group row">
+										<div class="col-sm-6">
+												<label class="col-form-label">Category</label>
+											<select class="form-control" name="category" required>
+												<option hidden>-- Select --</option>
+												<option value="Email">Email</option>
+												<option value="Follow">Follow up</option>
+												<option value="Get">Get Started</option>
+												<option value="Meeting">Meeting</option>
+												<option value="Phone">Phone call</option>
+												</select>
 										</div>
-										<div class="form-group row">
-											<div class="col-sm-6">
-												<label class="col-form-label">Progress</label>
-				                            	<input class="form-control" type="text" name="progress" placeholder="Progress" required>
-											</div>
-											<div class="col-sm-6">
-												<label class="col-form-label">Priority</label>
-												<select class="form-control" name="priority" required>
-													<option>Low</option>
-													<option>Medium</option>
-													<option>High</option>
-													
-												 </select>
-											</div>											
-										</div>										
-										<div class="form-group row">
-											<div class="col-sm-6">
-												<label class="col-form-label">Status</label>
-					                            <select class="form-control" name="status" required>
-					                                <option>Not Started</option>
-					                                <option>Inprogress</option>
-					                                <option>Deferred</option>
-					                                <option>Waiting</option>
-					                             </select>
-											</div>
-											
+										<div class="col-sm-6">
+											<label class="col-form-label">Due Date <span class="text-danger">*</span></label>
+											<div class="cal-icon"><input class="form-control datetimepicker" name="due_date" type="text" placeholder="MM/DD/YY" required></div>
 										</div>
-										<h4>Related To</h4>
-										<div class="form-group row">
-											<div class="col-sm-6">
-												<label class="col-form-label">Related To</label>
-					                            <select class="form-control" name="related_to" required>
-					                                <option>Select</option>
-					                                <option>Test</option>
-					                             </select>
-											</div>
-											
+									</div>
+									<h4>Additional Information</h4>
+									<div class="form-group row">
+										<div class="col-sm-6">
+												<label class="col-form-label">Start Date <span class="text-danger">*</span></label>
+											<div class="cal-icon"><input class="form-control datetimepicker" type="text" placeholder="MM/DD/YY" name="start_date" required></div>
 										</div>
-										<h4>Description Information</h4>
-										<div class="form-group row">
-											<div class="col-sm-12">
-												<label class="col-form-label">Description </label>
-				                            	<textarea class="form-control" rows="3" id="description" name="description" placeholder="Description" required></textarea>
-											</div>
+										<div class="col-sm-6">
+											<label class="col-form-label">Reminder Date <span class="text-danger">*</span></label>
+											<div class="cal-icon"><input class="form-control datetimepicker" type="text" placeholder="MM/DD/YY" name="reminder_date" required></div>
 										</div>
-										<h4>Permissions</h4>
-										<div class="form-group row">
-											<div class="col-sm-6">
-												<label class="col-form-label">Permission</label>
-					                        	<select class="form-control" name="permission" required>
-					                                <option>Task Visibility</option>
-					                                <option>Private Task</option>
-					                         	</select>
-											</div>
-											
+									</div>
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Progress</label>
+											<input class="form-control" type="text" name="progress" placeholder="Progress" required>
 										</div>
-						                <div class="text-center py-3">
-						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
-						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
-						                </div>
-						            </form>
-						        </div>
+										<div class="col-sm-6">
+											<label class="col-form-label">Priority</label>
+											<select class="form-control" name="priority" required>
+												<option>Low</option>
+												<option>Medium</option>
+												<option>High</option>
+												
+												</select>
+										</div>											
+									</div>										
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Status</label>
+											<select class="form-control" name="status" required>
+												<option>Not Started</option>
+												<option>Inprogress</option>
+												<option>Deferred</option>
+												<option>Waiting</option>
+												</select>
+										</div>
+										
+									</div>
+									<h4>Related To</h4>
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Related To</label>
+											<select class="form-control" name="related_to" required>
+												<option>Select</option>
+												<option>Test</option>
+												</select>
+										</div>
+										
+									</div>
+									<h4>Description Information</h4>
+									<div class="form-group row">
+										<div class="col-sm-12">
+											<label class="col-form-label">Description </label>
+											<textarea class="form-control" rows="3" id="description" name="description" placeholder="Description" required></textarea>
+										</div>
+									</div>
+									<h4>Permissions</h4>
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Permission</label>
+											<select class="form-control" name="permission" required>
+												<option>Task Visibility</option>
+												<option>Private Task</option>
+											</select>
+										</div>
+										
+									</div>
+									<div class="text-center py-3">
+										<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+										<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+									</div>
+								</form>
 							</div>
-
 						</div>
 
-					</div><!-- modal-content -->
-				</div><!-- modal-dialog -->
-			</div><!-- modal -->
+					</div>
+
+				</div><!-- modal-content -->
+			</div><!-- modal-dialog -->
+		</div><!-- modal -->
+
+		<!-- Modal (Update task) -->
+		<div class="modal right fade" id="edit_task" tabindex="-1" role="dialog" aria-modal="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-center">Edit Task</h4>
+						<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+						</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<form method="POST" id="update-task-form" action="{% url 'tasks:create' %}">
+									{% csrf_token %}
+									<h4>Task Details</h4>
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Task Name <span class="text-danger">*</span></label>
+											<input class="form-control" type="text" name="name" id="task-name-value" placeholder="Task Name" required>
+										</div>
+										<div class="col-sm-6">
+											<label class="col-form-label">Assigned To</label>
+											<select class="form-control" name="assigned_to" required>
+												<option hidden>-- Select --</option>
+												{% for user in users %}
+												<option value="{{user.pk}}" id="task-assigned-to-{{user.pk}}">{{user.name}}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="form-group row">
+										<div class="col-sm-6">
+												<label class="col-form-label">Category</label>
+											<select class="form-control" name="category" id="category-value" required>
+												<option hidden>-- Select --</option>
+												<option value="Email">Email</option>
+												<option value="Follow">Follow up</option>
+												<option value="Get">Get Started</option>
+												<option value="Meeting">Meeting</option>
+												<option value="Phone">Phone call</option>
+											</select>
+										</div>
+										<div class="col-sm-6">
+											<label class="col-form-label">Due Date <span class="text-danger">*</span></label>
+											<div class="cal-icon"><input class="form-control datetimepicker" name="due_date" type="text" id="due-date-value" placeholder="MM/DD/YY" required></div>
+										</div>
+									</div>
+									<h4>Additional Information</h4>
+									<div class="form-group row">
+										<div class="col-sm-6">
+												<label class="col-form-label">Start Date <span class="text-danger">*</span></label>
+											<div class="cal-icon"><input class="form-control datetimepicker" type="text" placeholder="MM/DD/YY" name="start_date" id="start-date-value" required></div>
+										</div>
+										<div class="col-sm-6">
+											<label class="col-form-label">Reminder Date <span class="text-danger">*</span></label>
+											<div class="cal-icon"><input class="form-control datetimepicker" type="text" placeholder="MM/DD/YY" name="reminder_date" id="reminder-date-value" required></div>
+										</div>
+									</div>
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Progress</label>
+											<input class="form-control" type="text" name="progress" id="progress-value" placeholder="Progress" required>
+										</div>
+										<div class="col-sm-6">
+											<label class="col-form-label">Priority</label>
+											<select class="form-control" name="priority" id="priority-value" required>
+												<option value="Low">Low</option>
+												<option value="Medium">Medium</option>
+												<option value="High">High</option>												
+												</select>
+										</div>											
+									</div>										
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Status</label>
+											<select class="form-control" name="status" id="status-value" required>
+												<option value="Not Started">Not Started</option>
+												<option value="Inprogress">Inprogress</option>
+												<option value="Deferred">Deferred</option>
+												<option value="Waiting">Waiting</option>
+											</select>
+										</div>
+										
+									</div>
+									<h4>Related To</h4>
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Related To</label>
+											<select class="form-control" name="related_to" id="related-to-value" required>
+												<option hidden>-- Select --</option>
+												<option value="Test">Test</option>
+												<option value="Other">Other</option>
+											</select>
+										</div>
+										
+									</div>
+									<h4>Description Information</h4>
+									<div class="form-group row">
+										<div class="col-sm-12">
+											<label class="col-form-label">Description </label>
+											<textarea class="form-control" rows="3" id="description-value" name="description" placeholder="Description" required></textarea>
+										</div>
+									</div>
+									<h4>Permissions</h4>
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Permission</label>
+											<select class="form-control" name="permission" id="permission-value" required>
+												<option hidden>Task Visibility</option>
+												<option value="Private Task">Private Task</option>
+												<option value="Public Task">Public Task</option>
+											</select>
+										</div>
+										
+									</div>
+									<div class="text-center py-3">
+										<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+										<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+				</div><!-- modal-content -->
+			</div><!-- modal-dialog -->
+		</div><!-- modal (Update task) --> 
+
 
 			<!--system users Modal -->
             <div class="modal right fade" id="system-user" tabindex="-1" role="dialog" aria-modal="true">
@@ -2352,6 +2482,9 @@
 
 <!-- Task Details Fetching Function -->
 <script src="{% static 'js/loadTaskDetails.js' %}"></script>
+
+<!-- Insert Edit Task Form Dynamicaly -->
+<script src="{% static 'js/fetchEditTaskDetails.js' %}"></script>
 
 <!-- User Details Fetching Function -->
 <script src="{% static 'js/loadCrmUserDetails.js' %}"></script>

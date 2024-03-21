@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
-from django.views.generic  import DeleteView, ListView, DetailView, CreateView, UpdateView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic  import DeleteView, ListView, DetailView, CreateView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Task
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.http import JsonResponse
 
 from authentication.models import CrmUser
@@ -14,12 +14,12 @@ from projects.models import Project
 from organizations.models import Company
 from leads.models import Lead
 
-class BaseTaskView(LoginRequiredMixin):
+class BaseTaskView(LoginRequiredMixin): #base class
     model = Task
     login_url = 'authentication:login'
+    template_name = 'tasks/tasks.html'
 
-class TaskCreateView(BaseTaskView, CreateView):
-    template_name = 'tasks/tasks.html'    
+class TaskCreateView(BaseTaskView, CreateView): # For creating task.
     fields=["name", "assigned_to", "category", "due_date", "start_date", "reminder_date", "progress", "priority", "status", "related_to", "description", "permission"]
     success_url = reverse_lazy('tasks:list')
     raise_exception = True
@@ -29,45 +29,73 @@ class TaskCreateView(BaseTaskView, CreateView):
         messages.success(self.request,"New task created")
         return response
     
-    def form_invalid(self, form):
-        # Iterate through form errors and add them as messages
+    def form_invalid(self, form):        
         for field, errors in form.errors.items():
             for error in errors:
                 print(f"Error in {field}: {error}")
 
         messages.error(self.request, "Failed to create task.")
         return super().form_invalid(form)
-    
-    
 
 
-class TaskUpdateView(BaseTaskView, UpdateView):
-    template_name = 'tasks/update.html'
+# def clone(request, pk):
+#     try:
+#         task = Task.objects.get(pk=pk)
+#         Task.objects.create(
+#             name = task.name,
+#             assigned_to = task.assigned_to,
+#             category = task.category,
+#             due_date = task.due_date,
+#             start_date = task.start_date,
+#             reminder_date = task.reminder_date,
+#             progress = task.progress,
+#             priority = task.priority,
+#             status = task.status,
+#             related_to = task.related_to,
+#             description = task.description,
+#             permission = task.permission,
+#             task_owner = task.task_owner
+#         )
+#         return redirect('tasks:list')
+#     except Task.DoesNotExist:
+#         return HttpResponse("Task does not exists.")
+    
+class CloneTaskView(BaseTaskView, View):
+    def get(self, request, pk):
+        try:
+            task = get_object_or_404(Task, pk=pk)
+            Task.objects.create(
+                name=task.name,
+                assigned_to=task.assigned_to,
+                category=task.category,
+                due_date=task.due_date,
+                start_date=task.start_date,
+                reminder_date=task.reminder_date,
+                progress=task.progress,
+                priority=task.priority,
+                status=task.status,
+                related_to=task.related_to,
+                description=task.description,
+                permission=task.permission,
+                task_owner=task.task_owner
+            )
+            return redirect('tasks:list')
+        except Task.DoesNotExist:
+            return HttpResponse("Task does not exist.")
+
+
+class TaskUpdateView(BaseTaskView, UpdateView): # For updating task.
     fields='__all__'
-    query_pk_and_slug = 'pk'    
-
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset=queryset)
-        return obj
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        obj = self.get_object()
-        due_date = obj.due_date        
-        context.update({"due_date": str(due_date)})
-        return context
+    query_pk_and_slug = 'pk'
+    success_url = reverse_lazy('tasks:list')
     
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, 'Task updation successfull.')
-        return response
-
-    def get_success_url(self):
-        return reverse_lazy('tasks:detail', kwargs={'pk': self.object.pk})
+        return response    
 
 
-class TaskListView(BaseTaskView, ListView):
-    template_name = 'tasks/tasks.html'
+class TaskListView(BaseTaskView, ListView): # To list tasks.
     queryset = Task.objects.all()
     context_object_name = 'tasks'
 
@@ -84,8 +112,7 @@ class TaskListView(BaseTaskView, ListView):
 
         return context
 
-class TaskDetailView(BaseTaskView, DetailView):
-    template_name = 'tasks/detail.html'
+class TaskDetailView(BaseTaskView, DetailView): # For providing a detail of a single task. 
     query_pk_and_slug = 'pk'
 
     def render_to_response(self, context, **response_kwargs):
@@ -95,6 +122,7 @@ class TaskDetailView(BaseTaskView, DetailView):
             'id': task.id,
             'name': task.name,
             'assigned_to' : task.assigned_to.name,
+            'assigned_to_pk': task.assigned_to.pk,
             'category' : task.category,
             'due_date' : task.due_date,
             'start_date': task.start_date,
@@ -105,14 +133,13 @@ class TaskDetailView(BaseTaskView, DetailView):
             'related_to' : task.related_to,
             'description': task.description,
             'permission': task.permission,
-            'created_at': task.created_at.strftime("%d %b %Y %I:%M %p"),
-            'updated_at': task.updated_at.strftime("%d %b %Y %I:%M %p")
+            'created_at': task.created.strftime("%d %b %Y %I:%M %p"),
+            'updated_at': task.updated.strftime("%d %b %Y %I:%M %p"),            
         }
 
         return JsonResponse(serialized_data)
 
 class TaskDeleteView(BaseTaskView, DeleteView):
-    template_name = 'tasks/confirm_deletion.html'
     query_pk_and_slug = 'pk'
     success_url = reverse_lazy('tasks:list')
     
@@ -120,10 +147,21 @@ class TaskDeleteView(BaseTaskView, DeleteView):
         try:
             return super().get(request, *args, **kwargs)
         except Http404:
-            return redirect(reverse_lazy('tasks:list'))
+            return redirect(self.get_success_url())
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         messages.success(self.request, "Task deletion successful.")
         return response
+    
+
+# class TaskDeleteView(BaseTaskView, View):
+#     def get(self, request, pk):
+#         try:
+#             task = get_object_or_404(Task, pk=pk)
+#             task.delete()
+#             messages.success(request, "Task Deleted.")
+#             return redirect('tasks:list')
+#         except Http404:
+#             return HttpResponse("invalid object")
     
