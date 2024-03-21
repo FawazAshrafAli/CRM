@@ -666,7 +666,7 @@
 												</td>
 												<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user" data-user-id={{task.assigned_to.pk}} onclick="loadCrmUserDetails({{task.assigned_to.pk}}); return false;">{{task.assigned_to.name}}</a></td>
 												<td>{{task.due_date}}</td>
-												<td>Task Owner</td>
+												<td>{{task.task_owner}}</td>
 												<td><label class="badge badge-gradient-danger">{{task.status}}</label></td>
 												<td>
 					                              <label class="container-checkbox">
@@ -682,7 +682,7 @@
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task"  data-task-id={{task.id}} onclick="fetchEditTaskDetails({{task.pk}}); return false">Edit this task</a>
 							                                <a class="dropdown-item" href="#">Complete This Task</a>
 							                                <a class="dropdown-item" href="#">Complete Task &amp; Clone</a>
-							                                <a class="dropdown-item" href="#">Change Record Owner</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task_owner"  data-task-id={{task.id}} onclick="fetchChangeTaskOwnerDetails({{task.pk}}); return false">Change Record Owner</a>
 							                                <a class="dropdown-item" href="{% url 'tasks:delete' task.pk %}">Delete This Tasks</a>
 							                                <a class="dropdown-item" href="{% url 'tasks:clone' task.pk %}">Clone This Tasks</a>
 							                                <a class="dropdown-item" href="#">Print This Tasks</a>
@@ -895,7 +895,7 @@
 					<div class="modal-body">
 						<div class="row">
 							<div class="col-md-12">
-								<form method="POST" id="update-task-form" action="{% url 'tasks:create' %}">
+								<form method="POST" id="update-task-form">
 									{% csrf_token %}
 									<h4>Task Details</h4>
 									<div class="form-group row">
@@ -1011,6 +1011,41 @@
 				</div><!-- modal-content -->
 			</div><!-- modal-dialog -->
 		</div><!-- modal (Update task) --> 
+
+
+		<!-- Modal (Update task owner) -->
+		<div class="modal right fade" id="edit_task_owner" tabindex="-1" role="dialog" aria-modal="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-center">Edit Task</h4>
+						<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+						</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<form method="POST" id="update-task-owner-form">
+									{% csrf_token %}
+									<h4>Task Owner Details</h4>
+									<div class="form-group row">
+										<div class="col-sm-6">
+											<label class="col-form-label">Task Owner <span class="text-danger">*</span></label>
+											<input class="form-control" type="text" name="task_owner" id="task-owner-value" placeholder="Task Owner" required>
+										</div>										
+									</div>									
+									<div class="text-center py-3">
+										<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+										<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+				</div><!-- modal-content -->
+			</div><!-- modal-dialog -->
+		</div><!-- modal (Update task owner) --> 
 
 
 			<!--system users Modal -->
@@ -2489,5 +2524,7 @@
 <!-- User Details Fetching Function -->
 <script src="{% static 'js/loadCrmUserDetails.js' %}"></script>
 
+<!-- Task Owner detail fetching -->
+<script src="{% static 'js/fetchChangeTaskOwnerDetails.js' %}"></script>
     </body>
 </html>

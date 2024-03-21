@@ -95,6 +95,15 @@ class TaskUpdateView(BaseTaskView, UpdateView): # For updating task.
         return response    
 
 
+class TaskOwnerUpdateView(BaseTaskView, UpdateView):
+    fields = ["task_owner"]
+    success_url = reverse_lazy('tasks:list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Successfully updated task owner.')
+        return super().form_valid(form)
+
+
 class TaskListView(BaseTaskView, ListView): # To list tasks.
     queryset = Task.objects.all()
     context_object_name = 'tasks'
@@ -133,6 +142,7 @@ class TaskDetailView(BaseTaskView, DetailView): # For providing a detail of a si
             'related_to' : task.related_to,
             'description': task.description,
             'permission': task.permission,
+            'task_owner': task.task_owner,
             'created_at': task.created.strftime("%d %b %Y %I:%M %p"),
             'updated_at': task.updated.strftime("%d %b %Y %I:%M %p"),            
         }
