@@ -680,11 +680,11 @@
 														<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 														<div class="dropdown-menu dropdown-menu-right">
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task"  data-task-id={{task.id}} onclick="fetchEditTaskDetails({{task.pk}}); return false">Edit this task</a>
-							                                <a class="dropdown-item" href="#">Complete This Task</a>
-							                                <a class="dropdown-item" href="#">Complete Task &amp; Clone</a>
-							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task_owner"  data-task-id={{task.id}} onclick="fetchChangeTaskOwnerDetails({{task.pk}}); return false">Change Record Owner</a>
-							                                <a class="dropdown-item" href="{% url 'tasks:delete' task.pk %}">Delete This Tasks</a>
-							                                <a class="dropdown-item" href="{% url 'tasks:clone' task.pk %}">Clone This Tasks</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#complete_task_confirmation" data-task-id={{task.id}} onclick="fetchCompletingTaskDetails({{task.pk}}); return false;">Complete This Task</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#complete_and_clone_task_confirmation" data-task-id={{task.id}} onclick="fetchCompletingAndCloningTaskDetails({{task.pk}}); return false;">Complete Task &amp; Clone</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task_owner" data-task-id={{task.id}} onclick="fetchChangeTaskOwnerDetails({{task.pk}}); return false;">Change Record Owner</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_task_confirmation" data-task-id="{{task.id}}" onclick="fetchDeletingTaskDetails({{task.id}}); return false;">Delete This Tasks</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone_task_confirmation" data-task-id="{{task.id}}" onclick="fetchCloningTaskDetails({{task.id}}); return false;">Clone This Tasks</a>
 							                                <a class="dropdown-item" href="#">Print This Tasks</a>
 														</div>
 													</div>
@@ -872,7 +872,7 @@
 									</div>
 									<div class="text-center py-3">
 										<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
-										<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+										<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label='Close'>Cancel</button>
 									</div>
 								</form>
 							</div>
@@ -959,10 +959,10 @@
 										<div class="col-sm-6">
 											<label class="col-form-label">Status</label>
 											<select class="form-control" name="status" id="status-value" required>
-												<option value="Not Started">Not Started</option>
-												<option value="Inprogress">Inprogress</option>
-												<option value="Deferred">Deferred</option>
-												<option value="Waiting">Waiting</option>
+												<option value="Active">Active</option>
+												<option value="Completed">Completed</option>
+												<option value="In Progress">In Progress</option>
+												<option value="Pending">Pending</option>
 											</select>
 										</div>
 										
@@ -1000,18 +1000,63 @@
 									</div>
 									<div class="text-center py-3">
 										<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
-										<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+										<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Clos">Cancel</button>
 									</div>
 								</form>
 							</div>
 						</div>
-
 					</div>
-
 				</div><!-- modal-content -->
 			</div><!-- modal-dialog -->
 		</div><!-- modal (Update task) --> 
 
+		<!-- Modal (Complete Task Confirmation) -->
+		<div class="modal fade" id="complete_task_confirmation" tabindex="-1" role="dialog" aria-modal="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-center">Complete Task <span id="completion-task-object"></span></h4>
+						<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<h5>Are you sure?</h5>								
+								<div class="text-center py-3">
+									<a href="#" class="border-0 btn btn-danger btn-gradient-primary btn-rounded" id="complete-task">Yes</a>&nbsp;&nbsp;
+									<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div><!-- modal-content -->
+			</div><!-- modal-dialog -->
+		</div><!-- modal (Complete Task Confirmation) --> 
+
+		<!-- Modal (Complete And Clone Task Confirmation) -->
+		<div class="modal fade" id="complete_and_clone_task_confirmation" tabindex="-1" role="dialog" aria-modal="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-center">Complete And Clone Task <span id="completion-task-object"></span></h4>
+						<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<h5>Are you sure?</h5>								
+								<div class="text-center py-3">
+									<a href="#" class="border-0 btn btn-danger btn-gradient-primary btn-rounded" id="complete-clone-task">Yes</a>&nbsp;&nbsp;
+									<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div><!-- modal-content -->
+			</div><!-- modal-dialog -->
+		</div><!-- modal (Complete And Clone Task Confirmation) --> 
 
 		<!-- Modal (Update task owner) -->
 		<div class="modal right fade" id="edit_task_owner" tabindex="-1" role="dialog" aria-modal="true">
@@ -1035,7 +1080,7 @@
 									</div>									
 									<div class="text-center py-3">
 										<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
-										<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+										<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
 									</div>
 								</form>
 							</div>
@@ -1047,6 +1092,53 @@
 			</div><!-- modal-dialog -->
 		</div><!-- modal (Update task owner) --> 
 
+
+		<!-- Modal (Delete Task Confirmation) -->
+		<div class="modal fade" id="delete_task_confirmation" tabindex="-1" role="dialog" aria-modal="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-center">Deleting Task <span id="deletion-task-object"></span></h4>
+						<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<h5>Are you sure?</h5>								
+								<div class="text-center py-3">
+									<a href="#" class="border-0 btn btn-danger btn-gradient-primary btn-rounded" id="delete-task">Yes</a>&nbsp;&nbsp;
+									<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div><!-- modal-content -->
+			</div><!-- modal-dialog -->
+		</div><!-- modal (Delete Task Confirmation) --> 
+
+		<!-- Modal (Clone Task Confirmation) -->
+		<div class="modal fade" id="clone_task_confirmation" tabindex="-1" role="dialog" aria-modal="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-center">Cloning Task <span id="cloning-task-object"></span></h4>
+						<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<h5>Are you sure?</h5>								
+								<div class="text-center py-3">
+									<a href="#" class="border-0 btn btn-danger btn-gradient-primary btn-rounded" id="clone-task">Yes</a>&nbsp;&nbsp;
+									<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- modal-content -->
+			</div><!-- modal-dialog -->
+		</div><!-- modal (Clone Task Confirmation) --> 
 
 			<!--system users Modal -->
             <div class="modal right fade" id="system-user" tabindex="-1" role="dialog" aria-modal="true">
@@ -2502,29 +2594,36 @@
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
 
-		<script>
-			// Get a reference to the div
-			var timeoutDiv = document.getElementById("message-div");
-		  
-			// Set a timeout to hide the div after 5000 milliseconds (2 seconds)
-			setTimeout(function () {
-				timeoutDiv.style.display = "none"; // or use timeoutDiv.remove() to remove the div
-			}, 5000);
-		  </script>
 
+		<!-- W3 Functions -->	
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		<!-- Function to time out message div -->
+		<script src="{% static 'js/messageTimeOut.js' %}"></script>
 
-<!-- Task Details Fetching Function -->
-<script src="{% static 'js/loadTaskDetails.js' %}"></script>
+		<!-- Task Details Fetching Function -->
+		<script src="{% static 'js/task/loadTaskDetails.js' %}"></script>
 
-<!-- Insert Edit Task Form Dynamicaly -->
-<script src="{% static 'js/fetchEditTaskDetails.js' %}"></script>
+		<!-- Insert Edit Task Form Dynamicaly -->
+		<script src="{% static 'js/task/fetchEditTaskDetails.js' %}"></script>
 
-<!-- User Details Fetching Function -->
-<script src="{% static 'js/loadCrmUserDetails.js' %}"></script>
+		<!-- Completing Task detail fetching -->
+		<script src="{% static 'js/task/fetchCompletingTaskDetails.js' %}"></script>
 
-<!-- Task Owner detail fetching -->
-<script src="{% static 'js/fetchChangeTaskOwnerDetails.js' %}"></script>
+		<!-- Complete and Clone Task detail fetching -->
+		<script src="{% static 'js/task/fetchCompletingAndCloningTaskDetails.js' %}"></script>
+
+		<!-- Task Owner detail fetching -->
+		<script src="{% static 'js/task/fetchChangeTaskOwnerDetails.js' %}"></script>
+
+		<!-- Fetch Task Deletion Function -->
+		<script src="{% static 'js/task/fetchDeletingTaskDetails.js' %}"></script>
+
+		<!-- Fetch Task Cloning Function -->
+		<script src="{% static 'js/task/fetchCloningTaskDetails.js' %}"></script>
+
+		<!-- User Details Fetching Function -->
+		<script src="{% static 'js/loadCrmUserDetails.js' %}"></script>
+
     </body>
 </html>
