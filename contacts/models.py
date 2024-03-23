@@ -3,6 +3,7 @@ from organizations.models import Company
 
 class Contact(models.Model):
     # name and occupation
+    image = models.ImageField(upload_to='contact_photos/', null=True, blank=True)
     prefix = models.CharField(max_length=50, blank=False, null=False)
     first_name = models.CharField(max_length=100, blank=False, null=False)
     last_name = models.CharField(max_length=100, blank=True, null=True)    
