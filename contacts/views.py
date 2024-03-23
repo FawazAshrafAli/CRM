@@ -1,31 +1,29 @@
-from django.shortcuts import render, redirect
+from django.db.models.base import Model as Model
+from django.db.models.query import QuerySet
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .models import Contact
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
-from django.http  import Http404
+from django.http  import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from organizations.models import Company
 from django.http import JsonResponse
 from organizations.models import Company
 from deals.models import Deal
 from projects.models import Project
+from django.utils import timezone
+from django.utils.timezone import timedelta
 
 class BaseContactView(LoginRequiredMixin):
     login_url = 'authentication:login'
     model = Contact
+    template_name = 'contacts/contacts.html'
 
 
 class CreateContactView(BaseContactView, CreateView):    
     template_name = 'contacts/contacts.html'
-    fields = [
-        "prefix", "first_name", "last_name", "organization", "title", "email", "email_opted_out",
-        "phone", "home_phone", "mobile_phone", "other_phone", "assistant_phone", "assistant_name",
-        "fax", "linkedin", "facebook", "twitter", "mailing_address", "mailing_city", "mailing_state",
-        "mailing_postal_code", "mailing_country", "other_address", "other_city", "other_state",
-        "other_postal_code", "other_country", "due_date", "date_of_birth", "description", "permission",
-        "tag_list"
-    ]
+    fields = "__all__"
     success_url = reverse_lazy('contacts:list')    
 
     def form_valid(self, form):
@@ -39,19 +37,74 @@ class CreateContactView(BaseContactView, CreateView):
             for error in errors:
                 print(f"Error on {field}: {error}")
         return response
+        
 
+class CloneContactView(BaseContactView, CreateView):
+    fields = "__all__"
+    success_url = reverse_lazy('contacts:list')
 
+    def get_object(self):
+        try:
+            return get_object_or_404(Contact, pk=self.kwargs['pk'])
+        except Http404:
+            messages.error(self.request, "Invalid contact")
+            return HttpResponseRedirect(reverse('contacts:list'))          
 
+    def get(self, request, *args, **kwargs):        
+        self.object = self.get_object()
+        try:   
+            Contact.objects.create(
+                image = self.object.image,
+                prefix = self.object.prefix,
+                first_name = self.object.first_name,
+                last_name = self.object.last_name,
+                organization = self.object.organization,
+                title = self.object.title,
+                email = self.object.email,
+                email_opted_out = self.object.email_opted_out,
+                phone = self.object.phone,
+                home_phone = self.object.home_phone,
+                mobile_phone = self.object.mobile_phone,
+                other_phone = self.object.other_phone,
+                assistant_phone = self.object.assistant_phone,
+                assistant_name = self.object.assistant_name,
+                fax = self.object.fax,
+                linkedin = self.object.linkedin,
+                facebook = self.object.facebook,
+                twitter = self.object.twitter,
+                mailing_address = self.object.mailing_address,
+                mailing_city = self.object.mailing_city,
+                mailing_state = self.object.mailing_state,
+                mailing_postal_code = self.object.mailing_postal_code,
+                mailing_country = self.object.mailing_country,
+                other_address = self.object.other_address,
+                other_city = self.object.other_city,
+                other_state = self.object.other_state,
+                other_postal_code = self.object.other_postal_code,
+                other_country = self.object.other_country,
+                due_date = self.object.due_date,
+                date_of_birth = self.object.date_of_birth,
+                description = self.object.description,
+                permission = self.object.permission,
+                tag_list = self.object.tag_list,
+                permissions = self.object.permissions,
+            )
+            messages.success(self.request, "Contact Cloned Successfully.")
+            return redirect(self.get_success_url())        
+        except Exception as e:
+            messages.error(self.request, f"Failed to clone contact: {e}")
+            return redirect('contacts:list')
+        
+        
 class ListContactView(BaseContactView, ListView):
-    template_name = 'contacts/contacts.html'
-    queryset = Contact.objects.all()
-    context_object_name = "contacts"    
+    template_name = 'contacts/contacts.html'    
+    context_object_name = "contacts"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
             'organizations' : Company.objects.all(),
-            'contacts': Contact.objects.all(),
+            'related_contacts': Contact.objects.all(),
             'deals': Deal.objects.all(),
             'projects': Project.objects.all(),
         })
@@ -70,9 +123,12 @@ class DetailContactView(BaseContactView, DetailView):
         # Auto dictionary creation using field name in a model and their respective value
         for field in contact._meta.fields:
             field_name = field.name
-            if field_name not in ("organization", "created", "updated"):
+            if field_name not in ("organization", "created", "updated", "image"):
                 field_value = getattr(contact, field_name)
                 serialized_data[field_name] = field_value        
+
+        if contact.image:
+            serialized_data['image'] = contact.image.url
 
         # Compining names together to form full name
         if contact.first_name and contact.last_name:
@@ -110,22 +166,41 @@ class DetailContactView(BaseContactView, DetailView):
 
 
 class UpdateContactView(BaseContactView, UpdateView):
-    template_name = 'contacts/update_contact.html'
     fields = "__all__"
     pk_url_kwarg = 'pk'
     context_object_name = "contact"
+    success_url = reverse_lazy('contact/contacts.html')
     
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, "Contact Updated.")
-        return response
+        return response    
+    
 
-    def get_success_url(self):
-        return reverse_lazy('detail_contact', kwargs={'pk' : self.object.pk})    
+class UpdateContactImageView(BaseContactView, UpdateView):
+    fields = ["image"]
+    success_url = reverse_lazy('contacts:list')
+
+    def form_valid(self, form):
+        messages.success(self.request, "Contact image updated successfully")
+        return super().form_valid(form)
 
 
 class DeleteContactView(LoginRequiredMixin, DeleteView):
-    template_name = 'contacts/confirm_deletion.html'
+    model = Contact
     pk_url_kwarg = 'pk'
-    success_url = reverse_lazy('list_contacts')
-    context_object_name = 'contact'
+    success_url = reverse_lazy('contacts:list')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()            
+            return redirect(self.get_success_url())
+        except Exception as e:
+            messages.error(self.request, f"Failed to delete contact due to {e}")
+            return HttpResponseRedirect(reverse('contact:list'))
+        
+
+    def form_valid(self, form):
+        messages.success(self.request, "Contact Deleted Successfully.")
+        return super().form_valid(form)
