@@ -568,6 +568,16 @@
 			                  <i class="feather-smartphone"></i>
 			                </span> Contacts </h3>
                 		</div>
+						<div id="message-div">
+							{% if messages %}
+								<ul class="messages">
+									{% for message in messages %}
+									<li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
+									{% endfor %}
+								</ul>
+							{% endif %}
+						</div>
+
                 		<div class="col text-end">
                 			<ul class="breadcrumb bg-white float-end m-0 ps-0 pe-0">
 								<li class="breadcrumb-item"><a href="{% url 'dashboard:deals_dashboard' %}">Dashboard</a></li>
@@ -648,7 +658,7 @@
 														</label>
 													</td>
 													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-11.jpg' %}"></a>
+														<a href="#" class="avatar"><img alt="" {% if contact.image %} src="{{contact.image.url}}" {% else %} src="{% static 'assets/img/profiles/avatar-11.jpg' %}" {% endif %}></a>
 														<a href="#" data-bs-toggle="modal" data-bs-target="#system-user" data-contact-id={{contact.pk}} onclick="loadContactDetails({{ contact.pk }}); return false;">{{contact.first_name}} {{contact.last_name}}</a>
 													</td>
 													<td>{{contact.title}}</td>
@@ -663,9 +673,9 @@
 															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 															<div class="dropdown-menu dropdown-menu-right">
 																<a class="dropdown-item" href="#">Edit This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Contact Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Contact</a>
-								                                <a class="dropdown-item" href="#">Clone This Contact</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_contact_image" data-contact-id="{{contact.pk}}" onclick="updateContactImage({{contact.pk}}); return false;">Change Contact Image</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-contact-confirmation" data-contact-id="{{contact.pk}}" onclick="deleteContact({{contact.pk}}); return false;">Delete This Contact</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone_task_confirmation" data-contact-id="{{contact.pk}}" onclick="cloneContact({{contact.pk}}); return false;" >Clone This Contact</a>
 								                                <a class="dropdown-item" href="#">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
 								                                <a class="dropdown-item" href="#">Change Contact To Lead</a>
@@ -960,6 +970,97 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal -->
+
+			<!-- Modal (Delete Contact) -->
+			<div class="modal fade" id="delete-contact-confirmation" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<button type="button" class="close md-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Delete Contact '<span id="deleting-contact"></span>'</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+						</div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="delete-contact-form" action=#>
+										{% csrf_token %}						            	
+						            	<h5>Are you sure?</h5>								
+										<div class="text-center py-3">
+											<button type="submit" class="border-0 btn btn-danger btn-gradient-primary btn-rounded">Yes</button>&nbsp;&nbsp;
+											<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+										</div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Delete Contact)-->
+
+			<!-- Modal (Change Contact Image) -->
+			<div class="modal fade" id="change_contact_image" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<button type="button" class="close md-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Change Contact Image</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="contact-image-updation-form" enctype="multipart/form-data">
+										{% csrf_token %}						            	
+						            	<div class="form-group row">
+				                            <div class="col-md-12"><label class="col-form-label">Contact Image </label></div>
+				                            <div class="col-md-12">
+				                                <input class="form-control" type="file" placeholder="Image" id="contact-image-input" name="image" required>
+												<a href='#' id="current-contact-image"></a>											
+				                            </div>				                            
+				                        </div>						                
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Change Contact Image)-->
+
+			<!-- Modal (Clone Contact Confirmation) -->
+			<div class="modal fade" id="clone_task_confirmation" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title text-center">Cloning Contact '<span id="cloning-contact-object"></span>'</h4>
+							<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-12">
+									<h5>Are you sure?</h5>								
+									<div class="text-center py-3">
+										<a href="#" class="border-0 btn btn-danger btn-gradient-primary btn-rounded" id="clone-contact">Yes</a>&nbsp;&nbsp;
+										<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Clone Contact Confirmation) --> 
 
 			<!--system users Modal -->
             <div class="modal right fade" id="system-user" tabindex="-1" role="dialog" aria-modal="true">
@@ -1280,7 +1381,7 @@
 		                                <div class="card-body">
 		                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 		                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-		                                  <span>{{contacts|length}}</span>
+		                                  <span>{{related_contacts|length}}</span>
 		                                </div>
 		                              </div>
 		                            </div>
@@ -1450,7 +1551,7 @@
 																</tr>
 															</thead>
 															<tbody>
-																{% for contact in contacts %}
+																{% for contact in related_contacts %}
 																<tr>
 																	
 																	<td>
@@ -2026,7 +2127,7 @@
 	                                <div class="card-body">
 	                                  <img src="{% static 'assets/img/circle.png' %}" class="card-img-absolute" alt="circle-image">
 	                                  <h4 class="font-weight-normal mb-3">Contacts</h4>
-	                                  <span>{{contacts|length}}</span>
+	                                  <span>{{related_contacts|length}}</span>
 	                                </div>
 	                              </div>
 	                            </div>
@@ -2387,11 +2488,21 @@
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
 
+		<!-- W3 functions -->
+		<!-- Message TimeOut Function -->
+		<script src="{% static 'js/messageTimeOut.js' %}"></script>
+
 		<!-- Contact Detail Funciton -->
 		<script src="{% static 'js/loadContactDetails.js' %}"></script>
 
-		<!-- Message TimeOut Function -->
-		<script src="{% static 'js/messageTimeOut.js' %}"></script>
+		<!-- Change Contact Image Function -->
+		<script src="{% static 'js/contacts/updateContactImage.js' %}"></script>
+
+		<!-- Delete Contact Function -->
+		<script src="{% static 'js/contacts/deleteContact.js' %}"></script>
+
+		<!-- Clone Contact Function -->
+		<script src="{% static 'js/contacts/cloneContact.js' %}"></script>
 
     </body>
 </html>
