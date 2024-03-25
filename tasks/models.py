@@ -20,10 +20,8 @@ class Task(models.Model):
 
     # description information
     description = models.TextField(blank=True, null=True)
-
-    # Permissions
-    permission = models.CharField(max_length=150, blank=False, null=False)
-      
+    
+    # Task Owner
     task_owner = models.CharField(max_length=150, blank=True, null=True)
 
     #  Creation and Updation Details
