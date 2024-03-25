@@ -672,13 +672,13 @@
 														<div class="dropdown dropdown-action">
 															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Contact</a>
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_contact" data-contact-id='{{contact.pk}}' onclick="editContact({{contact.pk}}); return false;">Edit This Contact</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_contact_image" data-contact-id="{{contact.pk}}" onclick="updateContactImage({{contact.pk}}); return false;">Change Contact Image</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-contact-confirmation" data-contact-id="{{contact.pk}}" onclick="deleteContact({{contact.pk}}); return false;">Delete This Contact</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone_task_confirmation" data-contact-id="{{contact.pk}}" onclick="cloneContact({{contact.pk}}); return false;" >Clone This Contact</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_contact_owner" data-contact-id="{{contact.pk}}" onclick="changeContactOwner({{contact.pk}}); return false;">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Contact To Lead</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#lead_convertion" data-contact-id="{{contact.pk}}" onclick="contactToLead({{contact.pk}}); return false;">Change Contact To Lead</a>
 								                                <a class="dropdown-item" href="#">Print This Contact</a>
 								                                <a class="dropdown-item" href="#">Email This Contact</a>
 								                                <a class="dropdown-item" href="#">Add New Task For Contact</a>
@@ -945,18 +945,7 @@
 												<label class="col-form-label">Tag List</label>
                             					<input type="text" class="form-control" name="tag_list" placeholder="Tag List">
 											</div>
-										</div>
-										<h4>Permissions</h4>
-										<div class="form-group row">
-											<div class="col-sm-6">
-												<label class="col-form-label">Permission</label>
-					                        	<select class="form-control" name="task_visibility">
-					                                <option>Task Visibility</option>
-					                                <option>Private Task</option>
-					                         	</select>
-											</div>
-											
-										</div>
+										</div>										
 						                <div class="text-center py-3">
 						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
 						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
@@ -970,6 +959,250 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal -->
+
+			<!-- Modal (Update Contact) -->
+			<div class="modal right fade" id="edit_contact" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title text-center">Edit Contact</h4>
+							<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+							</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-12">
+									<form method="POST" id="edit-contact-form">
+										{% csrf_token %}
+						            	<h4>Name & Occupation</h4>
+						            	<div class="form-group row">
+				                            <div class="col-md-12"><label class="col-form-label">Name <span class="text-danger">*</span></label></div>
+				                            <div class="col-md-4">
+				                                <input class="form-control" type="text" placeholder="Prefix" name="prefix" id="prefix-value" required>
+				                            </div>
+				                            <div class="col-md-4">
+				                                <input class="form-control" type="text" placeholder="First name" name="first_name" id="first-name-value" required>
+				                            </div>
+				                            <div class="col-md-4">
+				                                <input class="form-control" type="text" placeholder="Last name" name="last_name" id="last-name-value">
+				                            </div>
+				                        </div>
+						                <div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Organization</label>
+					                            <select class="form-control" name="organization" id='organization-value' required>
+					                                <option hidden>-- Select --</option>
+													{% for organization in organizations %}
+													<option value="{{organization.pk}}">{{organization.name}}</option>
+													{% endfor %}
+					                            </select>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Title</label>
+                            					<input type="text" class="form-control"  name="title" id="title-value" placeholder="Title" required>
+											</div>
+										</div>
+										<h4>Contact Details</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Email</label>
+                            					<input type="email" class="form-control"  name="email" id="email-value" placeholder="Email" required>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Email Opted out</label>
+					                            <div >
+					                            <label class="container-checkbox">
+												  	<input type="checkbox" name="email_opted_out" id="email-opted-out-value">
+												  	<span class="checkmark"></span>
+												</label>
+					                            </div>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Phone</label>
+                            					<input type="text" class="form-control" name="phone" id="phone-value" placeholder="Phone">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Home Phone</label>
+                            					<input type="text" class="form-control"  name="home_phone" id="home-phone-value" placeholder="Home Phone">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Mobile Phone</label>
+                            					<input type="text" class="form-control" name="mobile_phone" id="mobile-phone-value" placeholder="Mobile Phone" required>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Other Phone</label>
+                            					<input type="text" class="form-control" id="o-phone" name="other_phone" id="other-phone-value" placeholder="Other Phone">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Assistant Phone</label>
+                            					<input type="text" class="form-control" name="assistant_phone" id="assistant-phone-value" placeholder="Assistant Phone">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Assistant Name</label>
+                            					<input type="text" class="form-control"  name="assistant_name" id="assistant-name-value" placeholder="Assistant Name">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Fax</label>
+                            					<input type="text" class="form-control" name="fax" id="fax-value" placeholder="Fax">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Linkedin</label>
+                            					<input type="text" class="form-control"  name="linkedin" id="linkedin-value" placeholder="linkedin">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Facebook</label>
+                            					<input type="text" class="form-control"  name="facebook" id="facebook-value" placeholder="Facebook">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Twitter</label>
+                            					<input type="text" class="form-control"  name="twitter" id="twitter-value" placeholder="Twitter">
+											</div>
+										</div>
+										<h4>Address Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Mailing Address</label>
+                            					<textarea class="form-control" rows="3" name="mailing_address" id="mailing-address-value" placeholder="Mailing Address" required></textarea>
+											</div>
+											<div class="col-sm-6 mt-3">
+												<label class="col-form-label"></label><br>
+                            					<input type="text" class="form-control" placeholder="Mailing City" name="mailing_city" id="mailing-city-value" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Mailing State" name="mailing_state" id="mailing-state-value" required>
+											</div>
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Mailing Postal code" name="mailing_postal_code" id="mailing-postal-code-value" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Mailing Country</label>
+					                            <select class="form-control" name="mailing_country" id="mailing-country-value" required>
+					                                <option hidden>-- Select --</option>
+													
+													<option value="Argentina">Argentina</option>
+													<option value="Brazil">Brazil</option>
+													<option value="Canada">Canada</option>
+													<option value="Denmark">Denmark</option>
+													<option value="El Salvarado">El Salvarado</option>
+													<option value="Finland">Finland</option>
+													<option value="Germany">Germany</option>
+													<option value="Hungary">Hungary</option>
+													<option value="India">India</option>
+													<option value="Japan">Japan</option>
+													<option value="Kenya">Kenya</option>
+													<option value="Lebanon">Lebanon</option>
+													<option value="Mexico">Mexico</option>
+													<option value="Netherlands">Netherlands</option>
+													<option value="Oman">Oman</option>
+													<option value="Philippines">Philippines</option>
+													<option value="Qatar">Qatar</option>
+													<option value="Russia">Russia</option>
+													<option value="Sweden">Sweden</option>
+													<option value="Tibet">Tibet</option>
+					                                <option value="US">US</option>
+													<option value="Veitnam">Veitnam</option>
+													<option value="Wales">Wales</option>				                        
+													<option value="Zimbabwe">Zimbabwe</option>
+					                            </select>
+											</div>
+											<div class="col-sm-6 mt-3">
+												<label class="col-form-label">Other Address</label>
+                            					<textarea class="form-control" rows="3" name="other_address" id="other-address-value" placeholder="Other Address"></textarea>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Other City" name="other_city" id="other-city-value">
+											</div>
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Other State" name="other_state" id="other-state-value">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control"  placeholder="Other Postal code" name="other_postal_code" id="other-postal-code-value">
+											</div>
+											<div class="col-sm-6">
+												<select class="form-control" name="other_country" id="other-country-value">
+					                                <option hidden>-- Select --</option>
+													
+													<option value="Argentina">Argentina</option>
+													<option value="Brazil">Brazil</option>
+													<option value="Canada">Canada</option>
+													<option value="Denmark">Denmark</option>
+													<option value="El Salvarado">El Salvarado</option>
+													<option value="Finland">Finland</option>
+													<option value="Germany">Germany</option>
+													<option value="Hungary">Hungary</option>
+													<option value="India">India</option>
+													<option value="Japan">Japan</option>
+													<option value="Kenya">Kenya</option>
+													<option value="Lebanon">Lebanon</option>
+													<option value="Mexico">Mexico</option>
+													<option value="Netherlands">Netherlands</option>
+													<option value="Oman">Oman</option>
+													<option value="Philippines">Philippines</option>
+													<option value="Qatar">Qatar</option>
+													<option value="Russia">Russia</option>
+													<option value="Sweden">Sweden</option>
+													<option value="Tibet">Tibet</option>
+					                                <option value="US">US</option>
+													<option value="Veitnam">Veitnam</option>
+													<option value="Wales">Wales</option>				                        
+													<option value="Zimbabwe">Zimbabwe</option>
+					                            </select>
+											</div>
+										</div>
+										<h4>Dates To Remember</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Due Date <span class="text-danger">*</span></label>
+				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="due_date" id="due-date-value" placeholder="MM/DD/YY"></div>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Date of Birth <span class="text-danger">*</span></label>
+				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_birth" id="date-of-birth-value" placeholder="MM/DD/YY"></div>
+											</div>
+										</div>
+										
+										<h4>Description Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Description </label>
+				                            	<textarea class="form-control" rows="3" id="description-value" placeholder="Description"></textarea>
+											</div>
+										</div>
+										<h4>Tag Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Tag List</label>
+                            					<input type="text" class="form-control" name="tag_list" id="tag-list-value" placeholder="Tag List">
+											</div>
+										</div>									
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                </div>
+						            </form>
+								</div>
+							</div>
+						</div>
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Update Contact) --> 
 
 			<!-- Modal (Delete Contact) -->
 			<div class="modal fade" id="delete-contact-confirmation" tabindex="-1" role="dialog" aria-modal="true">
@@ -1027,7 +1260,7 @@
 				                        </div>						                
 						                <div class="text-center py-3">
 						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
-						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
 						                </div>
 						            </form>
 						        </div>
@@ -1061,6 +1294,79 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Clone Contact Confirmation) --> 
+
+			<!-- Modal (Change Record Owner) -->
+			<div class="modal fade" id="change_contact_owner" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<button type="button" class="close md-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Change Record Owner</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="contact-owner-updation-form" enctype="multipart/form-data">
+										{% csrf_token %}						            	
+						            	<div class="form-group row">
+				                            <div class="col-md-12"><label class="col-form-label">Contact Record Owner</label></div>
+				                            <div class="col-md-12">
+				                                <select class="form-control" name="record_owner" id="contact-owner-value" required>
+													<option hidden>-- Select --</option>
+													{% for user in users %}
+													<option value={{user.pk}}>{{user.name}}</option>
+													{% endfor %}					                                
+					                            </select>
+				                            </div>				                            
+				                        </div>						                
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Change Record Owner)-->
+
+			<!-- Modal (Contact to Lead Convertion) -->
+			<div class="modal fade" id="lead_convertion" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<button type="button" class="close md-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Contact To Lead Convertion '<span id="converting-contact"></span>'</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+						</div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="lead-convertion-form" action=#>
+										{% csrf_token %}						            	
+						            	<h5>Are you sure?</h5>								
+										<div class="text-center py-3">
+											<button type="submit" class="border-0 btn btn-danger btn-gradient-primary btn-rounded">Yes</button>&nbsp;&nbsp;
+											<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+										</div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Contact to Lead Convertion)-->
+
 
 			<!--system users Modal -->
             <div class="modal right fade" id="system-user" tabindex="-1" role="dialog" aria-modal="true">
@@ -1290,19 +1596,19 @@
 			                                <tbody>
 				                                  <tr>
 				                                    <td class="border-0">Date of Next Activity</td>
-				                                    <td class="border-0">04/08/2000</td>
+				                                    <td class="border-0"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Date of Last Activity</td>
-				                                    <td class="contact-updated">04/05/2010</td>
+				                                    <td class="contact-updated"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Contact Owner</td>
-				                                    <td>John Doe</td>
+				                                    <td class="contact-owner"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Contact Created</td>
-				                                    <td class="contact-created">Jun 20, 2020</td>
+				                                    <td class="contact-created"></td>
 				                                  </tr>
 			                                  
 			                                	</tbody>
@@ -2493,10 +2799,19 @@
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>
 
 		<!-- Contact Detail Funciton -->
-		<script src="{% static 'js/loadContactDetails.js' %}"></script>
+		<script src="{% static 'js/contacts/loadContactDetails.js' %}"></script>
+
+		<!-- Edit Contact Function -->
+		<script src="{% static 'js/contacts/editContact.js' %}"></script>
 
 		<!-- Change Contact Image Function -->
 		<script src="{% static 'js/contacts/updateContactImage.js' %}"></script>
+
+		<!-- Change Contact Record Owner Function -->
+		<script src="{% static 'js/contacts/changeContactOwner.js' %}"></script>
+
+		<!-- Convert Contact To Lead Function -->
+		<script src="{% static 'js/contacts/contactToLead.js' %}"></script>
 
 		<!-- Delete Contact Function -->
 		<script src="{% static 'js/contacts/deleteContact.js' %}"></script>
