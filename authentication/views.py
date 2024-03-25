@@ -111,3 +111,11 @@ class CrmUserDetailView(BaseCrmUserView, DetailView):
             })
 
         return JsonResponse(serialized_data)
+
+
+class Error404(TemplateView):
+    template_name = "error_pages/error-404.html"
+
+
+class Error500(TemplateView):
+    template_name = "error_pages/error-500.html"
