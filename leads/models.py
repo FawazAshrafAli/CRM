@@ -1,6 +1,8 @@
 from django.db import models
 from organizations.models import Company
 from authentication.models import CrmUser
+from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 class Lead(models.Model):
     # Lead Information
@@ -10,7 +12,7 @@ class Lead(models.Model):
     organization = models.ForeignKey(Company, on_delete=models.PROTECT)
     title = models.CharField(max_length=150, blank=False, null=False)
     lead_status = models.CharField(max_length=150, blank=False, null=False, default = 'OPEN - Not Contacted')
-    user_responsible = models.ForeignKey(CrmUser, on_delete=models.PROTECT, related_name="user_responsible")
+    user_responsible = models.ForeignKey(CrmUser, on_delete=models.PROTECT, blank=True, null=True, related_name="user_responsible")
     lead_rating = models.IntegerField(blank=True, null=True)
 
     # managing
@@ -46,3 +48,14 @@ class Lead(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+
+    def save(self, *args, **kwargs):
+        organization = self.organization
+        email = self.email
+        phone = self.phone
+
+        try:
+            get_object_or_404(Lead, organization = organization, email = email, phone = phone)
+            pass
+        except Http404:
+            super().save(*args, **kwargs)
