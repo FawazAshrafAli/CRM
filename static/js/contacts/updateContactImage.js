@@ -6,14 +6,14 @@ contactImageInput.addEventListener( 'change', function () {
     document.getElementById('current-contact-image').setAttribute('href', imageUrl);
 });
 
-function updateContactImage(contactId) {
+function updateContactImage(contactId) {    
     $.ajax({
         type: 'GET',
         url: '/contacts/detail/' + contactId,
         dataType: 'json',
         success: function (contact) {
             $('#contact-image-updation-form').prop('action', '/contacts/update_image/' + contactId)
-            if (contact.image != null && contact.image != "") {
+            if (contact.image != null && contact.image != "") {                
                 $('#current-contact-image').html(contact.image);
                 $('#current-contact-image').prop('href', contact.image).prop('target', "_blank");
             } else {
@@ -23,6 +23,6 @@ function updateContactImage(contactId) {
         },
         error: function (error) {
             console.log(error);
-        };
+        }
     });
 };

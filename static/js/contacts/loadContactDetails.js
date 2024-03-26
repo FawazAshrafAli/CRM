@@ -224,6 +224,14 @@ function loadContactDetails(contactId) {
                     $(this).html("None");
                 };
             });
+
+            $('.contact-owner').each(function() {
+                if (contact.record_owner_name != null && contact.record_owner_name != ""){							
+                    $(this).html(contact.record_owner_name);
+                } else {
+                    $(this).html("None");
+                };
+            });
         },
         error: function(error) {
             console.log('Error:', error);
