@@ -1,11 +1,12 @@
-from django.shortcuts import render
-from django.views.generic import  CreateView, ListView, DetailView, UpdateView, DeleteView
-from  .models import Company
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import  CreateView, ListView, DetailView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from django.db.models import ProtectedError
 
+from  .models import Company
 from contacts.models import Contact
 from projects.models import Project
 from deals.models import Deal
@@ -126,9 +127,18 @@ class ChangeOrganizationImageView(BaseOrganizationView, UpdateView):
         return response
 
 
-class DeleteOrganizationView(BaseOrganizationView, DeleteView):    
-    template_name = "organizations/confirm_deletion.html"
+class DeleteOrganizationView(BaseOrganizationView, View):    
+    model = Company
     pk_url_kwarg = 'pk'
-    success_url = reverse_lazy('organizations:list')
     context_object_name = 'organization'
+    success_url = reverse_lazy('organizations:list')
 
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = get_object_or_404(Company, pk = self.kwargs['pk'])
+            self.object.delete()        
+            messages.success(self.request, "Organization deletion successfull.")
+            return redirect(self.success_url)
+        except ProtectedError:
+            messages.error(self.request, "Cannot delete this item because it is referenced by other objects.")
+            return redirect(reverse_lazy('organizations:list'))
