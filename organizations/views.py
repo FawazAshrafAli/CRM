@@ -14,7 +14,8 @@ from deals.models import Deal
 
 class BaseOrganizationView(LoginRequiredMixin):
     model = Company
-    login_url = 'authentication:login'
+    template_name = "organizations/companies.html"
+    login_url = 'authentication:login'    
 
 
 class CreateOrganizationView(BaseOrganizationView, CreateView):    
@@ -73,36 +74,43 @@ class DetailOrganizationView(BaseOrganizationView, DetailView):
             "facebook" : organization.facebook,
             "twitter" : organization.twitter,
             "email_domains" : organization.email_domains,
-            "billing_address" : f"{organization.billing_address}, {organization.billing_city}, {organization.billing_state}, {organization.billing_postal_code}, {organization.billing_country}.",                                
+            "billing_address" : organization.billing_address,
+            "billing_city" : organization.billing_city,
+            "billing_state" : organization.billing_state,
+            "billing_postal_code" : organization.billing_postal_code,
+            "billing_country" : organization.billing_country,
+            "shipping_address" : organization.shipping_address,
+            "shipping_city" : organization.shipping_city,
+            "shipping_state" : organization.shipping_state,
+            "shipping_postal_code" : organization.shipping_postal_code,
+            "shipping_country" : organization.shipping_country,
+            "date_to_remember" : organization.date_to_remember,
             "description" : organization.description,
             "tag_list" : organization.tag_list,
             "permission" : organization.permission,
             "created": organization.created.strftime("%d/%m/%Y"),
             "updated": organization.updated.strftime("%d/%m/%Y")
         }
-        if organization.date_to_remember:
-            date_to_remember = organization.date_to_remember.strftime("%d/%m/%Y")
-            serialized_data["date_to_remember"] = date_to_remember
+        if organization.billing_address and organization.billing_city and organization.billing_state and organization.billing_postal_code and organization.billing_country:
+            full_billing_address = f"{organization.billing_address}, {organization.billing_city}, {organization.billing_state}, {organization.billing_postal_code}, {organization.billing_country}."
+            serialized_data["full_billing_address"] = full_billing_address        
 
         if organization.shipping_address and organization.shipping_city and organization.shipping_state and organization.shipping_postal_code and organization.shipping_country :            
-            shipping_address = f"{organization.shipping_address}, {organization.shipping_city}, {organization.shipping_state}, {organization.shipping_postal_code}, {organization.shipping_country}."
-            serialized_data["shipping_address"] = shipping_address
+            full_shipping_address = f"{organization.shipping_address}, {organization.shipping_city}, {organization.shipping_state}, {organization.shipping_postal_code}, {organization.shipping_country}."
+            serialized_data["full_shipping_address"] = full_shipping_address
 
         return JsonResponse(serialized_data)
 
 class UpdateOrganizationView(BaseOrganizationView, UpdateView):    
-    template_name = "organizations/companies.html"
     fields="__all__"
     pk_url_kwarg = 'pk'
     context_object_name = "organization"
+    success_url = reverse_lazy('organizations:list')
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        # messages.success(self.request, "Company Updated.")
+        messages.success(self.request, "Company Updated.")
         return response
-
-    def get_success_url(self):
-        return reverse_lazy('organizations:detail', kwargs={'pk' : self.object.pk})    
 
 
 class DeleteOrganizationView(BaseOrganizationView, DeleteView):    
