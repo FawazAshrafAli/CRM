@@ -94,8 +94,8 @@ function loadOrganizationDetails(organizationId) {
             });
 
             $('.organization-billing-address').each(function() {
-                if (organization.billing_address != null && organization.billing_address != ""){
-                    $(this).html(organization.billing_address);
+                if (organization.full_billing_address != null && organization.full_billing_address != ""){
+                    $(this).html(organization.full_billing_address);
                 } else {
                     $(this).html("None");
                 }
@@ -126,8 +126,8 @@ function loadOrganizationDetails(organizationId) {
             });
 
             $('.organization-shipping-address').each(function() {
-                if (organization.shipping_address != null && organization.shipping_address != ""){
-                    $(this).html(organization.shipping_address);
+                if (organization.full_shipping_address != null && organization.full_shipping_address != ""){
+                    $(this).html(organization.full_shipping_address);
                 } else {
                     $(this).html("None");
                 }
