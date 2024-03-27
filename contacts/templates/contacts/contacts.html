@@ -595,9 +595,9 @@
 									<div class="dropdown-menu">
 										<a class="dropdown-item" href="#">Recently Viewed</a>
                         				<a class="dropdown-item" href="#">Items I'm following</a>
-                        				<a class="dropdown-item" href="#">All Contacts</a>
-                       					<a class="dropdown-item" href="#">Contacts added in the last 24 hours</a>
-                        				<a class="dropdown-item" href="#">Contacts added in the last 7 days</a>
+                        				<a class="dropdown-item" href="{% url 'contacts:list' %}">All Contacts</a>
+                       					<a class="dropdown-item" href="{% url 'contacts:list_24_hours' %}">Contacts added in the last 24 hours</a>
+                        				<a class="dropdown-item" href="{% url 'contacts:list_7_days' %}">Contacts added in the last 7 days</a>
                         				<a class="dropdown-item" href="#">Contacts with no notes in the last month</a>
                         				<a class="dropdown-item" href="#">Contacts with no notes in the last 7 days</a>
 									</div>
@@ -648,7 +648,7 @@
 													<th class="text-end">Actions</th>
 												</tr>
 											</thead>
-											<tbody>
+											<tbody id="contact-list-container">
 												{% for contact in contacts %}
 												<tr>
 													<td class="checkBox">
@@ -680,7 +680,7 @@
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#lead_convertion" data-contact-id="{{contact.pk}}" onclick="contactToLead({{contact.pk}}); return false;">Change Contact To Lead</a>
 								                                <a class="dropdown-item" href="#">Print This Contact</a>
-								                                <a class="dropdown-item" href="#">Email This Contact</a>
+								                                <a class="dropdown-item" href="mailto:{{contact.email}}">Email This Contact</a>
 								                                <a class="dropdown-item" href="#">Add New Task For Contact</a>
 								                                <a class="dropdown-item" href="#">Add New Event For Contact</a>
 								                                <a class="dropdown-item" href="#">Add Activity Set To Contact</a>
