@@ -590,12 +590,12 @@
 									<a class="dropdown-toggle recently-viewed" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> All Tasks </a>
 									<div class="dropdown-menu">
 										<a class="dropdown-item" href="#">Items I'm following</a>
-			                        	<a class="dropdown-item" href="#">All Completed Tasks</a>
+			                        	<a class="dropdown-item" href="{% url 'tasks:list_completed' %}">All Completed Tasks</a>
 			                        	<a class="dropdown-item" href="#">My Delegated Tasks</a>
 			                        	<a class="dropdown-item" href="#">My Completed Tasks</a>
 			                        	<a class="dropdown-item" href="#">My Open Tasks</a>
 			                        	<a class="dropdown-item" href="#">My Tasks</a>
-			                        	<a class="dropdown-item" href="#">All Tasks</a>
+			                        	<a class="dropdown-item" href="{% url 'tasks:list' %}">All Tasks</a>
 									</div>
 								</div>
 							</div>
@@ -679,12 +679,12 @@
 													<div class="dropdown dropdown-action">
 														<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 														<div class="dropdown-menu dropdown-menu-right">
-															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task"  data-task-id={{task.id}} onclick="fetchEditTaskDetails({{task.pk}}); return false">Edit this task</a>
-							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#complete_task_confirmation" data-task-id={{task.id}} onclick="fetchCompletingTaskDetails({{task.pk}}); return false;">Complete This Task</a>
-							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#complete_and_clone_task_confirmation" data-task-id={{task.id}} onclick="fetchCompletingAndCloningTaskDetails({{task.pk}}); return false;">Complete Task &amp; Clone</a>
-							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task_owner" data-task-id={{task.id}} onclick="fetchChangeTaskOwnerDetails({{task.pk}}); return false;">Change Record Owner</a>
-							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_task_confirmation" data-task-id="{{task.id}}" onclick="fetchDeletingTaskDetails({{task.id}}); return false;">Delete This Tasks</a>
-							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone_task_confirmation" data-task-id="{{task.id}}" onclick="fetchCloningTaskDetails({{task.id}}); return false;">Clone This Tasks</a>
+															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task"  data-task-id={{task.id}} onclick="editTask({{task.pk}}); return false">Edit this task</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#complete_task_confirmation" data-task-id={{task.id}} onclick="completeTask({{task.pk}}); return false;">Complete This Task</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#complete_and_clone_task_confirmation" data-task-id={{task.id}} onclick="completeAndCloneTask({{task.pk}}); return false;">Complete Task &amp; Clone</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task_owner" data-task-id={{task.id}} onclick="changeTaskOwner({{task.pk}}); return false;">Change Record Owner</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_task_confirmation" data-task-id="{{task.id}}" onclick="deleteTask({{task.id}}); return false;">Delete This Tasks</a>
+							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone_task_confirmation" data-task-id="{{task.id}}" onclick="cloneTask({{task.id}}); return false;">Clone This Tasks</a>
 							                                <a class="dropdown-item" href="#">Print This Tasks</a>
 														</div>
 													</div>
@@ -2605,22 +2605,22 @@
 		<script src="{% static 'js/task/loadTaskDetails.js' %}"></script>
 
 		<!-- Insert Edit Task Form Dynamicaly -->
-		<script src="{% static 'js/task/fetchEditTaskDetails.js' %}"></script>
+		<script src="{% static 'js/task/editTask.js' %}"></script>
 
 		<!-- Completing Task detail fetching -->
-		<script src="{% static 'js/task/fetchCompletingTaskDetails.js' %}"></script>
+		<script src="{% static 'js/task/completeTask.js' %}"></script>
 
 		<!-- Complete and Clone Task detail fetching -->
-		<script src="{% static 'js/task/fetchCompletingAndCloningTaskDetails.js' %}"></script>
+		<script src="{% static 'js/task/completeAndCloneTask.js' %}"></script>
 
 		<!-- Task Owner detail fetching -->
-		<script src="{% static 'js/task/fetchChangeTaskOwnerDetails.js' %}"></script>
+		<script src="{% static 'js/task/changeTaskOwner.js' %}"></script>
 
 		<!-- Fetch Task Deletion Function -->
-		<script src="{% static 'js/task/fetchDeletingTaskDetails.js' %}"></script>
+		<script src="{% static 'js/task/deleteTask.js' %}"></script>
 
 		<!-- Fetch Task Cloning Function -->
-		<script src="{% static 'js/task/fetchCloningTaskDetails.js' %}"></script>
+		<script src="{% static 'js/task/cloneTask.js' %}"></script>
 
 		<!-- User Details Fetching Function -->
 		<script src="{% static 'js/loadCrmUserDetails.js' %}"></script>
