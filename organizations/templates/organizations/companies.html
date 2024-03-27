@@ -673,7 +673,7 @@
 															<div class="dropdown-menu dropdown-menu-right">
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit-organization-modal" data-organization-id="{{organization.pk}}" onclick="editOrganization({{organization.pk}}); return false;">Edit This Company</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change-organization-image-modal" data-organization-id="{{organization.pk}}" onclick="changeOrganizationImage({{organization.pk}}); return false;">Change Organization Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Organization</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-organization-modal" data-organization-id="{{organization.pk}}" onclick="deleteOrganization({{organization.pk}}); return false;">Delete This Organization</a>
 								                                <a class="dropdown-item" href="#">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
 								                                <a class="dropdown-item" href="#">Print This Organization</a>
@@ -1161,6 +1161,37 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Edit Organization) -->
+
+			<!-- Modal (Delete Organization) -->
+			<div class="modal fade" id="delete-organization-modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<button type="button" class="close md-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Deleting Company '<span id="deleting-organization"></span>'</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="GET" enctype="multipart/form-data" id="delete-organization-form">
+										{% csrf_token %}
+						            	<h4>Are you sure?</h4>						            	
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Yes</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Delete Organization) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="company-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -2141,6 +2172,9 @@
 
 		<!-- Change Organization Image Function -->
 		<script src="{% static 'js/organizations/changeOrganizationImage.js' %}"></script>
+
+		<!-- Delete Organization Function -->
+		<script src="{% static 'js/organizations/deleteOrganization.js' %}"></script>
 
     </body>
 </html>
