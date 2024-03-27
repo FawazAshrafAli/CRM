@@ -1,4 +1,4 @@
-function fetchCompletingTaskDetails(taskId) {
+function completeTask(taskId) {
     $.ajax({
         type: 'GET',
         url: '/tasks/detail/' + taskId,

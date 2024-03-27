@@ -1,4 +1,4 @@
-function fetchChangeTaskOwnerDetails(taskId){
+function changeTaskOwner(taskId){
     $.ajax({
         type: 'GET',
         url: '/tasks/detail/' + taskId,

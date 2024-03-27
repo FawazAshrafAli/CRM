@@ -1,19 +1,19 @@
-function fetchDeletingTaskDetails(taskId) {
+function cloneTask(taskId) {
     $.ajax({
         type: 'GET',
         url: '/tasks/detail/' + taskId,
         dataType: 'json',
         success: function (task) {
             if (task.id != null && task.id != '') {
-                $('#delete-task').prop('href', '/tasks/delete/' + task.id);                
+                $('#clone-task').prop('href', '/tasks/clone/' + task.id);                
             } else {
-                $('#delete-task').prop('href', '#');
+                $('#clone-task').prop('href', '#');
             };
 
             if (task.name != null && task.name != '') {
-                $('#deletion-task-object').html("'" + task.name + "'");
+                $('#cloning-task-object').html("'" + task.name + "'");
             } else {
-                $('#deletion-task-object').html('');
+                $('#cloning-task-object').html('');
             };
         },
         error: function (error) {

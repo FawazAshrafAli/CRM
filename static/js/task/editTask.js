@@ -1,4 +1,4 @@
-function fetchEditTaskDetails(taskId) {
+function editTask(taskId) {
     $.ajax({
         type: 'GET',
         url: '/tasks/detail/' + taskId,
