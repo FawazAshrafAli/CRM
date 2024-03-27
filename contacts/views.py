@@ -1,19 +1,20 @@
-from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from .models import Contact
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.http  import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from django.utils import timezone
+from django.utils.timezone import timedelta
+from django.contrib.auth.models import User
 
-from organizations.models import Company
-from deals.models import Deal
-from projects.models import Project
 from authentication.models import CrmUser
+from organizations.models import Company
+from projects.models import Project
+from deals.models import Deal
 from leads.models import Lead
+from .models import Contact
 
 
 class BaseContactView(LoginRequiredMixin):
@@ -38,7 +39,7 @@ class CreateContactView(BaseContactView, CreateView):
             for error in errors:
                 print(f"Error on {field}: {error}")
         return response
-        
+
 
 class CloneContactView(BaseContactView, CreateView):
     fields = "__all__"
@@ -112,7 +113,15 @@ class ListContactView(BaseContactView, ListView):
             'users': CrmUser.objects.all()
         })
         return context
+    
 
+class ListLastDayContactView(ListContactView):    
+    queryset = Contact.objects.filter(archived = False, created__gt = timezone.now() - timedelta(days=1))
+
+
+class ListLastWeekContactView(ListContactView):    
+    queryset = Contact.objects.filter(archived = False, created__gt = timezone.now() - timedelta(days=7))
+    
 
 class DetailContactView(BaseContactView, DetailView):
     template_name = 'contacts/contacts.html'
