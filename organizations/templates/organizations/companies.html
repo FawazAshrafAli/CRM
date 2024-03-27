@@ -656,7 +656,7 @@
 														</label>
 													</td>
 													<td>
-														<a href="#" class="avatar"><img alt="" src="{% static 'assets/img/c-logo2.png' %}"></a>
+														<a href="#" class="avatar"><img alt="" {% if organization.image %} src="{{organization.image.url}}" {% else %} src="{% static 'assets/img/c-logo2.png' %}" {% endif %}></a>
 														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-organization-id="{{ organization.pk }}" onclick="loadOrganizationDetails({{ organization.pk }}); return false;">{{organization.name}}</a>
 													</td>
 													<td>{{organization.phone}}</td>
@@ -671,8 +671,8 @@
 														<div class="dropdown dropdown-action">
 															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit-organization-modal" data-organization-id="{{organization.pk}}" onclick="editOrganization({{organization.pk}}); return false">Edit This Company</a>
-								                                <a class="dropdown-item" href="#">Change Organization Image</a>
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit-organization-modal" data-organization-id="{{organization.pk}}" onclick="editOrganization({{organization.pk}}); return false;">Edit This Company</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change-organization-image-modal" data-organization-id="{{organization.pk}}" onclick="changeOrganizationImage({{organization.pk}}); return false;">Change Organization Image</a>
 								                                <a class="dropdown-item" href="#">Delete This Organization</a>
 								                                <a class="dropdown-item" href="#">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
@@ -1110,6 +1110,44 @@
 											</div>
 											
 										</div>
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Edit Organization) -->
+
+			<!-- Modal (Edit Organization) -->
+			<div class="modal right fade" id="change-organization-image-modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<button type="button" class="close md-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Change Organization Image</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" enctype="multipart/form-data" id="change-organization-image">
+										{% csrf_token %}
+						            	<h4>Organization Image</h4>
+						            	<div class="form-group row">
+				                            <div class="col-md-12">
+				                            	<label class="col-form-label">Organization Image <span class="text-danger">*</span></label>
+                              					<input class="form-control" type="file" placeholder="Organization Image" name="image" id="organization-image-input" required>
+												<a href="#" id="organization-image-value"></a>
+				                            </div>
+				                        </div>						                
 						                <div class="text-center py-3">
 						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
 						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
@@ -2100,6 +2138,9 @@
 
 		<!-- Edit Organization Function -->
 		<script src="{% static 'js/organizations/editOrganization.js' %}"></script>
+
+		<!-- Change Organization Image Function -->
+		<script src="{% static 'js/organizations/changeOrganizationImage.js' %}"></script>
 
     </body>
 </html>
