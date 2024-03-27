@@ -63,7 +63,7 @@ class DetailOrganizationView(BaseOrganizationView, DetailView):
         organization = context['object']
 
         serialized_data = {
-            "id": organization.id,
+            "id": organization.id,        
             "name" : organization.name,
             "organization" : organization.organization,
             "title" : organization.title,
@@ -91,6 +91,9 @@ class DetailOrganizationView(BaseOrganizationView, DetailView):
             "created": organization.created.strftime("%d/%m/%Y"),
             "updated": organization.updated.strftime("%d/%m/%Y")
         }
+        if organization.image:
+            serialized_data["image"] = organization.image.url
+
         if organization.billing_address and organization.billing_city and organization.billing_state and organization.billing_postal_code and organization.billing_country:
             full_billing_address = f"{organization.billing_address}, {organization.billing_city}, {organization.billing_state}, {organization.billing_postal_code}, {organization.billing_country}."
             serialized_data["full_billing_address"] = full_billing_address        
@@ -110,6 +113,16 @@ class UpdateOrganizationView(BaseOrganizationView, UpdateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, "Company Updated.")
+        return response
+    
+class ChangeOrganizationImageView(BaseOrganizationView, UpdateView):
+    model = Company
+    fields = ["image"]
+    success_url = reverse_lazy('organizations:list')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Company image updated.")
         return response
 
 
