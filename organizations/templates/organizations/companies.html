@@ -1039,40 +1039,41 @@
 												<input type="text" class="form-control" placeholder="Billing State" name="billing_state" id="billing-state-value" required>
 											</div>
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Billing Postal code" name="billing_postal_code" required>
+												<input type="text" class="form-control" placeholder="Billing Postal code" name="billing_postal_code" id="billing-postal-code-value" required>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Billing Country</label>
-					                            <select class="form-control" name="billing_country" required>
-					                                <option>India</option>
-					                                <option>US</option>
-					                                <option>Japan</option>
+					                            <select class="form-control" name="billing_country" id="billing-country-value" required>
+					                                <option value="India">India</option>
+					                                <option value="US">US</option>
+					                                <option value="Japan">Japan</option>
 					                            </select>
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Shipping Address</label>
-                            					<textarea class="form-control" rows="3" name="shipping_address" placeholder="Shipping Address"></textarea>
+                            					<textarea class="form-control" rows="3" name="shipping_address" id="shipping-address-value" placeholder="Shipping Address"></textarea>
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Shipping City" name="shipping_city">
+												<input type="text" class="form-control" placeholder="Shipping City" name="shipping_city" id="shipping-city-value">
 											</div>
 											<div class="col-sm-6">
-												<input type="text" class="form-control" placeholder="Shipping State" name="shipping_state">
+												<input type="text" class="form-control" placeholder="Shipping State" name="shipping_state" id="shipping-state-value">
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6">
-												<input type="text" class="form-control"  placeholder="Shipping Postal code" name="shipping_postal_code">
+												<input type="text" class="form-control"  placeholder="Shipping Postal code" name="shipping_postal_code" id="shipping-postal-code-value">
 											</div>
 											<div class="col-sm-6">
-												<select class="form-control" name="shipping_country">
-					                                <option>India</option>
-					                                <option>US</option>
-					                                <option>Japan</option>
+												<select class="form-control" name="shipping_country" id="shipping-country-value">
+					                                <option>No Country</option>
+													<option value="India">India</option>
+					                                <option value="US">US</option>
+					                                <option value="Japan">Japan</option>
 					                            </select>
 											</div>
 										</div>
@@ -1080,7 +1081,7 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Dates To Remember <span class="text-danger">*</span></label>
-				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_to_remember" placeholder="MM/DD/YY"></div>
+				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_to_remember" id="date-to-remember-value" placeholder="MM/DD/YY"></div>
 											</div>
 										</div>
 										
@@ -1088,23 +1089,23 @@
 										<div class="form-group row">
 											<div class="col-sm-12">
 												<label class="col-form-label">Description </label>
-				                            	<textarea class="form-control" rows="3" id="description" name="description" placeholder="Description"></textarea>
+				                            	<textarea class="form-control" rows="3" id="description-value" name="description" placeholder="Description"></textarea>
 											</div>
 										</div>
 										<h4>Tag Information</h4>
 										<div class="form-group row">
 											<div class="col-sm-12">
 												<label class="col-form-label">Tag List</label>
-                            					<input type="text" class="form-control" name="tag_name" placeholder="Tag List">
+                            					<input type="text" class="form-control" name="tag_list" id="tag-list-value" placeholder="Tag List">
 											</div>
 										</div>
 										<h4>Permissions</h4>
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Permission</label>
-					                        	<select class="form-control" name="permission">
-					                                <option>Task Visibility</option>
-					                                <option>Private Task</option>
+					                        	<select class="form-control" name="permission" id="permission-value">
+					                                <option value="Task Visibility">Task Visibility</option>
+					                                <option value="Private Task">Private Task</option>
 					                         	</select>
 											</div>
 											
@@ -2096,5 +2097,9 @@
 		
 		<!-- Fetch Organization Detail -->
 		<script src="{% static 'js/organizations/loadOrganizationDetails.js' %}"></script>
+
+		<!-- Edit Organization Function -->
+		<script src="{% static 'js/organizations/editOrganization.js' %}"></script>
+
     </body>
 </html>
