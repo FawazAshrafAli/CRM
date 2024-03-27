@@ -20,16 +20,16 @@ class Company(models.Model):
     billing_city = models.CharField(max_length=150, blank=False, null=False)    
     billing_state = models.CharField(max_length=150, blank=False, null=False)
     billing_postal_code = models.CharField(max_length=25, blank=False, null=False)
-    billing_country = models.CharField(max_length=150, blank=False, null=False, default="India")
+    billing_country = models.CharField(max_length=150, blank=False, null=False)
 
     shipping_address = models.TextField(blank=True, null=True)
     shipping_city = models.CharField(max_length=150, blank=True, null=True)
     shipping_state = models.CharField(max_length=150, blank=True, null=True)
     shipping_postal_code = models.CharField(max_length=25, blank=True, null=True)
-    shipping_country = models.CharField(max_length=150, blank=True, null=True, default="India")
+    shipping_country = models.CharField(max_length=150, blank=True, null=True)
 
     # Additional Information
-    date_to_remember = models.DateField(blank=True, null=True)
+    date_to_remember = models.CharField(max_length=150, blank=True, null=True)
 
     # Description Information
     description = models.TextField(blank=True, null=True)
