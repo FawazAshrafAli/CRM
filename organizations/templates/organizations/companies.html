@@ -671,7 +671,7 @@
 														<div class="dropdown dropdown-action">
 															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Company</a>
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit-organization-modal" data-organization-id="{{organization.pk}}" onclick="editOrganization({{organization.pk}}); return false">Edit This Company</a>
 								                                <a class="dropdown-item" href="#">Change Organization Image</a>
 								                                <a class="dropdown-item" href="#">Delete This Organization</a>
 								                                <a class="dropdown-item" href="#">Change Record Owner</a>
@@ -938,6 +938,190 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal -->
+
+			<!-- Modal (Edit Organization) -->
+			<div class="modal right fade" id="edit-organization-modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<button type="button" class="close md-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Edit Company</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="edit-organization-form">
+										{% csrf_token %}
+						            	<h4>Organization Name</h4>
+						            	<div class="form-group row">
+				                            <div class="col-md-12">
+				                            	<label class="col-form-label">Organization Name <span class="text-danger">*</span></label>
+                              					<input class="form-control" type="text" placeholder="Organization Name" id="organization-name-value" name="name" required>
+				                            </div>
+				                        </div>
+						                <div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Organization</label>
+					                            <select class="form-control" name="organization" id="organization-value" required>
+					                                <option>-- Select --</option>
+													<option value="Company/Corporation">Company/Corporation</option>
+													<option value="Small Business">Small Business</option>
+													<option value="Nonprofit Organization">Nonprofit Organization</option>
+													<option value="Government">Government</option>
+													<option value="Educational Institution">Educational Institution</option>
+													<option value="Healthcare Organization">Healthcare Organization</option>
+													<option value="Retail">Retail</option>
+													<option value="Manufacturing">Manufacturing</option>
+													<option value="Service Provider">Service Provider</option>
+													<option value="Other">Other</option>			
+					                            </select>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Title</label>
+                            					<input type="text" class="form-control"  name="title" id="title-value" placeholder="Title" required>
+											</div>
+										</div>
+										<h4>Organization Contact Details</h4>
+										
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Phone</label>
+                            					<input type="text" class="form-control" name="phone" id="phone-value" placeholder="Phone" required>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Fax</label>
+                            					<input type="text" class="form-control" name="fax" id="fax-value" placeholder="Fax">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Website</label>
+                            					<input type="text" class="form-control" name="website" id="website-value" placeholder="Website">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Linkedin</label>
+                            					<input type="text" class="form-control"  name="linkedin" id="linkedin-value" placeholder="Linkedin">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Facebook</label>
+                            					<input type="text" class="form-control"  name="facebook" id="facebook-value" placeholder="Facebook">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Twitter</label>
+                            					<input type="text" class="form-control"  name="twitter" id="twitter-value" placeholder="Twitter">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Email Domains</label>
+                            					<input type="text" class="form-control"  name="email_domains" id="email-domain-value" placeholder="Email Domains" required>
+											</div>
+											
+										</div>
+										<h4>Address Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Billing Address</label>
+                            					<textarea class="form-control" rows="3" name="billing_address" id="billing-address-value" placeholder="Billing Address" required></textarea>
+											</div>
+											<div class="col-sm-6 mt-3">
+												<label class="col-form-label"></label><br>
+                            					<input type="text" class="form-control" placeholder="Billing City" name="billing_city" id="billing-city-value" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Billing State" name="billing_state" id="billing-state-value" required>
+											</div>
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Billing Postal code" name="billing_postal_code" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Billing Country</label>
+					                            <select class="form-control" name="billing_country" required>
+					                                <option>India</option>
+					                                <option>US</option>
+					                                <option>Japan</option>
+					                            </select>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Shipping Address</label>
+                            					<textarea class="form-control" rows="3" name="shipping_address" placeholder="Shipping Address"></textarea>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Shipping City" name="shipping_city">
+											</div>
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Shipping State" name="shipping_state">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control"  placeholder="Shipping Postal code" name="shipping_postal_code">
+											</div>
+											<div class="col-sm-6">
+												<select class="form-control" name="shipping_country">
+					                                <option>India</option>
+					                                <option>US</option>
+					                                <option>Japan</option>
+					                            </select>
+											</div>
+										</div>
+										<h4>Additional Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Dates To Remember <span class="text-danger">*</span></label>
+				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_to_remember" placeholder="MM/DD/YY"></div>
+											</div>
+										</div>
+										
+										<h4>Description Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Description </label>
+				                            	<textarea class="form-control" rows="3" id="description" name="description" placeholder="Description"></textarea>
+											</div>
+										</div>
+										<h4>Tag Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Tag List</label>
+                            					<input type="text" class="form-control" name="tag_name" placeholder="Tag List">
+											</div>
+										</div>
+										<h4>Permissions</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Permission</label>
+					                        	<select class="form-control" name="permission">
+					                                <option>Task Visibility</option>
+					                                <option>Private Task</option>
+					                         	</select>
+											</div>
+											
+										</div>
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Edit Organization) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="company-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -1911,6 +2095,6 @@
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>
 		
 		<!-- Fetch Organization Detail -->
-		<script src="{% static 'js/loadOrganizationDetails.js' %}"></script>
+		<script src="{% static 'js/organizations/loadOrganizationDetails.js' %}"></script>
     </body>
 </html>
