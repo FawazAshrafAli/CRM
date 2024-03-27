@@ -139,6 +139,9 @@ class TaskListView(BaseTaskView, ListView): # To list tasks.
 
         return context
 
+class CompletedTaskListView(TaskListView):
+    queryset = Task.objects.filter(status="Completed")
+
 class TaskDetailView(BaseTaskView, DetailView): # For providing a detail of a single task. 
     query_pk_and_slug = 'pk'
 
