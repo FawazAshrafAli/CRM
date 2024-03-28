@@ -21,9 +21,9 @@ class Lead(models.Model):
     lead_owner = models.ForeignKey(CrmUser, on_delete=models.PROTECT, related_name="lead_owner", blank=True, null=True)
 
     # Additional Information
-    email = models.EmailField(max_length=254, blank=False, null=False, unique=True)
+    email = models.EmailField(max_length=254, blank=False, null=False)
     email_opted_out = models.BooleanField(default=False)
-    phone = models.CharField(max_length=20, blank=False, null=False, unique=True)
+    phone = models.CharField(max_length=20, blank=False, null=False)
     mobile_phone = models.CharField(max_length=20, blank=True, null=True)
     fax = models.CharField(max_length=20, blank=True, null=True)
     website = models.CharField(max_length=150, blank=True, null=True)
