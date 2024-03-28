@@ -674,7 +674,7 @@
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit-organization-modal" data-organization-id="{{organization.pk}}" onclick="editOrganization({{organization.pk}}); return false;">Edit This Company</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change-organization-image-modal" data-organization-id="{{organization.pk}}" onclick="changeOrganizationImage({{organization.pk}}); return false;">Change Organization Image</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-organization-modal" data-organization-id="{{organization.pk}}" onclick="deleteOrganization({{organization.pk}}); return false;">Delete This Organization</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change-organization-owner-modal" data-organization-id="{{organization.pk}}" onclick="changeRecordOwner({{organization.pk}}); return false;">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
 								                                <a class="dropdown-item" href="#">Print This Organization</a>
 								                                <a class="dropdown-item" href="#">Add New Task For Organization</a>
@@ -1192,6 +1192,47 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Delete Organization) -->
+
+			<!-- Modal (Change Organization Owner) -->
+			<div class="modal right fade" id="change-organization-owner-modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<button type="button" class="close md-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Change Organization Owner</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="change-organization-owner-form">
+										{% csrf_token %}						            	
+						            	<div class="form-group row">
+				                            <div class="col-md-12">
+				                            	<label class="col-form-label">Organization Owner <span class="text-danger">*</span></label>
+												<select class="form-control" name="record_owner" id="record-owner-value">
+					                                <option hidden>-- Select --</option>
+													{% for user in users %}
+					                                <option value="{{user.pk}}">{{user.name}}</option>
+													{% endfor %}
+					                         	</select>
+				                            </div>
+				                        </div>						                
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Change Organization Owner) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="company-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -2175,6 +2216,9 @@
 
 		<!-- Delete Organization Function -->
 		<script src="{% static 'js/organizations/deleteOrganization.js' %}"></script>
+
+		<!-- Change Organization owner Function -->
+		<script src="{% static 'js/organizations/changeRecordOwner.js' %}"></script>
 
     </body>
 </html>
