@@ -63,7 +63,7 @@ class DetailLeadView(BaseLeadView, DetailView):
         lead = context['object']
                 
         serialized_data = {
-            "id" : lead.id,
+            "id" : lead.id,        
             "prefix" : lead.prefix,
             "first_name": lead.first_name,
             "last_name": lead.last_name,
@@ -91,6 +91,9 @@ class DetailLeadView(BaseLeadView, DetailView):
             "created" : lead.created.strftime("%d-%b-%y %I:%M %p"),
             "updated" : lead.updated.strftime("%d/%m/%Y")
         }
+
+        if lead.image:
+            serialized_data["image"] = lead.image.url
 
         if lead.first_name and lead.last_name:
             serialized_data["full_name"] = f"{lead.first_name} {lead.last_name}"
@@ -121,6 +124,17 @@ class UpdateLeadView(BaseLeadView, UpdateView):
             for error in errors:
                 print(f"Error on  field {field}: {error}")
         return  super().form_invalid(form)
+    
+
+class UpdateLeadImageView(BaseLeadView, UpdateView):    
+    pk_url_kwarg = 'pk'
+    fields = ["image"]
+    success_url = reverse_lazy('leads:list')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Successfully Changed Lead Image.')
+        return response    
 
 
 # For updating lead status using ajax
