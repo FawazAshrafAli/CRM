@@ -656,7 +656,7 @@
 														</label>
 													</td>
 													<td>
-														<a href="#" class="avatar"><img alt="" {% if organization.image %} src="{{organization.image.url}}" {% else %} src="{% static 'assets/img/c-logo2.png' %}" {% endif %}></a>
+														<a href="#" class="avatar"><img alt="Organization Image" {% if organization.image %} src="{{organization.image.url}}" {% else %} src="{% static 'assets/img/c-logo2.png' %}" {% endif %}></a>
 														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-organization-id="{{ organization.pk }}" onclick="loadOrganizationDetails({{ organization.pk }}); return false;">{{organization.name}}</a>
 													</td>
 													<td>{{organization.phone}}</td>
