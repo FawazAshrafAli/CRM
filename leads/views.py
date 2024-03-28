@@ -84,8 +84,7 @@ class DetailLeadView(BaseLeadView, DetailView):
             "website" : lead.website,
             "industry" : lead.industry,
             "number_of_employees" : lead.number_of_employees,
-            "lead_source" : lead.lead_source,
-            
+            "lead_source" : lead.lead_source,            
             "description" : lead.description,
             "tag_list" : lead.tag_list,
             "permission" : lead.permission,
@@ -133,12 +132,9 @@ class UpdateLeadStatusView(BaseLeadView, UpdateView):
     @csrf_exempt
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        print(self.object)
-        print(self.object.lead_status)
         data = {'message': 'Error'}        
         self.object.lead_status = request.POST.get('new_status')
-        self.object.save()
-        print(self.object.lead_status)      
+        self.object.save()              
         data = {'message': 'Success', 'id': self.object.id}
 
         return JsonResponse(data)
