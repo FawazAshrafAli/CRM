@@ -6,11 +6,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.db.models import ProtectedError
 
-from  .models import Company
+from .models import Company
 from contacts.models import Contact
 from projects.models import Project
 from deals.models import Deal
-
+from authentication.models import CrmUser
 
 
 class BaseOrganizationView(LoginRequiredMixin):
@@ -50,6 +50,7 @@ class ListOrganizationView(BaseOrganizationView, ListView):
             "contacts": Contact.objects.all(),
             "projects": Project.objects.all(),
             "deals": Deal.objects.all(),
+            "users": CrmUser.objects.all(),
             })
         return context
     
@@ -88,10 +89,13 @@ class DetailOrganizationView(BaseOrganizationView, DetailView):
             "date_to_remember" : organization.date_to_remember,
             "description" : organization.description,
             "tag_list" : organization.tag_list,
-            "permission" : organization.permission,
+            "permission" : organization.permission,            
             "created": organization.created.strftime("%d/%m/%Y"),
             "updated": organization.updated.strftime("%d/%m/%Y")
         }
+        if organization.record_owner:
+            serialized_data["record_owner"] = organization.record_owner.id,
+
         if organization.image:
             serialized_data["image"] = organization.image.url
 
@@ -124,6 +128,19 @@ class ChangeOrganizationImageView(BaseOrganizationView, UpdateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, "Company image updated.")
+        return response
+
+
+class ChangeOrganizationRecordOwnerView(BaseOrganizationView, UpdateView):
+    model = Company
+    fields = ["record_owner"]
+    success_url = reverse_lazy('organizations:list')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self.object = self.get_object()
+        print(self.object.record_owner)
+        messages.success(self.request, "Organization record owner updated successfully.")
         return response
 
 

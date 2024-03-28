@@ -1,7 +1,8 @@
 from django.urls import path
 from .views  import (CreateOrganizationView, ListOrganizationView, 
                      DetailOrganizationView, UpdateOrganizationView, 
-                     DeleteOrganizationView, ChangeOrganizationImageView)
+                     DeleteOrganizationView, ChangeOrganizationImageView, 
+                     ChangeOrganizationRecordOwnerView)
 
 app_name = "organizations"
 
@@ -11,5 +12,6 @@ urlpatterns = [
     path('detail/<pk>', DetailOrganizationView.as_view(), name="detail"),
     path('update/<pk>', UpdateOrganizationView.as_view(), name="update"),    
     path('change_image/<pk>', ChangeOrganizationImageView.as_view(), name="change_image"),
+    path('change_owner/<pk>', ChangeOrganizationRecordOwnerView.as_view(), name="change_owner"),
     path('delete/<pk>', DeleteOrganizationView.as_view(), name="delete")
 ]
