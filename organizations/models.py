@@ -1,4 +1,5 @@
 from django.db import models
+from authentication.models import CrmUser
 
 class Company(models.Model):
     image = models.ImageField(upload_to='company_images/', blank=True, null=True)
@@ -40,6 +41,9 @@ class Company(models.Model):
 
     # Permissions
     permission = models.CharField(max_length=150, blank=True, null=True)
+
+    # Record Owner
+    record_owner = models.ForeignKey(CrmUser, on_delete=models.CASCADE, blank=True, null=True)
 
     # Created and Updated Datetimes
     created = models.DateTimeField(auto_now_add=True)
