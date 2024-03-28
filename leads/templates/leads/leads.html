@@ -572,6 +572,17 @@
 								<li class="breadcrumb-item active">Leads</li>
 							</ul>
                 		</div>
+
+						<div id="message-div">
+							{% if messages %}
+							<ul class="messages">
+								{% for message in messages %}
+								<li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
+								{% endfor %}
+							</ul>
+							{% endif %}
+						</div>
+
                 	</div>
 					
 					<!-- Page Header -->
@@ -679,7 +690,7 @@
 													</td>
 													<td>{{lead.phone}}</td>
 													<td>{{lead.email}}</td>
-													<td class="lead-status">{{lead.lead_status}}</td>
+													<td id="lead-status-{{lead.pk}}">{{lead.lead_status}}</td>
 													{% comment %} <td>03-Jun-20 1:14 AM</td> {% endcomment %}
 													<td>{{lead.created|date:"d-b-y h:i A"}}</td>
 													<td>John Doe</td>
@@ -688,7 +699,7 @@
 														<div class="dropdown dropdown-action">
 															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Lead</a>
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_lead_modal" data-lead-id="{{lead.pk}}" onclick="editLead({{lead.pk}}); return false;">Edit This Lead</a>
 								                                <a class="dropdown-item" href="#">Change Lead Image</a>
 								                                <a class="dropdown-item" href="#">Delete This Lead</a>
 								                                <a class="dropdown-item" href="#">Email This Lead</a>
@@ -970,6 +981,208 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal -->
+
+			<!-- Modal (Edit Lead) -->
+			<div class="modal right fade" id="edit_lead_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Edit Lead</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="lead-edition-form">
+										{% csrf_token %}
+						            	<h4>Lead Information</h4>
+						            	<div class="form-group row">
+				                            <div class="col-md-12"><label class="col-form-label">Name <span class="text-danger">*</span></label></div>
+				                            <div class="col-md-4">
+				                                <input class="form-control" type="text" placeholder="Prefix" name="prefix" id="prefix-value" required>
+				                            </div>
+				                            <div class="col-md-4">
+				                                <input class="form-control" type="text" placeholder="First name" name="first_name" id="first-name-value" required>
+				                            </div>
+				                            <div class="col-md-4">
+				                                <input class="form-control" type="text" placeholder="Last name" name="last_name" id="last-name-value" required>
+				                            </div>
+				                        </div>
+						                <div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Organization</label>
+					                            <select class="form-control" name="organization" id="organization-value" required>
+					                                <option hidden>-- Select --</option>
+													{% for organization in organizations %}
+													<option value="{{organization.pk}}">{{organization.name}}</option>
+													{% endfor %}
+					                            </select>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label" for="title">Title</label>
+                            					<input type="text" class="form-control" name="title" id="title-value" placeholder="Title" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Lead Status</label>
+					                            <select class="form-control" name="lead_status" id="lead-status-value" required>
+					                                <option hidden>-- Select --</option>
+					                                <option value="Not Contacted">Not Contacted</option>
+													<option value="Attempted Contact">Attempted Contact</option>
+					                                <option value="Contacted">Contacted</option>
+													<option value="Converted">Converted</option>
+					                            </select>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">User Responsible</label>
+					                            <select class="form-control" name="user_responsible" id="user-responsible-value" required>
+					                                <option hidden>-- Select --</option>
+					                                {% for user in users %}
+													<option value="{{user.pk}}">{{user.name}}</option>
+													{% endfor %}
+					                            </select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Lead Rating</label>
+                            					<input type="number" class="form-control" name="lead_rating" id="lead-rating-value" placeholder="Rating">
+											</div>
+											
+										</div>
+										<h4>Additional Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Email</label>
+                            					<input type="text" class="form-control"  name="email" id="email-value" placeholder="Email" required>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Email Opted out</label>
+					                            <div >
+					                              <label class="container-checkbox">
+												  	<input type="checkbox" name="email_opted_out" id="email-opted-out-value">
+												  	<span class="checkmark"></span>
+												</label>
+					                            </div>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Phone</label>
+                            					<input type="text" class="form-control" name="phone" id="phone-value" placeholder="Phone">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Mobile Phone</label>
+                            					<input type="text" class="form-control" name="mobile_phone" id="mobile-phone-value" placeholder="Mobile Phone" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Fax</label>
+                            					<input type="text" class="form-control" name="fax" id="fax-value" placeholder="Fax">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Website</label>
+                            					<input type="text" class="form-control"  name="website" id="website-value" placeholder="Website">
+											</div>
+										</div>
+										
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Industry</label>
+                            					<input type="text" class="form-control" name="industry" id="industry-value" placeholder="Industry">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Number of Employees</label>
+                            					<input type="text" class="form-control"  name="number_of_employees" id="number-of-employees-value" placeholder="Number of Employees">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Lead Source</label>
+					                            <select class="form-control" name="lead_source" id="lead-source-value" required>
+													<option>-- Select --</option>
+					                                <option value="Web">Web</option>
+					                                <option value="Phone Enquiry">Phone Enquiry</option>
+					                                <option value="Partner Referral">Partner Referral</option>
+					                                <option value="Purchased List">Purchased List</option>
+					                                <option value="Other">Other</option>
+					                             </select>
+											</div>
+											
+										</div>
+										
+										<h4>Address Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Mailing Address</label>
+                            					<textarea class="form-control" rows="3" name="mailing_address" id="mailing-address-value" placeholder="Address" required></textarea>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="City" name="mailing_city" id="mailing-city-value" required>
+											</div>
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="State/Provience" name="mailing_state" id="mailing-state-value" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Postal Code" name="mailing_postal_code" id="mailing-postal-code-value" required>
+											</div>
+											<div class="col-sm-6">
+					                            <select class="form-control" name="mailing_country" id="mailing-country-value" required>
+													<option hidden>-- Select --</option>
+					                                <option value="India">India</option>
+					                                <option value="US">US</option>
+					                                <option value="Japan">Japan</option>
+					                            </select>
+											</div>
+										</div>
+										
+										<h4>Description Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Description </label>
+				                            	<textarea class="form-control" rows="3" id="description-value" name="description" placeholder="Description"></textarea>
+											</div>
+										</div>
+										<h4>Tag Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Tag List</label>
+                            					<input type="text" class="form-control" name="tag_list" id="tag-list-value" placeholder="Tag List">
+											</div>
+										</div>
+										<h4>Permissions</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Permission</label>
+					                        	<select class="form-control" name="permission" id="permission-value" required>
+					                                <option>-- Task Visibility --</option>
+					                                <option value="Private Task">Private Task</option>
+													<option value="Public Task">Public Task</option>
+					                         	</select>
+											</div>
+											
+										</div>
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Edit Lead) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="leads-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -3329,180 +3542,17 @@
 		
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 		  
-		<!-- Fetching details single item -->
-		<script>
-			function loadLeadDetails(LeadId) {	
-				$.ajax({
-					url: '/leads/detail/' + LeadId,  // Update the URL to match your actual URL
-					type: 'GET',
-					dataType: 'json',
-					success: function(lead) {										
-						// Handle the JSON response
-						if (lead.id != null && lead.id != ""){
-							$('.lead-id').each(function() {
-								$(this).html(lead.id);
-							});
-						};
-						
-						if (lead.full_name != null && lead.full_name != ""){
-							$('.lead-full-name').each(function() {
-								$(this).html(lead.full_name);
-							});
-						};
-						
-						if (lead.organization != null && lead.organization != ""){
-							$('.lead-organization').each(function() {
-								$(this).html(lead.organization); 
-							});
-						};
-						
-						if (lead.title != null && lead.title != ""){
-							$('.lead-title').each(function() {
-								$(this).html(lead.title); 
-							});
-						};
+		<!-- Fetching lead details function -->
+		<script src="{% static 'js/leads/loadLeadDetails.js' %}"></script>
 
-						if (lead.lead_status != null && lead.lead_status != ""){
-							$('.lead-status').each(function() {
-								$(this).html(lead.lead_status); 
-							});							
-							$('.lead-status-indicator').each(function() {								
-								if (lead.lead_status === $(this).text().trim()) {
-									$(this).addClass('active');
-								}
-								$(this).prop('value', lead.id);								
-							});									
-						};
-						
-						if (lead.user_responsible != null && lead.user_responsible != ""){
-							$('.lead-user-responsible').each(function() {
-								$(this).html(lead.user_responsible); 
-							});
-						};
+		<!-- Edit Lead function -->
+		<script src="{% static 'js/leads/editLead.js' %}"></script>
+		
+		<!-- Update Lead Status Function -->
+		<script src={% static 'js/updateLeadStatus.js' %}></script>
+		
+		<!-- Message TimeOut Function -->
+		<script src="{% static 'js/messageTimeOut.js' %}"></script>
 
-						if (lead.lead_rating != null && lead.lead_rating != ""){
-							$('.lead-rating').each(function() {
-								$(this).html(lead.lead_rating); 
-							});
-						};
-
-						if (lead.email != null && lead.email != ""){                  
-							$('.lead-email').each(function() {  
-								$(this).html(lead.email); 
-							});
-						};	
-						var email_opted_out = '' + lead.email_opted_out + ''
-						if (email_opted_out != null && email_opted_out != ""){							
-							$('.lead-email-opted-out').each(function() {								
-								$(this).html(email_opted_out);																
-							});
-						};
-
-						if (lead.phone != null && lead.phone != ""){
-							$('.lead-phone').each(function() {
-								$(this).html(lead.phone); 
-							});
-						};							
-									
-						if (lead.mobile_phone != null && lead.mobile_phone != ""){                    
-							$('.lead-mobile-phone').each(function() {
-								$(this).html(lead.mobile_phone); 
-							});
-						};								
-
-						if (lead.fax != null && lead.fax != ""){
-							$('.lead-fax').each(function() {
-								$(this).html(lead.fax);
-							});
-						};
-
-						if (lead.website != null && lead.website != ""){
-							$('.lead-website').each(function() {
-								$(this).html(lead.website);
-							});
-						};
-
-						if (lead.industry != null && lead.industry != ""){
-							$('.lead-industry').each(function() {
-								$(this).html(lead.industry);
-							});
-						};
-
-						if (lead.number_of_employees != null && lead.number_of_employees != ""){
-							$('.lead-number-of-employees').each(function() {
-								$(this).html(lead.number_of_employees);
-							});
-						};
-
-						if (lead.lead_source != null && lead.lead_source != ""){
-							$('.lead-source').each(function() {
-								$(this).html(lead.lead_source);
-							});
-						};
-
-						if (lead.mailing_address != null && lead.mailing_address != ""){
-							$('.lead-mailing-address').each(function() {
-								$(this).html(lead.mailing_address);
-							});
-						};
-
-						if (lead.description != null && lead.description != ""){
-							$('.lead-description').each(function() {
-								$(this).html(lead.description);
-							});
-						};
-
-						if (lead.tag_list != null && lead.tag_list != ""){							
-							$('.lead-tag-list').each(function() {
-								$(this).html(lead.tag_list);
-							});
-						};						
-
-						if (lead.permission != null && lead.permission != ""){							
-							$('.lead-permission').each(function() {
-								$(this).html(lead.permission);
-							});
-						};						
-
-						if (lead.created != null && lead.created != ""){							
-							$('.lead-created').each(function() {
-								$(this).html(lead.created);
-							});
-						};
-
-						if (lead.updated != null && lead.updated != ""){							
-							$('.lead-updated').each(function() {
-								$(this).html(lead.updated);
-							});
-						};
-					},
-					error: function(error) {
-						console.log('Error:', error);
-					}
-				});
-			}
-		</script>
-
-		<script>
-			// Example function to update lead status via AJAX
-			function updateLeadStatus(leadId, newStatus) {
-				$.ajax({
-					type: 'POST',
-					url: `/leads/update_lead_status/${leadId}`,
-					data: {
-						new_status: newStatus,
-						csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token for security
-					},
-					success: function(response) {
-						loadLeadDetails(leadId)						
-						// Perform any additional actions on success
-					},
-					error: function(error) {
-						console.error('Error updating lead status:', error);
-						// Handle errors as needed
-					}
-				});
-			}
-		</script>
     </body>
 </html>
