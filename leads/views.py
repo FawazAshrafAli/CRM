@@ -13,6 +13,7 @@ from authentication.models import CrmUser
 class BaseLeadView(LoginRequiredMixin):
     model = Lead
     login_url = 'authentication:login'
+    template_name = 'leads/leads.html' #
 
 class CreateLeadView(BaseLeadView, CreateView):
     template_name = 'leads/leads.html'    
@@ -64,11 +65,16 @@ class DetailLeadView(BaseLeadView, DetailView):
         serialized_data = {
             "id" : lead.id,
             "prefix" : lead.prefix,
-            "full_name": f"{lead.first_name} {lead.last_name}",            
-            "organization" : lead.organization.name,
+            "first_name": lead.first_name,
+            "last_name": lead.last_name,
+            "organization" : lead.organization.id,
             "title" : lead.title,
             "lead_status" : lead.lead_status,
-            "user_responsible" : lead.user_responsible.name,
+            "mailing_address": lead.mailing_address,
+            "mailing_city": lead.mailing_city,
+            "mailing_state": lead.mailing_state,
+            "mailing_postal_code": lead.mailing_postal_code,
+            "mailing_country": lead.mailing_country,           
             "lead_rating" : lead.lead_rating,
             "email" : lead.email,
             "email_opted_out" : lead.email_opted_out,
@@ -78,7 +84,8 @@ class DetailLeadView(BaseLeadView, DetailView):
             "website" : lead.website,
             "industry" : lead.industry,
             "number_of_employees" : lead.number_of_employees,
-            "lead_source" : lead.lead_source,            
+            "lead_source" : lead.lead_source,
+            
             "description" : lead.description,
             "tag_list" : lead.tag_list,
             "permission" : lead.permission,
@@ -86,23 +93,36 @@ class DetailLeadView(BaseLeadView, DetailView):
             "updated" : lead.updated.strftime("%d/%m/%Y")
         }
 
+        if lead.first_name and lead.last_name:
+            serialized_data["full_name"] = f"{lead.first_name} {lead.last_name}"
+        elif lead.first_name:
+            serialized_data["full_name"] = lead.first_name
+
+        if lead.user_responsible:
+            serialized_data["user_responsible"] = lead.user_responsible.id,
+
         if lead.mailing_address and lead.mailing_city and lead.mailing_state and lead.mailing_postal_code and lead.mailing_country:
-            mailing_address = f"{lead.mailing_address}, {lead.mailing_city}, {lead.mailing_state}, {lead.mailing_postal_code}, {lead.mailing_country}."
-            serialized_data['mailing_address'] = mailing_address
+            full_mailing_address = f"{lead.mailing_address}, {lead.mailing_city}, {lead.mailing_state}, {lead.mailing_postal_code}, {lead.mailing_country}."
+            serialized_data['full_mailing_address'] = full_mailing_address
 
         return JsonResponse(serialized_data)
 
-class UpdateLeadView(BaseLeadView, UpdateView):
-    template_name = 'leads/update.html'
+class UpdateLeadView(BaseLeadView, UpdateView):    
     pk_url_kwarg = 'pk'
-    fields = ["lead_status"]
+    fields = "__all__"
+    success_url = reverse_lazy('leads:list')
 
     def form_valid(self, form):
+        response = super().form_valid(form)
         messages.success(self.request, 'Lead updation successfull.')
-        return super().form_valid(form)
+        return response
     
-    def get_success_url(self):
-        return reverse_lazy('leads:detail', kwargs={'pk': self.object.id})
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                print(f"Error on  field {field}: {error}")
+        return  super().form_invalid(form)
+
 
 # For updating lead status using ajax
 class UpdateLeadStatusView(BaseLeadView, UpdateView):
@@ -113,9 +133,12 @@ class UpdateLeadStatusView(BaseLeadView, UpdateView):
     @csrf_exempt
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
+        print(self.object)
+        print(self.object.lead_status)
         data = {'message': 'Error'}        
         self.object.lead_status = request.POST.get('new_status')
         self.object.save()
+        print(self.object.lead_status)      
         data = {'message': 'Success', 'id': self.object.id}
 
         return JsonResponse(data)
