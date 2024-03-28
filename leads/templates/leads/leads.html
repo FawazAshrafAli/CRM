@@ -681,7 +681,11 @@
 														</label>
 													</td>
 													<td>
+														{% if lead.image %}
+														<a href="{{lead.image.url}}" target="_blank" class="avatar" style="width:30px; height:30px" ><img alt="Lead Image" src="{{lead.image.url}}"></a>
+														{% else %}
 														<a href="#"><span class="person-circle-a person-circle">{{lead.first_name|slice:":1"}}{{lead.last_name|slice:":1"}}</span></a>
+														{% endif %}
 														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details" data-lead-id="{{ lead.pk }}" onclick="loadLeadDetails({{ lead.pk }}); return false;">{{lead.first_name}} {{lead.last_name}}</a>
 													</td>
 													<td>{{lead.title}}</td>
@@ -700,7 +704,7 @@
 															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 															<div class="dropdown-menu dropdown-menu-right">
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_lead_modal" data-lead-id="{{lead.pk}}" onclick="editLead({{lead.pk}}); return false;">Edit This Lead</a>
-								                                <a class="dropdown-item" href="#">Change Lead Image</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_lead_image_modal" data-lead-id="{{lead.pk}}" onclick="changeLeadImage({{lead.pk}}); return false;">Change Lead Image</a>
 								                                <a class="dropdown-item" href="#">Delete This Lead</a>
 								                                <a class="dropdown-item" href="#">Email This Lead</a>
 								                                <a class="dropdown-item" href="#">Clone This Lead</a>
@@ -970,7 +974,7 @@
 										</div>
 						                <div class="text-center py-3">
 						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
-						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
 						                </div>
 						            </form>
 						        </div>
@@ -1172,7 +1176,7 @@
 										</div>
 						                <div class="text-center py-3">
 						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
-						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
 						                </div>
 						            </form>
 						        </div>
@@ -1183,6 +1187,43 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Edit Lead) -->
+
+			<!-- Modal (Change Lead Image) -->
+			<div class="modal fade" id="change_lead_image_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Edit Lead</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" enctype="multipart/form-data" id="change-lead-image-form">
+										{% csrf_token %}
+						            	<h4>Lead Image</h4>
+						            	<div class="form-group row">
+				                            <div class="col-md-12"><label class="col-form-label">Lead Image <span class="text-danger">*</span></label></div>
+				                            <div class="col-md-12">
+				                                <input class="form-control" type="file" placeholder="Lead Image" id="image-input" name="image" required>
+												<a href='#' target="_blank" id="image-value"></a>
+				                            </div>				                            
+				                        </div>						                
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Change Lead Image) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="leads-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -3549,8 +3590,11 @@
 		<script src="{% static 'js/leads/editLead.js' %}"></script>
 		
 		<!-- Update Lead Status Function -->
-		<script src={% static 'js/updateLeadStatus.js' %}></script>
-		
+		<script src={% static 'js/leads/updateLeadStatus.js' %}></script>
+
+		<!-- Change Lead Image Function -->
+		<script src={% static 'js/leads/changeLeadImage.js' %}></script>
+
 		<!-- Message TimeOut Function -->
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>
 
