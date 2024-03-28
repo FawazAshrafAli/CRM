@@ -6,6 +6,8 @@ from django.http import Http404
 
 class Lead(models.Model):
     # Lead Information
+    image = models.ImageField(upload_to='lead_images/', blank=True, null=True)
+
     prefix = models.CharField(max_length=25, blank=False, null=False)
     first_name = models.CharField(max_length=100, blank=False, null=False)
     last_name = models.CharField(max_length=100, blank=False, null=False)
