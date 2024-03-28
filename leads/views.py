@@ -1,13 +1,14 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, Http404
 from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
-from django.shortcuts import render, redirect
-from .models import Lead
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.http import Http404, JsonResponse
-from organizations.models import Company
 from django.views.decorators.csrf import csrf_exempt
+
+from .models import Lead
+from organizations.models import Company
 from authentication.models import CrmUser
 
 class BaseLeadView(LoginRequiredMixin):
@@ -31,7 +32,63 @@ class CreateLeadView(BaseLeadView, CreateView):
         for field, errors in form.errors.items():
             for error in errors:
                 print(f"Error on {field}: {error}")
-        return response    
+        return response
+    
+
+class CloneLeadView(BaseLeadView, CreateView):        
+    fields = "__all__"
+    success_url = reverse_lazy('leads:list')
+
+    def get_object(self, **kwargs):
+        try:
+            return get_object_or_404(Lead, pk = self.kwargs['pk'])
+        except Http404:
+            return redirect(reverse_lazy('authentication:error404'))
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            Lead.objects.create(
+                image = self.object.image,
+                prefix = self.object.prefix,
+                first_name = self.object.first_name,
+                last_name = self.object.last_name,
+                organization = self.object.organization,
+                title = self.object.title,
+                lead_status = self.object.lead_status,
+                user_responsible = self.object.user_responsible,
+                lead_rating = self.object.lead_rating,
+                lead_owner = self.object.lead_owner,
+                email = self.object.email,
+                email_opted_out = self.object.email_opted_out,
+                phone = self.object.phone,
+                mobile_phone = self.object.mobile_phone,
+                fax = self.object.fax,
+                website = self.object.website,
+                industry = self.object.industry,
+                number_of_employees = self.object.number_of_employees,
+                lead_source = self.object.lead_source,
+                mailing_address = self.object.mailing_address,
+                mailing_city = self.object.mailing_city,
+                mailing_state = self.object.mailing_state,
+                mailing_postal_code = self.object.mailing_postal_code,
+                mailing_country = self.object.mailing_country,
+                description = self.object.description,
+                tag_list = self.object.tag_list,
+                permission = self.object.permission,
+            )
+            messages.success(self.request, "Successfully cloned lead.")
+            return redirect(self.get_success_url())
+        except Exception as e:
+            print(e)  
+    
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        messages.error(self.request, 'Something went wrong')
+        for field, errors in form.errors.items():
+            for error in errors:
+                print(f"Error on {field}: {error}")
+        return response 
 
     
 class ListLeadView(BaseLeadView, ListView):
