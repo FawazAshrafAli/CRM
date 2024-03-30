@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.http import Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import ProtectedError
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Lead
 from organizations.models import Company
@@ -76,7 +78,7 @@ class CloneLeadView(BaseLeadView, CreateView):
                 mailing_country = self.object.mailing_country,
                 description = self.object.description,
                 tag_list = self.object.tag_list,
-                permission = self.object.permission,
+                permission = self.object.permission,            
             )
             messages.success(self.request, "Successfully cloned lead.")
             return redirect(self.get_success_url())
@@ -92,6 +94,16 @@ class CloneLeadView(BaseLeadView, CreateView):
         return response 
 
     
+class ChangeLeadOwnerView(BaseLeadView, UpdateView):
+    model = Lead
+    fields = ["record_owner"]
+    success_url = reverse_lazy('leads:list')
+
+    def form_valid(self, form):
+        messages.success(self.request, "Lead owner updation successfull.")
+        return super().form_valid(form)    
+
+
 class ListLeadView(BaseLeadView, ListView):
     template_name = 'leads/leads.html'
     queryset = Lead.objects.all()
@@ -126,8 +138,7 @@ class DetailLeadView(BaseLeadView, DetailView):
             "first_name": lead.first_name,
             "last_name": lead.last_name,
             "organization" : lead.organization.id,
-            "title" : lead.title,
-            "lead_status" : lead.lead_status,
+            "title" : lead.title,            
             "mailing_address": lead.mailing_address,
             "mailing_city": lead.mailing_city,
             "mailing_state": lead.mailing_state,
@@ -145,10 +156,16 @@ class DetailLeadView(BaseLeadView, DetailView):
             "lead_source" : lead.lead_source,            
             "description" : lead.description,
             "tag_list" : lead.tag_list,
-            "permission" : lead.permission,
+            "permission" : lead.permission,            
             "created" : lead.created.strftime("%d-%b-%y %I:%M %p"),
             "updated" : lead.updated.strftime("%d/%m/%Y")
         }
+
+        if lead.lead_status:
+            serialized_data["lead_status"] = lead.lead_status,
+
+        if lead.record_owner:
+            serialized_data["record_owner"] = self.object.record_owner.pk
 
         if lead.image:
             serialized_data["image"] = lead.image.url
@@ -196,6 +213,7 @@ class UpdateLeadImageView(BaseLeadView, UpdateView):
 
 
 # For updating lead status using ajax
+@method_decorator(csrf_exempt, name="dispatch")
 class UpdateLeadStatusView(BaseLeadView, UpdateView):
     template_name = 'leads/leads.html'
     pk_url_kwarg = 'pk'

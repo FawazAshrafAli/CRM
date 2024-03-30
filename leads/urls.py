@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (ListLeadView,  CreateLeadView, 
                     UpdateLeadView, UpdateLeadStatusView, 
                     DeleteLeadView, DetailLeadView, 
-                    UpdateLeadImageView, CloneLeadView)
+                    UpdateLeadImageView, CloneLeadView, 
+                    ChangeLeadOwnerView)
 
 app_name= 'leads'
 
@@ -13,6 +14,7 @@ urlpatterns = [
     path('detail/<pk>', DetailLeadView.as_view(), name="detail"),
     path('update/<pk>', UpdateLeadView.as_view(), name= 'update'),
     path('update_image/<pk>', UpdateLeadImageView.as_view(), name= 'update_image'),
+    path('update_owner/<pk>', ChangeLeadOwnerView.as_view(), name= 'update_owner'),
     path('update_lead_status/<pk>', UpdateLeadStatusView.as_view(), name= 'update_lead_status'),
     path('delete/<pk>', DeleteLeadView.as_view(), name='delete'),
 ]
