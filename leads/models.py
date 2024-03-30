@@ -13,7 +13,7 @@ class Lead(models.Model):
     last_name = models.CharField(max_length=100, blank=False, null=False)
     organization = models.ForeignKey(Company, on_delete=models.PROTECT)
     title = models.CharField(max_length=150, blank=False, null=False)
-    lead_status = models.CharField(max_length=150, blank=False, null=False)
+    lead_status = models.CharField(max_length=150, blank=False, null=False, default = 'Not Contacted')
     user_responsible = models.ForeignKey(CrmUser, on_delete=models.PROTECT, blank=True, null=True, related_name="user_responsible")
     lead_rating = models.IntegerField(blank=True, null=True)
 
@@ -47,5 +47,7 @@ class Lead(models.Model):
     # Permissions
     permission = models.CharField(max_length=100, blank=True, null=True)
     
+    record_owner = models.ForeignKey(CrmUser, on_delete=models.CASCADE, blank=True, null=True)
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
