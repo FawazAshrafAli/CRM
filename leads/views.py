@@ -1,11 +1,12 @@
 from django.http import HttpRequest, HttpResponse, Http404
-from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
+from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView, View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.http import Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import ProtectedError
 
 from .models import Lead
 from organizations.models import Company
@@ -211,19 +212,17 @@ class UpdateLeadStatusView(BaseLeadView, UpdateView):
         return JsonResponse(data)
 
 
-class DeleteLeadView(BaseLeadView, DeleteView):
-    template_name = 'leads/confirm_deletion.html'
+class DeleteLeadView(BaseLeadView, View):    
+    modal = Lead
     pk_url_kwarg = 'pk'
     success_url = reverse_lazy('leads:list')
 
-    def get(self, request, *args , **kwargs):
+    def get(self, request, *args, **kwargs):
         try:
-            return super().get(request, *args, **kwargs)
-        except Http404:
-            messages.error(self.request, 'Invalid lead')
+            self.object = get_object_or_404(Lead, pk = self.kwargs['pk'])
+            self.object.delete()
+            messages.success(self.request, "Lead deleted successfully.")
+            return redirect(self.success_url)
+        except ProtectedError:
+            messages.error(self.request, "Cannot delete this lead object since it has relation with objects of other models.")
             return redirect(reverse_lazy('leads:list'))
-
-    def delete(self, request, *args, **kwargs):
-        response =  super().delete(request, *args, **kwargs)
-        messages.success(self.request, 'Lead Deleted.')
-        return response
