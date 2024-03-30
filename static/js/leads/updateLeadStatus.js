@@ -1,10 +1,11 @@
-function updateLeadStatus(leadId, newStatus) {				
+function updateLeadStatus(leadId, newStatus) {
+    window.alert(leadId)			
     $.ajax({
         type: 'POST',
         url: `/leads/update_lead_status/${leadId}`,
         data: {
             new_status: newStatus,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
+            // csrfmiddlewaretoken: '{{ csrf_token }}'
         },
         success: function(response) {
             loadLeadDetails(leadId)									            
