@@ -239,6 +239,7 @@ class DeleteContactView(BaseContactView, DeleteView):
 class LeadConvertion(BaseContactView, CreateView):
     modal = Lead
     fields = "__all__"
+    success_url = reverse_lazy('contacts:list')
 
     def get_object(self, **kwargs):
         try:
@@ -257,6 +258,7 @@ class LeadConvertion(BaseContactView, CreateView):
 
         try:
             Lead.objects.create(
+                image = self.object.image,
                 prefix = self.object.prefix,
                 first_name = self.object.first_name,
                 last_name = self.object.last_name,
