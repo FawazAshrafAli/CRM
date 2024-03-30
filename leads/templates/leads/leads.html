@@ -705,7 +705,7 @@
 															<div class="dropdown-menu dropdown-menu-right">
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_lead_modal" data-lead-id="{{lead.pk}}" onclick="editLead({{lead.pk}}); return false;">Edit This Lead</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_lead_image_modal" data-lead-id="{{lead.pk}}" onclick="changeLeadImage({{lead.pk}}); return false;">Change Lead Image</a>
-								                                <a class="dropdown-item" href="#">Delete This Lead</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#lead_deletion_modal" data-lead-id="{{lead.pk}}" onclick="deleteLead({{lead.pk}}); return false;">Delete This Lead</a>
 								                                <a class="dropdown-item" href="#">Email This Lead</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone_lead_modal" data-lead-id="{{lead.pk}}" onclick="cloneLead({{lead.pk}}); return false;">Clone This Lead</a>
 								                                <a class="dropdown-item" href="#">Change Record Owner</a>
@@ -1225,6 +1225,35 @@
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Change Lead Image) -->
 
+			<!-- Modal (Delete Lead) -->
+			<div class="modal fade" id="lead_deletion_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Deleting Lead '<span id="deleting-lead-object"></span>'</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="GET" id="lead-deletion-form">
+										{% csrf_token %}
+						            	<h4>Are you sure?</h4>						            						                
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Yes</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Delete Lead) -->
 
 			<!-- Modal (Clone Lead) -->
 			<div class="modal fade" id="clone_lead_modal" tabindex="-1" role="dialog" aria-modal="true">
@@ -1232,7 +1261,7 @@
 					<div class="modal-content">
 
 						<div class="modal-header">
-		                    <h4 class="modal-title text-center">Clone Lead '<span id="cloning-lead-object"></span>'</h4>
+		                    <h4 class="modal-title text-center">Cloning Lead '<span id="cloning-lead-object"></span>'</h4>
 		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
 		                  </div>
 
@@ -3625,6 +3654,9 @@
 
 		<!-- Change Lead Image Function -->
 		<script src={% static 'js/leads/changeLeadImage.js' %}></script>
+
+		<!-- Delete Lead Function -->
+		<script src={% static 'js/leads/deleteLead.js' %}></script>
 
 		<!-- Clone Lead Function -->
 		<script src={% static 'js/leads/cloneLead.js' %}></script>
