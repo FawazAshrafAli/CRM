@@ -236,7 +236,7 @@ class DeleteContactView(BaseContactView, DeleteView):
         return super().form_valid(form)
     
 
-class LeadConvertion(BaseContactView, CreateView):
+class LeadConvertionView(BaseContactView, CreateView):
     modal = Lead
     fields = "__all__"
     success_url = reverse_lazy('contacts:list')
