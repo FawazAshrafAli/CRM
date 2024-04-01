@@ -49,5 +49,7 @@ class Lead(models.Model):
     
     record_owner = models.ForeignKey(CrmUser, on_delete=models.CASCADE, blank=True, null=True)
 
+    archived = models.BooleanField(default=False)
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
