@@ -13,6 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Lead
 from organizations.models import Company
 from authentication.models import CrmUser
+from contacts.models import Contact
+from deals.models import Deal
 
 class BaseLeadView(LoginRequiredMixin):
     model = Lead
@@ -106,7 +108,7 @@ class ChangeLeadOwnerView(BaseLeadView, UpdateView):
 
 class ListLeadView(BaseLeadView, ListView):
     template_name = 'leads/leads.html'
-    queryset = Lead.objects.all()
+    queryset = Lead.objects.all().exclude(archived = True)
     context_object_name = 'leads'
 
     def get_context_data(self, **kwargs):
@@ -244,3 +246,103 @@ class DeleteLeadView(BaseLeadView, View):
         except ProtectedError:
             messages.error(self.request, "Cannot delete this lead object since it has relation with objects of other models.")
             return redirect(reverse_lazy('leads:list'))
+        
+
+
+class ChangeLeadToContact(BaseLeadView, CreateView):
+    model = Lead
+    pk_url_kwarg = 'pk'
+    success_url = reverse_lazy('leads:list')
+
+    def get_object(self, **kwargs):
+        try:
+            return get_object_or_404(Lead, pk = self.kwargs['pk'])
+        except Http404:
+            return redirect(reverse_lazy('authentication:error404'))
+        
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.contact_object = get_object_or_404(Contact, 
+                              prefix = self.object.prefix, 
+                              first_name = self.object.first_name, 
+                              last_name = self.object.last_name,
+                              organization = self.object.organization,
+                              email = self.object.email,
+                              phone = self.object.phone
+                              )
+            self.contact_object.archived = False
+            self.contact_object.save()            
+            self.object.delete()
+            messages.success(self.request, "Change lead to contacts successfully.")
+            return redirect(self.get_success_url())
+        except Http404:
+            try:
+                Contact.objects.create(
+                    image = self.object.image,
+                    prefix = self.object.prefix,
+                    first_name = self.object.first_name,
+                    last_name = self.object.last_name,
+                    organization = self.object.organization,
+                    title = self.object.title,
+                    email = self.object.email,
+                    email_opted_out = self.object.email_opted_out,
+                    phone = self.object.phone,                
+                    mobile_phone = self.object.mobile_phone,                
+                    fax = self.object.fax,                
+                    mailing_address = self.object.mailing_address,
+                    mailing_city = self.object.mailing_city,
+                    mailing_state = self.object.mailing_state,
+                    mailing_postal_code = self.object.mailing_postal_code,
+                    mailing_country = self.object.mailing_country,                
+                    description = self.object.description,
+                    permission = self.object.permission,
+                    tag_list = self.object.tag_list,                
+                    record_owner = self.object.record_owner,                                
+                )
+                self.object.delete()
+                messages.success(self.request, "Change lead to contacts successfully.")
+                return redirect(self.get_success_url())
+            except Http404:
+                pass
+
+
+
+class ChangeLeadToDeal(BaseLeadView, CreateView):
+    model = Lead
+    pk_url_kwarg = 'pk'
+    success_url = reverse_lazy('leads:list')
+
+    def get_object(self, **kwargs):
+        try:
+            return get_object_or_404(Lead, pk = self.kwargs['pk'])
+        except Http404:
+            return redirect(reverse_lazy('authentication:error404'))
+        
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.last_name:
+            self.full_name = f"{self.object.first_name} {self.object.last_name}"
+        try:
+            get_object_or_404(Deal, 
+                              name = self.full_name,
+                              company = self.object.organization,                              
+                              )            
+            messages.success(self.request, "Similer deal already exists.")
+            return redirect(self.get_success_url())
+        except Http404:
+            try:
+                deal = Deal.objects.create(
+                    name = self.full_name,
+                    company = self.object.organization,                                                                                
+                    user_responsible = self.object.user_responsible,
+                    description = self.object.description,
+                    tag_list = self.object.tag_list,                    
+                )
+                deal.stage.clear()
+                self.object.archived = True
+                self.object.save()
+                messages.success(self.request, "Changed lead to deal successfully.")
+                return redirect(self.get_success_url())
+            except Http404:
+                pass

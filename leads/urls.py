@@ -3,7 +3,8 @@ from .views import (ListLeadView,  CreateLeadView,
                     UpdateLeadView, UpdateLeadStatusView, 
                     DeleteLeadView, DetailLeadView, 
                     UpdateLeadImageView, CloneLeadView, 
-                    ChangeLeadOwnerView)
+                    ChangeLeadOwnerView, ChangeLeadToContact, 
+                    ChangeLeadToDeal)
 
 app_name= 'leads'
 
@@ -16,5 +17,7 @@ urlpatterns = [
     path('update_image/<pk>', UpdateLeadImageView.as_view(), name= 'update_image'),
     path('update_owner/<pk>', ChangeLeadOwnerView.as_view(), name= 'update_owner'),
     path('update_lead_status/<pk>', UpdateLeadStatusView.as_view(), name= 'update_lead_status'),
+    path('covert_to_contact/<pk>', ChangeLeadToContact.as_view(), name= 'covert_to_contact'),
+    path('covert_to_deal/<pk>', ChangeLeadToDeal.as_view(), name= 'covert_to_deal'),
     path('delete/<pk>', DeleteLeadView.as_view(), name='delete'),
 ]

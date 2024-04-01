@@ -710,7 +710,7 @@
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone_lead_modal" data-lead-id="{{lead.pk}}" onclick="cloneLead({{lead.pk}}); return false;">Clone This Lead</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_lead_owner_modal" data-lead-id="{{lead.pk}}" onclick="changeLeadOwner({{lead.pk}}); return false;">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Change Lead to Contact</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#lead_to_contact_modal" data-lead-id="{{lead.pk}}" onclick="changeLeadTOContact({{lead.pk}}); return false;">Change Lead to Contact</a>
 								                                <a class="dropdown-item" href="#">Convert Lead</a>
 								                                <a class="dropdown-item" href="#">Print This Lead</a>
 								                                <a class="dropdown-item" href="#">Merge Into Lead</a>
@@ -1325,6 +1325,36 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Change Lead Owner) -->
+
+			<!-- Modal (Lead to Contact) -->
+			<div class="modal fade" id="lead_to_contact_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Change Lead to Contact '<span id="converting-lead-object"></span>'</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="lead-to-contact-form">
+										{% csrf_token %}
+						            	<h4>Are you sure?</h4>						            						                
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Yes</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Lead to Contact) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="leads-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -3704,6 +3734,9 @@
 
 		<!-- Change Lead Owner Function -->
 		<script src={% static 'js/leads/changeLeadOwner.js' %}></script>
+
+		<!-- Change Lead To Contact Function -->
+		<script src={% static 'js/leads/changeLeadTOContact.js' %}></script>
 
 		<!-- Message TimeOut Function -->
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>
