@@ -697,7 +697,7 @@
 													<td id="lead-status-{{lead.pk}}">{{lead.lead_status}}</td>
 													{% comment %} <td>03-Jun-20 1:14 AM</td> {% endcomment %}
 													<td>{{lead.created|date:"d-b-y h:i A"}}</td>
-													<td>John Doe</td>
+													<td>{{lead.lead_owner}}</td>
 						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
 						                            <td class="text-center">
 														<div class="dropdown dropdown-action">
@@ -710,8 +710,8 @@
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone_lead_modal" data-lead-id="{{lead.pk}}" onclick="cloneLead({{lead.pk}}); return false;">Clone This Lead</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_lead_owner_modal" data-lead-id="{{lead.pk}}" onclick="changeLeadOwner({{lead.pk}}); return false;">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#lead_to_contact_modal" data-lead-id="{{lead.pk}}" onclick="changeLeadTOContact({{lead.pk}}); return false;">Change Lead to Contact</a>
-								                                <a class="dropdown-item" href="#">Convert Lead</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#lead_to_contact_modal" data-lead-id="{{lead.pk}}" onclick="changeLeadToContact({{lead.pk}}); return false;">Change Lead to Contact</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#lead_to_deal_modal" data-lead-id="{{lead.pk}}" onclick="changeLeadToDeal({{lead.pk}})">Convert Lead To Deal</a>
 								                                <a class="dropdown-item" href="#">Print This Lead</a>
 								                                <a class="dropdown-item" href="#">Merge Into Lead</a>
 								                                <a class="dropdown-item" href="#">SmartMerge Lead</a>
@@ -1356,6 +1356,32 @@
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Lead to Contact) -->
 
+			<!-- Modal (Lead to Deal) -->
+			<div class="modal fade" id="lead_to_deal_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Change Lead to Deal '<span id="converting-lead-to-deal-object"></span>'</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="lead-to-deal-form">
+										{% csrf_token %}
+						            	<h4>Are you sure?</h4>						            						                
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Yes</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+						</div>
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Lead to Deal) -->
+
 			<!--system users Modal -->
             <div class="modal right fade" id="leads-details" tabindex="-1" role="dialog" aria-modal="true">
               <div class="modal-dialog" role="document">
@@ -1389,7 +1415,7 @@
                                   	<a class="dropdown-item" href="#">Change Record Owner</a>
                                   	<a class="dropdown-item" href="#">Generate Merge Document</a>
                                   	<a class="dropdown-item" href="#">Change Lead to Contact</a>
-                                  	<a class="dropdown-item" href="#">Convert Lead</a>
+                                  	<a class="dropdown-item" href="#">Convert Lead To Deal</a>
                                   	<a class="dropdown-item" href="#">Print This Lead</a>
                                   	<a class="dropdown-item" href="#">Merge Into Lead</a>
                                   	<a class="dropdown-item" href="#">SmartMerge Lead</a>
@@ -1410,23 +1436,23 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Lead Status</span>
-	                        <p class="lead-status">None</p>
+	                        <p class="lead-status"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Name</span>
-	                        <p class="lead-full-name">None</p>
+	                        <p class="lead-full-name"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Lead Source</span>
-	                        <p class="lead-source">None</p>
+	                        <p class="lead-source"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Lead Rating</span>
-	                        <p class="lead-rating">None</p>
+	                        <p class="lead-rating"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Lead owner</span>
-	                        <p>John Doe</p>
+	                        <p class="lead-owner"></p>
 	                      </div>
 	                    </div>
 	                </div>
@@ -1436,32 +1462,27 @@
                   <div class="modal-body">
 	                <div class="row">
 	                  	<div class="col-md-12">
-	                  		<ul class="cd-breadcrumb triangle nav nav-tabs w-100 crms-steps" role="tablist">
+	                  		<ul class="cd-breadcrumb triangle nav nav-tabs w-100 crms-steps" role="tablist" id="status-indicator">
 							    <li role="presentation">
-							        <a href="#not-contacted" class="lead-status-indicator" aria-controls="not-contacted" role="tab" data-bs-toggle="tab" aria-expanded="true" onclick="updateLeadStatus(this.value, 'Not Contacted');">
-							              <span class="octicon octicon-light-bulb"></span>Not Contacted
+							        <a href="#not-contacted" class="lead-status-indicator" id="not-contacted-status" aria-controls="not-contacted" role="tab" data-bs-toggle="tab" aria-expanded="true" onclick="updateLeadStatus(this.value, 'Not Contacted');">
+										<span class="octicon octicon-light-bulb"></span>Not Contacted
 							         </a>
 							    </li>
 							    <li role="presentation">
-							        <a href="#attempted-contact" class="lead-status-indicator" aria-controls="attempted-contact" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Attempted Contact')">
+							        <a href="#attempted-contact" class="lead-status-indicator" id="attempted-contact-status" aria-controls="attempted-contact" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Attempted Contact')">
 							            <span class="octicon octicon-diff-added"></span>Attempted Contact
 							        </a>
 							    </li>
 							    <li role="presentation">
-							        <a href="#contact" class="lead-status-indicator" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Contacted')">
-							            <span class="octicon octicon-comment-discussion"></span>Contacted
+							        <a href="#contact" class="lead-status-indicator" id="contacted-status" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Contacted')">
+							            <span class="octicon octicon-comment-discussionr"></span>Contacted
 							        </a>
 							    </li>
 							     <li role="presentation">
-							        <a href="#converted" class="lead-status-indicator" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Converted')">
+							        <a href="#converted" class="lead-status-indicator" id="converted-status" aria-controls="contact" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Converted')">
 							            <span class="octicon octicon-comment-discussion"></span>Converted
 							        </a>
-							    </li>
-							    <li role="presentation" class="d-none">
-							        <a href="#converted" class="lead-status-indicator" aria-controls="converted" role="tab" data-bs-toggle="tab" aria-expanded="false" onclick="updateLeadStatus(this.value, 'Converted')">
-							            <span class="octicon octicon-verified"></span>Converted
-							       	</a>
-							    </li>
+							    </li>							    
 						   
 							</ul>
 	                  	</div>
@@ -1488,51 +1509,51 @@
 							                                <tbody>
 							                                  <tr>
 							                                    <td class="border-0">Record ID</td>
-							                                    <td class="border-0 lead-id">None</td>
+							                                    <td class="border-0 lead-id"></td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Name</td>
-							                                    <td class="lead-full-name">None</td>
+							                                    <td class="lead-full-name"></td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Title</td>
-							                                    <td class="lead-title">None</td>
+							                                    <td class="lead-title"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Organization</td>
-							                                  	<td class="lead-organization">None</td>
+							                                  	<td class="lead-organization"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Status</td>
-							                                  	<td class="lead-status">None</td>
+							                                  	<td class="lead-status"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>User Responsible</td>
-							                                  	<td class="lead-user-responsible">None</td>
+							                                  	<td class="lead-user-responsible"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Link Email Address</td>
-							                                  	<td class="lead-email">None</td>
+							                                  	<td class="lead-email"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Owner</td>
-							                                  	<td>None</td>
+							                                  	<td class="lead-owner"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Created</td>
-							                                  	<td class="lead-created">None</td>
+							                                  	<td class="lead-created"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Last Activity</td>
-							                                  	<td class="lead-updated">None</td>
+							                                  	<td class="lead-updated"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Next Activity</td>
-							                                  	<td>None</td>
+							                                  	<td></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Rating</td>
-							                                  	<td class="lead-rating">None</td>
+							                                  	<td class="lead-rating"></td>
 							                                  </tr>
 							                                </tbody>
 							                            </table>
@@ -1547,39 +1568,39 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td>Email Address</td>
-						                                    <td class="lead-email">None</td>
+						                                    <td class="lead-email"></td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Email Opted Out</td>
-						                                    <td class="text-capitalize lead-email-opted-out">None</td>
+						                                    <td class="text-capitalize lead-email-opted-out"></td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Phone</td>
-						                                    <td class="lead-phone">None</td>
+						                                    <td class="lead-phone"></td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Mobile Phone</td>
-						                                    <td class="lead-mobile-phone">None</td>
+						                                    <td class="lead-mobile-phone"></td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Fax</td>
-						                                    <td class="lead-fax">None</td>
+						                                    <td class="lead-fax"></td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Website</td>
-						                                    <td class="lead-website">None</td>
+						                                    <td class="lead-website"></td>
 						                                  </tr>
 						                                  <tr>
 						                                    <td>Industry</td>
-						                                    <td class="lead-industry">None</td>
+						                                    <td class="lead-industry"></td>
 						                                  </tr>
 						                                  <tr>
 						                                  	<td>Number of Employees</td>
-						                                  	<td class="lead-number-of-employees">None</td>
+						                                  	<td class="lead-number-of-employees"></td>
 						                                  </tr>
 						                                  <tr>
 						                                  	<td>Lead Source</td>
-						                                  	<td class="lead-source">None</td>
+						                                  	<td class="lead-source"></td>
 						                                  </tr>
 						                                  
 						                                </tbody>
@@ -1595,7 +1616,7 @@
 						                                <tbody>
 							                                <tr>
 							                                    <td>Address</td>
-							                                    <td class="lead-mailing-address">None</td>
+							                                    <td class="lead-mailing-address"></td>
 							                                </tr>
 						                                </tbody>
 						                            </table>
@@ -1611,7 +1632,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td>Description</td>
-						                                    <td class="lead-description">None</td>
+						                                    <td class="lead-description"></td>
 						                                  </tr>
 						                                </tbody>
 						                            </table>
@@ -1628,7 +1649,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td class="border-0">Tag List</td>
-						                                    <td class="border-0 lead-tag-list">None</td>
+						                                    <td class="border-0 lead-tag-list"></td>
 						                                  </tr>
 						                                </tbody>
 						                              </table>
@@ -1995,51 +2016,51 @@
 							                                <tbody>
 							                                  <tr>
 							                                    <td>Record ID</td>
-							                                    <td class="lead-id">None</td>
+							                                    <td class="lead-id"></td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Name</td>
-							                                    <td class="lead-full-name">None</td>
+							                                    <td class="lead-full-name"></td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Title</td>
-							                                    <td class="lead-title">None</td>
+							                                    <td class="lead-title"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Organization</td>
-							                                  	<td class="lead-organization">None</td>
+							                                  	<td class="lead-organization"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Status</td>
-							                                  	<td class="lead-status">None</td>
+							                                  	<td class="lead-status"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>User Responsible</td>
-							                                  	<td class="lead-user-responsible">None</td>
+							                                  	<td class="lead-user-responsible"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Link Email Address</td>
-							                                  	<td class="lead-email">None</td>
+							                                  	<td class="lead-email"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Owner</td>
-							                                  	<td class="lead-owner">None</td>
+							                                  	<td class="lead-owner"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Created</td>
-							                                  	<td class="lead-created">None</td>
+							                                  	<td class="lead-created"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Last Activity</td>
-							                                  	<td class="lead-updated">None</td>
+							                                  	<td class="lead-updated"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Next Activity</td>
-							                                  	<td>None</td>
+							                                  	<td></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Rating</td>
-							                                  	<td class="lead-rating">None</td>
+							                                  	<td class="lead-rating"></td>
 							                                  </tr>
 							                                </tbody>
 							                            </table>
@@ -2054,39 +2075,39 @@
 						                                <tbody>
 															<tr>
 																<td>Email Address</td>
-																<td class="lead-email">None</td>
+																<td class="lead-email"></td>
 															  </tr>
 															  <tr>
 																<td>Email Opted Out</td>
-																<td class="text-capitalize lead-email-opted-out">None</td>
+																<td class="text-capitalize lead-email-opted-out"></td>
 															  </tr>
 															  <tr>
 																<td>Phone</td>
-																<td class="lead-phone">None</td>
+																<td class="lead-phone"></td>
 															  </tr>
 															  <tr>
 																<td>Mobile Phone</td>
-																<td class="lead-mobile-phone">None</td>
+																<td class="lead-mobile-phone"></td>
 															  </tr>
 															  <tr>
 																<td>Fax</td>
-																<td class="lead-fax">None</td>
+																<td class="lead-fax"></td>
 															  </tr>
 															  <tr>
 																<td>Website</td>
-																<td class="lead-website">None</td>
+																<td class="lead-website"></td>
 															  </tr>
 															  <tr>
 																<td>Industry</td>
-																<td class="lead-industry">None</td>
+																<td class="lead-industry"></td>
 															  </tr>
 															  <tr>
 																  <td>Number of Employees</td>
-																  <td class="lead-number-of-employees">None</td>
+																  <td class="lead-number-of-employees"></td>
 															  </tr>
 															  <tr>
 																  <td>Lead Source</td>
-																  <td class="lead-source">None</td>
+																  <td class="lead-source"></td>
 															  </tr>
 						                                  
 						                                </tbody>
@@ -2102,7 +2123,7 @@
 						                                <tbody>
 							                                <tr>
 							                                    <td> Address</td>
-							                                    <td class="lead-mailing-address">None</td>
+							                                    <td class="lead-mailing-address"></td>
 							                                </tr>
 						                                </tbody>
 						                            </table>
@@ -2118,7 +2139,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td>Description</td>
-						                                    <td class="lead-description">None</td>
+						                                    <td class="lead-description"></td>
 						                                  </tr>
 						                                </tbody>
 						                            </table>
@@ -2135,7 +2156,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td class="border-0">Tag List</td>
-						                                    <td class="border-0 lead-tag-list">None</td>
+						                                    <td class="border-0 lead-tag-list"></td>
 						                                  </tr>
 						                                </tbody>
 						                              </table>
@@ -2502,51 +2523,51 @@
 							                                <tbody>
 							                                  <tr>
 							                                    <td>Record ID</td>
-							                                    <td class="lead-id">None</td>
+							                                    <td class="lead-id"></td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Name</td>
-							                                    <td class="lead-full-name">None</td>
+							                                    <td class="lead-full-name"></td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Title</td>
-							                                    <td class="lead-title">None</td>
+							                                    <td class="lead-title"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Organization</td>
-							                                  	<td class="lead-organization">None</td>
+							                                  	<td class="lead-organization"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Status</td>
-							                                  	<td class="lead-status">None</td>
+							                                  	<td class="lead-status"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>User Responsible</td>
-							                                  	<td class="lead-user-responsible">None</td>
+							                                  	<td class="lead-user-responsible"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Link Email Address</td>
-							                                  	<td class="lead-email">None</td>
+							                                  	<td class="lead-email"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Owner</td>
-							                                  	<td class="lead-owner">None</td>
+							                                  	<td class="lead-owner"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Created</td>
-							                                  	<td class="lead-created">None</td>
+							                                  	<td class="lead-created"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Last Activity</td>
-							                                  	<td class="lead-updated">None</td>
+							                                  	<td class="lead-updated"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Next Activity</td>
-							                                  	<td>None</td>
+							                                  	<td></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Rating</td>
-							                                  	<td class="lead-rating">None</td>
+							                                  	<td class="lead-rating"></td>
 							                                  </tr>
 							                                </tbody>
 							                            </table>
@@ -2561,39 +2582,39 @@
 						                                <tbody>
 															<tr>
 																<td>Email Address</td>
-																<td class="lead-email">None</td>
+																<td class="lead-email"></td>
 															  </tr>
 															  <tr>
 																<td>Email Opted Out</td>
-																<td class="text-capitalize lead-email-opted-out">None</td>
+																<td class="text-capitalize lead-email-opted-out"></td>
 															  </tr>
 															  <tr>
 																<td>Phone</td>
-																<td class="lead-phone">None</td>
+																<td class="lead-phone"></td>
 															  </tr>
 															  <tr>
 																<td>Mobile Phone</td>
-																<td class="lead-mobile-phone">None</td>
+																<td class="lead-mobile-phone"></td>
 															  </tr>
 															  <tr>
 																<td>Fax</td>
-																<td class="lead-fax">None</td>
+																<td class="lead-fax"></td>
 															  </tr>
 															  <tr>
 																<td>Website</td>
-																<td class="lead-website">None</td>
+																<td class="lead-website"></td>
 															  </tr>
 															  <tr>
 																<td>Industry</td>
-																<td class="lead-industry">None</td>
+																<td class="lead-industry"></td>
 															  </tr>
 															  <tr>
 																  <td>Number of Employees</td>
-																  <td class="lead-number-of-employees">None</td>
+																  <td class="lead-number-of-employees"></td>
 															  </tr>
 															  <tr>
 																  <td>Lead Source</td>
-																  <td class="lead-source">None</td>
+																  <td class="lead-source"></td>
 															  </tr>
 						                                  
 						                                </tbody>
@@ -2609,7 +2630,7 @@
 						                                <tbody>
 							                                <tr>
 							                                    <td> Address</td>
-							                                    <td class="lead-mailing-address">None</td>
+							                                    <td class="lead-mailing-address"></td>
 							                                </tr>
 						                                </tbody>
 						                            </table>
@@ -2625,7 +2646,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td>Description</td>
-						                                    <td class="lead-description">None</td>
+						                                    <td class="lead-description"></td>
 						                                  </tr>
 						                                </tbody>
 						                            </table>
@@ -2642,7 +2663,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td class="border-0">Tag List</td>
-						                                    <td class="border-0 lead-tag-list">None</td>
+						                                    <td class="border-0 lead-tag-list"></td>
 						                                  </tr>
 						                                </tbody>
 						                              </table>
@@ -3009,51 +3030,51 @@
 							                                <tbody>
 							                                  <tr>
 							                                    <td>Record ID</td>
-							                                    <td class="lead-id">None</td>
+							                                    <td class="lead-id"></td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Name</td>
-							                                    <td class="lead-full-name">None</td>
+							                                    <td class="lead-full-name"></td>
 							                                  </tr>
 							                                  <tr>
 							                                    <td>Title</td>
-							                                    <td class="lead-title">None</td>
+							                                    <td class="lead-title"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Organization</td>
-							                                  	<td class="lead-organization">None</td>
+							                                  	<td class="lead-organization"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Status</td>
-							                                  	<td class="lead-status">None</td>
+							                                  	<td class="lead-status"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>User Responsible</td>
-							                                  	<td class="lead-user-responsible">None</td>
+							                                  	<td class="lead-user-responsible"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Link Email Address</td>
-							                                  	<td class="lead-email">None</td>
+							                                  	<td class="lead-email"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Owner</td>
-							                                  	<td class="lead-owner">None</td>
+							                                  	<td class="lead-owner"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Created</td>
-							                                  	<td class="lead-created">None</td>
+							                                  	<td class="lead-created"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Last Activity</td>
-							                                  	<td class="lead-updated">None</td>
+							                                  	<td class="lead-updated"></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Date of Next Activity</td>
-							                                  	<td>None</td>
+							                                  	<td></td>
 							                                  </tr>
 							                                  <tr>
 							                                  	<td>Lead Rating</td>
-							                                  	<td class="lead-rating">None</td>
+							                                  	<td class="lead-rating"></td>
 							                                  </tr>
 							                                </tbody>
 							                            </table>
@@ -3068,39 +3089,39 @@
 						                                <tbody>
 															<tr>
 																<td>Email Address</td>
-																<td class="lead-email">None</td>
+																<td class="lead-email"></td>
 															  </tr>
 															  <tr>
 																<td>Email Opted Out</td>
-																<td class="text-capitalize lead-email-opted-out">None</td>
+																<td class="text-capitalize lead-email-opted-out"></td>
 															  </tr>
 															  <tr>
 																<td>Phone</td>
-																<td class="lead-phone">None</td>
+																<td class="lead-phone"></td>
 															  </tr>
 															  <tr>
 																<td>Mobile Phone</td>
-																<td class="lead-mobile-phone">None</td>
+																<td class="lead-mobile-phone"></td>
 															  </tr>
 															  <tr>
 																<td>Fax</td>
-																<td class="lead-fax">None</td>
+																<td class="lead-fax"></td>
 															  </tr>
 															  <tr>
 																<td>Website</td>
-																<td class="lead-website">None</td>
+																<td class="lead-website"></td>
 															  </tr>
 															  <tr>
 																<td>Industry</td>
-																<td class="lead-industry">None</td>
+																<td class="lead-industry"></td>
 															  </tr>
 															  <tr>
 																  <td>Number of Employees</td>
-																  <td class="lead-number-of-employees">None</td>
+																  <td class="lead-number-of-employees"></td>
 															  </tr>
 															  <tr>
 																  <td>Lead Source</td>
-																  <td class="lead-source">None</td>
+																  <td class="lead-source"></td>
 															  </tr>
 						                                  
 						                                </tbody>
@@ -3116,7 +3137,7 @@
 						                                <tbody>
 							                                <tr>
 							                                    <td> Address</td>
-							                                    <td class="lead-mailing-address">None</td>
+							                                    <td class="lead-mailing-address"></td>
 							                                </tr>
 						                                </tbody>
 						                            </table>
@@ -3132,7 +3153,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td>Description</td>
-						                                    <td class="lead-description">None</td>
+						                                    <td class="lead-description"></td>
 						                                  </tr>
 						                                </tbody>
 						                            </table>
@@ -3149,7 +3170,7 @@
 						                                <tbody>
 						                                  <tr>
 						                                    <td class="border-0">Tag List</td>
-						                                    <td class="border-0 lead-tag-list">None</td>
+						                                    <td class="border-0 lead-tag-list"></td>
 						                                  </tr>
 						                                </tbody>
 						                              </table>
@@ -3736,7 +3757,10 @@
 		<script src={% static 'js/leads/changeLeadOwner.js' %}></script>
 
 		<!-- Change Lead To Contact Function -->
-		<script src={% static 'js/leads/changeLeadTOContact.js' %}></script>
+		<script src={% static 'js/leads/changeLeadToContact.js' %}></script>
+
+		<!-- Change Lead To Deal Function -->
+		<script src={% static 'js/leads/changeLeadToDeal.js' %}></script>
 
 		<!-- Message TimeOut Function -->
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>
