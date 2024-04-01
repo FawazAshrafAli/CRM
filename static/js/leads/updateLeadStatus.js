@@ -1,5 +1,4 @@
-function updateLeadStatus(leadId, newStatus) {
-    window.alert(leadId)			
+function updateLeadStatus(leadId, newStatus) {    
     $.ajax({
         type: 'POST',
         url: `/leads/update_lead_status/${leadId}`,

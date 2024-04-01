@@ -1,4 +1,4 @@
-function changeLeadTOContact (leadId) {
+function changeLeadToContact (leadId) {
     $.ajax({
         type: 'GET',
         url: '/leads/detail/' + leadId,

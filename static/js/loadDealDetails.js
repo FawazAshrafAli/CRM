@@ -140,57 +140,52 @@ function loadDealDetails(dealId){
                     $(this).html("None");
                 }
             });
+            
+            var array = deal.stages            
+            if (array != null && array != "") {
+                if (array.includes("Prospecting")) {                                
+                    $('#deal-stage-prospecting').removeClass("planning")
+                } else {
+                    $('#deal-stage-prospecting').addClass("planning")
+                };                                 
 
-            var array = deal.stages
-            if (deal.stages != null && deal.stages != "") {                                        
-                $('.deal-stage-prospecting').each(function (){ 
-                    if (!array.includes("Prospecting")) {                                
-                        $(this).addClass("planning")
-                    } else {
-                        $(this).removeClass("planning")
-                    }
-                })                    
+                if (array.includes("Qualification")) {                    
+                    $('#deal-stage-qualification').removeClass("planning")
+                } else {                    
+                    $('#deal-stage-qualification').addClass("planning")
+                };
 
-                $('.deal-stage-qualification').each(function (){                                         
-                    if (!array.includes("Qualification")) {                    
-                        $(this).addClass("planning")
-                    } else {                    
-                        $(this).removeClass("planning")
-                    }
-                })                    
+                if (array.includes("Needs Analysis")) {                    
+                    $('#deal-stage-needs-analysis').removeClass("planning")                    
+                } else {                        
+                    $('#deal-stage-needs-analysis').addClass("planning")
+                };
 
-                $('.deal-stage-needs-analysis').each(function (){
-                    if (!array.includes("Needs Analysis")) {                    
-                        $(this).addClass("planning")
-                    } else {                        
-                            $(this).removeClass("planning")                    
-                    }
-                })
+                if (array.includes("Proposal")) {                    
+                    $('#deal-stage-proposal').removeClass("planning")                    
+                } else {                    
+                    $('#deal-stage-proposal').addClass("planning")
+                };
 
-                $('.deal-stage-proposal').each(function (){
-                    if (!array.includes("Proposal")) {                    
-                        $(this).addClass("planning")
-                    } else {                    
-                        $(this).removeClass("planning")                    
-                    }
-                })
+                if (array.includes("Negotiation")) {                    
+                    $('#deal-stage-negotiation').removeClass("planning")
+                } else {                    
+                    $('#deal-stage-negotiation').addClass("planning")                    
+                };
 
-                $('.deal-stage-negotiation').each(function (){
-                    if (!array.includes("Negotiation")) {                    
-                        $(this).addClass("planning")                    
-                    } else {                    
-                        $(this).removeClass("planning")
-                    }
-                })
-
-                $('.deal-stage-closed-won').each(function (){
-                    if (!array.includes("Closed Won")) {                    
-                        $(this).addClass("planning")                    
-                    } else {                    
-                        $(this).removeClass("planning")
-                    }
-                })
-            }
+                if (array.includes("Closed Won")) {                    
+                    $('#deal-stage-closed-won').removeClass("planning")
+                } else {                    
+                    $('#deal-stage-closed-won').addClass("planning")                    
+                };
+            } else {
+                $('#deal-stage-prospecting').addClass("planning")
+                $('#deal-stage-qualification').addClass("planning")
+                $('#deal-stage-needs-analysis').addClass("planning")
+                $('#deal-stage-proposal').addClass("planning")
+                $('#deal-stage-negotiation').addClass("planning")                    
+                $('#deal-stage-closed-won').addClass("planning")                    
+            };
 
             $('.deal-stage').each(function (){
                 if (deal.stage != null && deal.stage != "") {
