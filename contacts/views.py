@@ -280,6 +280,7 @@ class LeadConvertionView(BaseContactView, CreateView):
             )
             self.object.archived = True
             self.object.save()
+            messages.success(self.request, "Contact has been changed to deal.")
             return redirect(self.get_success_url())
         except Exception as e:
             print(e)
