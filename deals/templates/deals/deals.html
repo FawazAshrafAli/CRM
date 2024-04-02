@@ -709,7 +709,7 @@
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_deal_modal" data-deal-id="{{deal.pk}}" onclick="editDeal({{deal.pk}}); return false;">Edit This Deal</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_deal_image_modal" data-deal-id="{{deal.pk}}" onclick="changeDealImage({{deal.pk}}); return false;">Change Deal Image</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone-deal-modal" data-deal-id="{{deal.pk}}" onclick="cloneDeal({{deal.pk}}); return false;">Clone This Deal</a>
-								                                <a class="dropdown-item" href="#">Delete This Deal</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-deal-modal" data-deal-id="{{deal.pk}}" onclick="deleteDeal({{deal.pk}}); return false;">Delete This Deal</a>
 								                                <a class="dropdown-item" href="#">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
 								                                <a class="dropdown-item" href="#">Print This Deal</a>
@@ -1157,6 +1157,37 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Clone Deal) -->
+
+			<!-- Modal (Delete Deal) -->
+			<div class="modal fade" id="delete-deal-modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    
+							<h4 class="modal-title text-center">Deleting Deal '<span id="deleting-deal-object"></span>'</h4>
+							<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="GET" id="delete-deal-form">
+										{% csrf_token %}
+						            	<h4>Are you sure?</h4>						            	                    
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Yes</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Delete Deal) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="company-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -2727,6 +2758,9 @@
 
 		<!-- Clone Deal Function -->
 		<script src="{% static 'js/deals/cloneDeal.js' %}"></script>
+
+		<!-- Delete Deal Function -->
+		<script src="{% static 'js/deals/deleteDeal.js' %}"></script>
 
 		<!-- Fetch Organization Detail -->
 		<script src="{% static 'js/loadOrganizationDetails.js' %}"></script>
