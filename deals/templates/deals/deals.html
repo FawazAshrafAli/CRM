@@ -568,6 +568,13 @@
 			                  <i class="feather-radio"></i>
 			                </span> Deals </h3>
                 		</div>
+						<div id="message-div">
+							<ul class="messages">
+								{% for message in messages %}
+								<li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
+								{% endfor %}
+							</ul>
+						</div>
                 		<div class="col text-end">
                 			<ul class="breadcrumb bg-white float-end m-0 ps-0 pe-0">
 								<li class="breadcrumb-item"><a href="i{% url 'dashboard:deals_dashboard' %}">Dashboard</a></li>
@@ -669,15 +676,32 @@
 															{% endfor %}																						                                
 							                            </div>
 													</td>
-													<td>{{deal.forecast_close_date}}</td>
-													<td>{{deal.user_responsible.name}}</td>
-													<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
+													<td>
+														{% if deal.forecast_close_date %}
+														{{deal.forecast_close_date}}
+														{% else %}
+														Not scheduled
+														{% endif %}
+													</td>
+													<td>
+														{% if deal.user_responsible %}
+														{{deal.user_responsible.name}}
+														{% else %}
+														None
+														{% endif %}
+													</td>
+													<td>
+														{% if deal.bid_amount %}
+														{{deal.deal_value}}‎{{deal.bid_amount}}</td>
+														{% else %}
+														None
+														{% endif %}
 						                            <td class="checkBox"><i class="fa fa-star" aria-hidden="true"></i></td>
 						                            <td class="text-center">
 														<div class="dropdown dropdown-action">
 															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Deal</a>
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_deal_modal" data-deal-id="{{deal.pk}}" onclick="editDeal({{deal.pk}}); return false;">Edit This Deal</a>
 								                                <a class="dropdown-item" href="#">Change Deal Image</a>
 								                                <a class="dropdown-item" href="#">Clone This Deal</a>
 								                                <a class="dropdown-item" href="#">Delete This Deal</a>
@@ -908,6 +932,157 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal -->
+
+			<!-- Modal (Edit Deal) -->
+			<div class="modal right fade" id="edit_deal_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    
+							<h4 class="modal-title text-center">Edit Deal</h4>
+							<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="edit-deal-form">
+										{% csrf_token %}
+						            	<h4>Deal Details</h4>
+						            	<div class="form-group row">
+				                            <div class="col-md-6">
+				                            	<label class="col-form-label">Deal Name <span class="text-danger">*</span></label>
+                            					<input class="form-control" type="text" name="name" id="name-value" placeholder="Deal Name" required>
+				                            </div>
+				                            <div class="col-md-6">
+				                            	<label class="col-form-label">Company</label>
+					                            <select class="form-control" name="company" id="company-select" required>
+					                                <option hidden>-- Select --</option>
+													{% for organization in organizations %}
+													<option value="{{organization.pk}}">{{organization.name}}</option>
+													{% endfor %}
+					                            </select>
+				                            </div>
+				                        </div>
+				                        <h4>Additional Information</h4>
+						                <div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Category</label>
+					                            <select class="form-control" name="category" id="category-select" required>
+					                                <option value="Email">Email</option>
+					                                <option value="Follow up">Follow up</option>
+					                                <option value="Get Started">Get Started</option>
+					                                <option value="Meeting">Meeting</option>
+					                                <option value="Phone call">Phone call</option>
+					                            </select>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Probability Of Winning</label>
+                            					<input class="form-control" type="text" name="probability_of_winning" id="probability-of-winning-value" placeholder="Probability Of Winning">
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Forecast Close Date <span class="text-danger">*</span></label>
+				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="forecast_close_date" id="forecast-close-date-value" placeholder="MM/DD/YY"></div>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Actual Close Date <span class="text-danger">*</span></label>
+				                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="actual_close_date" id="actual-close-date-value" placeholder="MM/DD/YY"></div>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">User Responsible</label>
+						                        <select class="form-control" name="user_responsible" id="user-responsible-select" required>
+						                            <option hidden> -- select --</option>
+													{% for user in users %}
+													<option value="{{user.pk}}">{{user.name}}</option>
+													{% endfor %}
+						                        </select>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Deal Value</label>
+					                            <div class="row">
+					                              <div class="col-md-4">
+					                                <select class="form-control" name="deal_value" id="deal-value-select">
+					                                    <option value="USD $">USD $</option>
+					                                    <option value="INR &#8377;">INR &#8377;</option>
+					                                </select>
+					                              </div>
+					                              <div class="col-md-4">
+					                                <input type="text" name="bid_amount" id="bid-amount-value" class="form-control"  placeholder="Bid Amount">
+					                              </div>
+					                              <div class="col-md-4">
+					                                <select class="form-control" name="bid_type" id="bid-type-select">
+					                                    <option value="Fixed Bid">Fixed Bid</option>
+					                                    <option value="Per Hour">Per Hour</option>
+					                                    <option value="Per Day">Per Day</option>
+					                                </select>
+					                              </div>
+					                            </div>
+											</div>
+										</div>
+										<h4>Description Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Description </label>
+				                            	<textarea class="form-control" rows="3" id="description-value" name="description" placeholder="Description"></textarea>
+											</div>
+										</div>
+										<h4>Tag Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Tag List</label>
+                            					<input type="text" class="form-control" name="tag_list" id="tag-list-value" placeholder="Tag List">
+											</div>
+										</div>
+										<h4>Pipeline & Stages</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Pipeline</label>
+						                        <select class="form-control" name="pipeline" id="pipeline-select">
+													<option hidden>-- Select --</option>
+						                            <option value="Deal Pipeline">Deal Pipeline</option>
+						                        </select>
+											</div>
+											<div class="col-md-6">
+												<label class="col-form-label">Stage</label>
+					                            <select class="form-control" name="stage" id="stage-select" multiple>
+					                                <option hidden>-- select --</option>
+													{% for stage in stages %}
+													<option value="{{stage.id}}">{{stage}}</option>
+													{% endfor %}
+					                            </select>
+											</div>
+											
+										</div>
+										<h4>Permissions</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Visibility</label>
+					                            <select class="form-control" name="visibility" id="visibility-select">
+													<option hidden>-- select --</option>
+					                                <option value="Everyone">Everyone</option>
+					                                <option value="Select a team">Select a team</option>
+					                             </select>
+											</div>
+											
+										</div>
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Edit Deal) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="company-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -1752,12 +1927,12 @@
                     </div>
                   	<div class="row">
                   		<div class="pipeline-small flat ps-3 pe-3 w-100">
-		                    <a class="won noselect tipped-top text-white deal-stage-prospecting" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Prospecting</span></a>
-		                    <a class="won noselect tipped-top bg-gray text-white deal-stage-qualification" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Qualification</span></a>
-		                    <a class="won noselect tipped-top text-white deal-stage-needs-analysis" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Needs Analysis</span></a>
-		                    <a class="won noselect tipped-top text-white deal-stage-proposal" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Proposal</span></a>
-		                    <a class="won noselect tipped-top text-white deal-stage-negotiation" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Negotiation</span></a>
-		                    <a class="won noselect tipped-top text-white padding deal-stage-closed-won" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;Closed Won</a>
+		                    <a class="won noselect tipped-top planning text-white" id="deal-stage-prospecting" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Prospecting</span></a>
+		                    <a class="won noselect tipped-top planning bg-gray text-white" id="deal-stage-qualification" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Qualification</span></a>
+		                    <a class="won noselect tipped-top planning text-white" id="deal-stage-needs-analysis" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Needs Analysis</span></a>
+		                    <a class="won noselect tipped-top planning text-white" id="deal-stage-proposal" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Proposal</span></a>
+		                    <a class="won noselect tipped-top planning text-white" id="deal-stage-negotiation" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;<i class="fa fa-check" aria-hidden="true"></i><br><span>Negotiation</span></a>
+		                    <a class="won noselect tipped-top planning text-white padding" id="deal-stage-closed-won" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Pipeline: Deal Pipeline">&nbsp;Closed Won</a>
 	                    </div>
                   	</div>
                     <div class="task-infos pt-3">
@@ -2468,9 +2643,15 @@
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 		<!-- Deal Detail js -->
-		<script src="{% static 'js/loadDealDetails.js' %}"></script>
+		<script src="{% static 'js/deals/loadDealDetails.js' %}"></script>
+
+		<!-- Edit Deal Function -->
+		<script src="{% static 'js/deals/editDeal.js' %}"></script>
 
 		<!-- Fetch Organization Detail -->
 		<script src="{% static 'js/loadOrganizationDetails.js' %}"></script>
+
+		<!-- Message Time Out -->
+		<script src="{% static 'js/messageTimeOut.js' %}"></script>
     </body>
 </html>
