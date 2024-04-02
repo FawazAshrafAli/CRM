@@ -36,6 +36,8 @@ class Deal(models.Model):
 
     # Permissions
     visibility = models.CharField(max_length=150, blank=True, null=True)
+
+    record_owner = models.ForeignKey(CrmUser, blank=True, null=True, on_delete=models.CASCADE, related_name="record_owner")
     
     # Created and Updated Datetime
     created = models.DateTimeField(auto_now_add=True)
