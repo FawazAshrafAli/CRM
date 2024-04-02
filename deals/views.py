@@ -13,12 +13,12 @@ from contacts.models import Contact
 from projects.models import Project
 
 class BaseDealView(LoginRequiredMixin):
-    login_url = 'authentication:login'
     model = Deal
-
-
-class CreateDealView(BaseDealView, CreateView):
+    login_url = 'authentication:login'
     template_name = "deals/deals.html"
+
+
+class CreateDealView(BaseDealView, CreateView):    
     success_url = reverse_lazy('deals:list')
     fields = [
         "name","company","category","probability_of_winning","forecast_close_date",
@@ -50,21 +50,22 @@ class CreateDealView(BaseDealView, CreateView):
     
 
 class UpdateDealView(BaseDealView, UpdateView):
-    template_name = "deals/deals.html"
-    success_url = reverse_lazy("deals:detail")
-
-    def get(self, request, *args, **kwargs):
-        try:
-            return super().get(request, *args, **kwargs)
-        except Http404:
-            messages.error(self.request, 'Invalid deal.')
-            return reverse_lazy('deals:list')
+    model = Deal    
+    success_url = reverse_lazy("deals:list")
+    fields = "__all__"
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, 'Deal Created.')
+        messages.success(self.request, 'Deal updation successfull.')
         return response
-    
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                print(f"Error on field {field}: {error}")
+        messages.error(self.request, "Error. Lead creation failed.")
+        return super().form_invalid(form)
+
 
 class ListDealView(BaseDealView, ListView):
     template_name = "deals/deals.html"
@@ -95,25 +96,31 @@ class DetailDealView(BaseDealView, DetailView):
             'id' : deal.id,
             'name' : deal.name,
             'company' : deal.company.name,
+            'company_id': deal.company.id,
             'company_title' : deal.company.title,            
             'company_phone' : deal.company.phone,
             'company_email' : deal.company.email_domains,           
             'category' : deal.category,
             'probability_of_winning' : deal.probability_of_winning,
             'forecast_close_date' : deal.forecast_close_date,
-            'actual_close_date' : deal.actual_close_date,
-            'user_responsible' : deal.user_responsible.name,
+            'actual_close_date' : deal.actual_close_date,        
             'deal_value' : deal.deal_value,
             'bid_amount' : deal.bid_amount,
             'bid_type' : deal.bid_type,
             'description' : deal.description,
             'tag_list' : deal.tag_list,
             'pipeline' : deal.pipeline,
-            'stages' :  [deal_stage.stage for deal_stage in deal.stage.all()],
+            'stages' :  [deal_stage.id for deal_stage in deal.stage.all()],
             'visibility' : deal.visibility,
             'created' : deal.created,
             'updated' : deal.updated
         }
+
+        if deal.user_responsible:
+            serialized_data.update({
+                'user_responsible': deal.user_responsible.name,
+                'user_responsible_id': deal.user_responsible.id,
+                })
 
         return JsonResponse(serialized_data)
 
