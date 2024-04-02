@@ -118,6 +118,17 @@ class UpdateDealImageView(BaseDealView, UpdateView):
         response = super().form_valid(form)
         messages.success(self.request, 'Changed Deal image successfully.')
         return response
+    
+
+class UpdateDealOwnerView(BaseDealView, UpdateView):
+    model = Deal    
+    success_url = reverse_lazy("deals:list")
+    fields = ["record_owner"]
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Changed Deal owner successfully.')
+        return response
 
 
 class ListDealView(BaseDealView, ListView):
@@ -165,7 +176,7 @@ class DetailDealView(BaseDealView, DetailView):
             'pipeline' : deal.pipeline,
             'stages' :  [deal_stage.stage for deal_stage in deal.stage.all()],
             'stages_id' :  [deal_stage.id for deal_stage in deal.stage.all()],
-            'visibility' : deal.visibility,
+            'visibility' : deal.visibility,            
             'created' : deal.created,
             'updated' : deal.updated
         }
@@ -178,6 +189,9 @@ class DetailDealView(BaseDealView, DetailView):
                 'user_responsible': deal.user_responsible.name,
                 'user_responsible_id': deal.user_responsible.id,
                 })
+            
+        if deal.record_owner:
+            serialized_data['record_owner_id'] = deal.record_owner.id
 
         return JsonResponse(serialized_data)
 

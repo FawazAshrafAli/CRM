@@ -1,7 +1,7 @@
 from django.urls import path
 from .views  import (CreateDealView, UpdateDealView, ListDealView, 
                      DetailDealView, DeleteDealView, UpdateDealImageView, 
-                     CloneDealView)
+                     CloneDealView, UpdateDealOwnerView)
 
 app_name = "deals"
 
@@ -12,5 +12,6 @@ urlpatterns = [
     path('detail/<pk>', DetailDealView.as_view(), name="detail"),
     path('update/<pk>', UpdateDealView.as_view(), name= 'update'),
     path('update_image/<pk>', UpdateDealImageView.as_view(), name= 'update_image'),
+    path('update_owner/<pk>', UpdateDealOwnerView.as_view(), name= 'update_owner'),
     path('delete/<pk>', DeleteDealView.as_view(), name='delete'),
 ]
