@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
+from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import  reverse_lazy
@@ -181,20 +181,21 @@ class DetailDealView(BaseDealView, DetailView):
 
         return JsonResponse(serialized_data)
 
-class DeleteDealView(BaseDealView, DeleteView):
-    template_name = "deals/confirm_deletion.html"
-    success_url = reverse_lazy('list_deals')
-    context_object_name = 'deal'
-    pk_url_kwarg = 'pk'
-
+class DeleteDealView(BaseDealView, View):
+    model = Deal    
+    pk_url_kwarg = 'pk'    
+    success_url = reverse_lazy('deals:list')    
+        
     def get(self, request, *args, **kwargs):
         try:
-            return super().get(request, *args, **kwargs)
+            self.object = get_object_or_404(Deal, pk = self.kwargs['pk'])
+            try:
+                self.object.delete()
+                messages.success(self.request, "Deal deletion successfull.")
+                return redirect(self.success_url)
+            except Exception as e:
+                print(e)
+                return redirect(reverse_lazy('authentication:error500'))
         except Http404:
-            messages.error(self.request, 'Invalid Deal.')
-            return reverse_lazy('deals:list')
+            return redirect(reverse_lazy('authentication:error404'))
         
-    def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
-        messages.success(self.request, 'Deal deleted successfully!')
-        return response
