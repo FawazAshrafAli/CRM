@@ -17,23 +17,23 @@ class Deal(models.Model):
     probability_of_winning = models.CharField(max_length=150, blank=True, null=True, default="Email")
     forecast_close_date = models.CharField(max_length=150, blank=True, null=True)
     actual_close_date = models.CharField(max_length=150, blank=True, null=True)
-    user_responsible = models.ForeignKey(CrmUser, on_delete=models.PROTECT)
-    deal_value = models.CharField(max_length=100, blank=False, null=False)
-    bid_amount = models.CharField(max_length=50, blank=False, null=False)
-    bid_type = models.CharField(max_length=100, blank=False, null=False, default="Fixed Bid")
+    user_responsible = models.ForeignKey(CrmUser, on_delete=models.PROTECT, blank=True, null=True)
+    deal_value = models.CharField(max_length=100, blank=True, null=True)
+    bid_amount = models.CharField(max_length=50, blank=True, null=True)
+    bid_type = models.CharField(max_length=100, blank=True, null=True, default="Fixed Bid")
 
     # Description Information
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
 
     # Tag Information
-    tag_list = models.CharField(max_length=150)
+    tag_list = models.CharField(max_length=150, blank=True, null=True)
 
     # Pipeline and Stages
-    pipeline = models.CharField(max_length=150, blank=False, null=False)    
+    pipeline = models.CharField(max_length=150, blank=True, null=True)    
     stage = models.ManyToManyField(PipelineStage)
 
     # Permissions
-    visibility = models.CharField(max_length=150, blank=False, null=False)
+    visibility = models.CharField(max_length=150, blank=True, null=True)
     
     # Created and Updated Datetime
     created = models.DateTimeField(auto_now_add=True)
