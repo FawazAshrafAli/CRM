@@ -140,7 +140,7 @@ function editDeal (dealId) {
             };
                         
             var stageSelect = document.getElementById( 'stage-select' );            
-            var array = deal.stages;
+            var array = deal.stages_id;
             if (array != null && array != '') {
                 for (var i = 0; i < stageSelect.options.length; i++) {                                        
                     if (array.includes(parseInt(stageSelect.options[i].value))) {
