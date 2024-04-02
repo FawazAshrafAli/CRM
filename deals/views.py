@@ -110,7 +110,8 @@ class DetailDealView(BaseDealView, DetailView):
             'description' : deal.description,
             'tag_list' : deal.tag_list,
             'pipeline' : deal.pipeline,
-            'stages' :  [deal_stage.id for deal_stage in deal.stage.all()],
+            'stages' :  [deal_stage.stage for deal_stage in deal.stage.all()],
+            'stages_id' :  [deal_stage.id for deal_stage in deal.stage.all()],
             'visibility' : deal.visibility,
             'created' : deal.created,
             'updated' : deal.updated
