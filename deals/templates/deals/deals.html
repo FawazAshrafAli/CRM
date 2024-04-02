@@ -710,7 +710,7 @@
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_deal_image_modal" data-deal-id="{{deal.pk}}" onclick="changeDealImage({{deal.pk}}); return false;">Change Deal Image</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone-deal-modal" data-deal-id="{{deal.pk}}" onclick="cloneDeal({{deal.pk}}); return false;">Clone This Deal</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-deal-modal" data-deal-id="{{deal.pk}}" onclick="deleteDeal({{deal.pk}}); return false;">Delete This Deal</a>
-								                                <a class="dropdown-item" href="#">Change Record Owner</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_deal_owner_modal" data-deal-id="{{deal.pk}}" onclick="changeDealOwner({{deal.pk}}); return false;">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
 								                                <a class="dropdown-item" href="#">Print This Deal</a>
 								                                <a class="dropdown-item" href="#">Add New Task For Deal</a>
@@ -1188,6 +1188,48 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Delete Deal) -->
+
+			<!-- Modal (Change Deal/Record Owner) -->
+			<div class="modal fade" id="change_deal_owner_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    
+							<h4 class="modal-title text-center">Change Deal Owner</h4>
+							<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="change-deal-owner-form">
+										{% csrf_token %}
+						            	<h4>Deal Owner</h4>
+						            	<div class="form-group row">
+				                            <div class="col-md-12">
+				                            	<label class="col-form-label">Deal Owner <span class="text-danger">*</span></label>
+                            					<select class="form-control" name="record_owner" id="record-owner-select">
+													<option hidden>-- select --</option>
+													{% for user in users %}
+					                                <option value="{{user.pk}}">{{user.name}}</option>
+													{% endfor %}
+												</select>
+				                            </div>				                            
+				                        </div>				                        
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Change Deal/Record Owner) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="company-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -2761,6 +2803,9 @@
 
 		<!-- Delete Deal Function -->
 		<script src="{% static 'js/deals/deleteDeal.js' %}"></script>
+
+		<!-- Change Deal Owner Function -->
+		<script src="{% static 'js/deals/changeDealOwner.js' %}"></script>
 
 		<!-- Fetch Organization Detail -->
 		<script src="{% static 'js/loadOrganizationDetails.js' %}"></script>
