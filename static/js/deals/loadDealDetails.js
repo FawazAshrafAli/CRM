@@ -1,9 +1,9 @@
-function loadDealDetails(dealId){    
+function loadDealDetails(dealId){        
     $.ajax({
         url: '/deals/detail/' + dealId,
         type: 'GET',
         dataType: 'json',
-        success: function(deal) {						
+        success: function(deal) {
             $('.deal-id').each(function() {  
                 if (deal.id != null && deal.id != "") {
                     $(this).html(deal.id);
@@ -59,7 +59,7 @@ function loadDealDetails(dealId){
                     $(this).html("None");
                 }
             });
-
+            
             $('.deal-probability-of-winning').each(function (){
                 if (deal.probability_of_winning != null && deal.probability_of_winning != "") {
                     $(this).html(deal.probability_of_winning);
@@ -83,7 +83,7 @@ function loadDealDetails(dealId){
                     $(this).html("None");
                 }
             });
-
+            
             $('.deal-user_responsible').each(function (){
                 if (deal.user_responsible != null && deal.user_responsible != "") {
                     $(this).html(deal.user_responsible);
@@ -141,7 +141,7 @@ function loadDealDetails(dealId){
                 }
             });
             
-            var array = deal.stages            
+            var array = deal.stages              
             if (array != null && array != "") {
                 if (array.includes("Prospecting")) {                                
                     $('#deal-stage-prospecting').removeClass("planning")
