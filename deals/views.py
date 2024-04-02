@@ -67,6 +67,17 @@ class UpdateDealView(BaseDealView, UpdateView):
         return super().form_invalid(form)
 
 
+class UpdateDealImageView(BaseDealView, UpdateView):
+    model = Deal    
+    success_url = reverse_lazy("deals:list")
+    fields = ["image"]
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Changed Deal image successfully.')
+        return response
+
+
 class ListDealView(BaseDealView, ListView):
     template_name = "deals/deals.html"
     queryset = Deal.objects.all()
@@ -93,7 +104,7 @@ class DetailDealView(BaseDealView, DetailView):
         deal = context['object']
 
         serialized_data = {
-            'id' : deal.id,
+            'id' : deal.id,            
             'name' : deal.name,
             'company' : deal.company.name,
             'company_id': deal.company.id,
@@ -116,6 +127,9 @@ class DetailDealView(BaseDealView, DetailView):
             'created' : deal.created,
             'updated' : deal.updated
         }
+
+        if deal.image:
+            serialized_data['image'] = deal.image.url
 
         if deal.user_responsible:
             serialized_data.update({
