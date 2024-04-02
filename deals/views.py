@@ -1,6 +1,6 @@
 from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import  reverse_lazy
 from django.contrib import messages
 from django.http import Http404, JsonResponse
@@ -48,6 +48,48 @@ class CreateDealView(BaseDealView, CreateView):
                 print(f"Error on {field}: {error}")
         return response
     
+
+class CloneDealView(BaseDealView, CreateView):
+    modal = Deal
+    fiedls = "__all__"
+    success_url = reverse_lazy('deals:list')
+
+    def get_object(self, **kwargs):
+        try:
+            return get_object_or_404(Deal, pk = self.kwargs['pk'])
+        except Http404:
+            return redirect(reverse_lazy('authentication:error'))
+        
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            new_deal = Deal.objects.create(
+                image = self.object.image,
+                name = self.object.name,
+                company = self.object.company,
+                category = self.object.category,
+                probability_of_winning = self.object.probability_of_winning,
+                forecast_close_date = self.object.forecast_close_date,
+                actual_close_date = self.object.actual_close_date,
+                user_responsible = self.object.user_responsible,
+                deal_value = self.object.deal_value,
+                bid_amount = self.object.bid_amount,
+                bid_type = self.object.bid_type,
+                description = self.object.description,
+                tag_list = self.object.tag_list,
+                pipeline = self.object.pipeline,                
+                visibility = self.object.visibility,                
+            )
+            stage = [deal_stage.pk for deal_stage in self.object.stage.all()]
+            new_deal.stage.add(*stage)
+            new_deal.save()
+            messages.success(self.request, "Cloned deal successfully.")
+            return redirect(self.get_success_url())
+        
+        except Exception as e:
+            print(e)
+            return redirect(reverse_lazy('authentication:error500'))
+
 
 class UpdateDealView(BaseDealView, UpdateView):
     model = Deal    
