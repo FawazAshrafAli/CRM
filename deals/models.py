@@ -9,6 +9,8 @@ class PipelineStage(models.Model):
         return self.stage
 
 class Deal(models.Model):
+    image = models.ImageField(upload_to='deal_images/', blank=True, null=True)
+
     name = models.CharField(max_length=150, blank=False, null=False)    
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
