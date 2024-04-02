@@ -567,14 +567,7 @@
 			                <span class="page-title-icon bg-gradient-primary text-white me-2">
 			                  <i class="feather-radio"></i>
 			                </span> Deals </h3>
-                		</div>
-						<div id="message-div">
-							<ul class="messages">
-								{% for message in messages %}
-								<li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
-								{% endfor %}
-							</ul>
-						</div>
+                		</div>						
                 		<div class="col text-end">
                 			<ul class="breadcrumb bg-white float-end m-0 ps-0 pe-0">
 								<li class="breadcrumb-item"><a href="i{% url 'dashboard:deals_dashboard' %}">Dashboard</a></li>
@@ -582,6 +575,14 @@
 							</ul>
                 		</div>
                 	</div>
+
+					<div id="message-div">
+						<ul class="messages">
+							{% for message in messages %}
+							<li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
+							{% endfor %}
+						</ul>
+					</div>
 					
 					<!-- Page Header -->
 					<div class="page-header pt-3 mb-0 ">
@@ -657,7 +658,11 @@
 														</label>
 													</td>
 													<td>
+														{% if deal.image %}
+														<a href="{{deal.image.url}}" target="_blank" class="avatar" style="width:30px; height:30px" ><img alt="Lead Image" src="{{deal.image.url}}"></a>
+														{% else %}
 														<a href="#"><span class="person-circle-a person-circle">{{deal.name|slice:":1"}}</span></a>
+														{% endif %}
 														<a href="#" data-bs-toggle="modal" data-bs-target="#deal-details" data-deal-id="{{ deal.pk }}" onclick="loadDealDetails({{ deal.pk }}); return false;">{{deal.name}}</a>
 													</td>
 													<td><a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-organization-id="{{ deal.company.pk }}" onclick="loadOrganizationDetails({{ deal.company.pk }}); return false;">{{deal.company}}</a></td>
@@ -702,7 +707,7 @@
 															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 															<div class="dropdown-menu dropdown-menu-right">
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_deal_modal" data-deal-id="{{deal.pk}}" onclick="editDeal({{deal.pk}}); return false;">Edit This Deal</a>
-								                                <a class="dropdown-item" href="#">Change Deal Image</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_deal_image_modal" data-deal-id="{{deal.pk}}" onclick="changeDealImage({{deal.pk}}); return false;">Change Deal Image</a>
 								                                <a class="dropdown-item" href="#">Clone This Deal</a>
 								                                <a class="dropdown-item" href="#">Delete This Deal</a>
 								                                <a class="dropdown-item" href="#">Change Record Owner</a>
@@ -921,7 +926,7 @@
 										</div>
 						                <div class="text-center py-3">
 						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
-						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
 						                </div>
 						            </form>
 						        </div>
@@ -1072,7 +1077,7 @@
 										</div>
 						                <div class="text-center py-3">
 						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
-						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
 						                </div>
 						            </form>
 						        </div>
@@ -1083,6 +1088,44 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Edit Deal) -->
+
+			<!-- Modal (Change Deal Image) -->
+			<div class="modal fade" id="change_deal_image_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    
+							<h4 class="modal-title text-center">Edit Deal</h4>
+							<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" enctype="multipart/form-data" id="change-deal-image-form">
+										{% csrf_token %}
+						            	<h4>Change Deal Image</h4>
+						            	<div class="form-group row">
+				                            <div class="col-md-12">
+				                            	<label class="col-form-label">Deal Image <span class="text-danger">*</span></label>
+                            					<input class="form-control" type="file" name="image" id="image-input" placeholder="Deal Image">
+												<a hred="#" target="_blank" id="image-value"></a>
+				                            </div>				                            
+				                        </div>				                        
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Change Deal Image) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="company-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -2647,6 +2690,9 @@
 
 		<!-- Edit Deal Function -->
 		<script src="{% static 'js/deals/editDeal.js' %}"></script>
+
+		<!-- Change Deal Image Function -->
+		<script src="{% static 'js/deals/changeDealImage.js' %}"></script>
 
 		<!-- Fetch Organization Detail -->
 		<script src="{% static 'js/loadOrganizationDetails.js' %}"></script>
