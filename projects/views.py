@@ -42,6 +42,23 @@ class ProjectCreateView(BaseProjectView, CreateView):
                 print(f"Error on {field}: {error}")
         messages.error(self.request, "Project creation failed.")
         return reverse_lazy('projects:list')
+    
+
+class ProjectUpdateView(BaseProjectView, UpdateView):
+    model = Project
+    fields = "__all__"
+    success_url = reverse_lazy('projects:list')
+
+    def form_valid(self, form):
+        messages.success(self.request, "Project updated successfully.")
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "Project updation failed.")
+        for field, errors in form.fields.items():
+            for error in errors:
+                print(f"Error on field {field}: {error}")
+        return redirect(reverse_lazy('projects:list'))
 
 
 class ProjectListView(BaseProjectView, ListView):    
@@ -72,12 +89,22 @@ class ProjectDetailView(BaseProjectView, DetailView):
                 field_value = getattr(project, field_name)
                 serialized_data[field_name] = field_value
             
-        serialized_data.update({
-            "stage": [stage.stage for stage in project.stage.all()],            
-            "user_responsible": project.user_responsible.name,
+        serialized_data.update({                        
             "created": project.created.strftime("%d/%m/%Y"),
             "updated": project.updated.strftime("%d/%m/%Y")
         })        
+
+        if project.stage:
+            serialized_data.update({
+                "stage" : [stage.stage for stage in project.stage.all()],
+                "stage_id" : [stage.id for stage in project.stage.all()],
+                })
+
+        if project.user_responsible:
+            serialized_data.update({
+                "user_responsible": project.user_responsible.name,
+                "user_responsible_id": project.user_responsible.pk,
+            })
 
         latest_stage = project.stage.latest('-stage').stage if project.stage.exists() else None        
         serialized_data["deal_state"] = latest_stage
