@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Project, PipelineStage
 from django.contrib import messages
+from django.http import Http404
 
 from authentication.models import CrmUser
 from django.http import JsonResponse
@@ -43,6 +44,42 @@ class ProjectCreateView(BaseProjectView, CreateView):
         messages.error(self.request, "Project creation failed.")
         return reverse_lazy('projects:list')
     
+
+class ProjectCloneView(BaseProjectView, CreateView):
+    model = Project
+    success_url = reverse_lazy('projects:list')
+
+    def get_object(self, **kwargs):
+        try:
+            return get_object_or_404(Project, pk = self.kwargs['pk'])            
+        except Http404:
+            return redirect(reverse_lazy('authentication:error404'))
+        
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        print(self.object)
+        try:
+            project = Project.objects.create(
+                image = self.object.image,
+                name = self.object.name,
+                status = self.object.status,
+                category = self.object.category,
+                user_responsible = self.object.user_responsible,
+                pipeline = self.object.pipeline,                
+                description = self.object.description,
+                tag_list = self.object.tag_list,
+                visibility = self.object.visibility
+            )
+
+            stages = [stage.id for stage in self.object.stage.all()]
+            project.stage.add(*stages)
+            project.save()
+            messages.success(self.request, "Cloned project successfully.")
+            return redirect(self.get_success_url())
+        except Exception as e:
+            print(e)
+            return redirect(reverse_lazy('authentication:error500'))
+
 
 class ProjectUpdateView(BaseProjectView, UpdateView):
     model = Project
