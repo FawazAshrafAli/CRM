@@ -108,6 +108,16 @@ class ProjectImageUpdateView(BaseProjectView, UpdateView):
         return super().form_valid(form)
 
 
+class ProjectOwnerUpdateView(BaseProjectView, UpdateView):
+    model = Project
+    fields = ["record_owner"]
+    success_url = reverse_lazy('projects:list')
+
+    def form_valid(self, form):
+        messages.success(self.request, "Project owner updated successfully.")
+        return super().form_valid(form)
+
+
 class ProjectListView(BaseProjectView, ListView):    
     queryset = Project.objects.all()
     context_object_name = "projects"
@@ -154,6 +164,12 @@ class ProjectDetailView(BaseProjectView, DetailView):
             serialized_data.update({
                 "user_responsible": project.user_responsible.name,
                 "user_responsible_id": project.user_responsible.pk,
+            })
+
+        if project.record_owner:
+            serialized_data.update({
+                "record_owner": project.record_owner.name,
+                "record_owner_id": project.record_owner.pk,
             })
 
         latest_stage = project.stage.latest('-stage').stage if project.stage.exists() else None        
