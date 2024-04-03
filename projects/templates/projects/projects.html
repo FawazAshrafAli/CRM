@@ -685,7 +685,7 @@
 														<div class="dropdown dropdown-action">
 															<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 															<div class="dropdown-menu dropdown-menu-right">
-																<a class="dropdown-item" href="#">Edit This Project</a>
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_project_modal" data-project-id="{{project.pk}}" onclick="editProject({{project.pk}})">Edit This Project</a>
 								                                <a class="dropdown-item" href="#">Change Project Image</a>
 								                                <a class="dropdown-item" href="#">Clone This Project</a>
 								                                <a class="dropdown-item" href="#">Delete This Project</a>
@@ -862,7 +862,7 @@
 										</div>
 						                <div class="text-center py-3">
 						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
-						                	<button type="button" class="btn btn-secondary btn-rounded">Cancel</button>
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
 						                </div>
 						            </form>
 						        </div>
@@ -873,6 +873,120 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal -->
+
+			<!-- Modal (Edit Project) -->
+			<div class="modal right fade" id="edit_project_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Edit Project</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="edit_project_form">
+										{% csrf_token %}
+						            	<h4>Project Details</h4>
+						            	<div class="form-group row">
+				                            <div class="col-md-6">
+				                            	<label class="col-form-label">Project Name <span class="text-danger">*</span></label>
+                            					<input class="form-control" type="text" name="name" id="name-value" placeholder="Project Name" required>
+				                            </div>
+				                            <div class="col-md-6">
+				                            	<label class="col-form-label">Status</label>
+					                            <select class="form-control" name="status" id="status-select" required>													
+													<option hidden>-- Select --</option>
+					                                <option value="In progress">In progress</option>
+					                                <option value="Deferred">Deferred</option>
+					                                <option value="Cancelled">Cancelled</option>
+					                                <option value="Abandoned">Abandoned</option>
+					                                <option value="Completed">Completed</option>
+					                             </select>
+				                            </div>
+				                        </div>
+				                        <div class="form-group row">
+				                            <div class="col-md-6">
+				                            	<label class="col-form-label">Category</label>
+					                            <select class="form-control" name="category" id="category-select" required>
+													<option hidden>-- Select --</option>
+													<option value="Email">Email</option>
+					                                <option value="Follow up">Follow up</option>
+					                                <option value="Get Started">Get Started</option>
+					                                <option value="Meeting">Meeting</option>
+					                                <option value="Phone call">Phone call</option>
+					                             </select>
+				                            </div>
+				                            <div class="col-md-6">
+				                            	<label class="col-form-label">User Responsible</label>
+					                            <select class="form-control" name="user_responsible" id="user-responsible-select" required>
+					                                <option hidden>-- select --</option>
+					                                {% for user in users %}
+													<option value="{{user.pk}}">{{user.name}}</option>
+													{% endfor %}
+					                            </select>
+				                            </div>
+				                        </div>
+				                        <h4>Pipeline and Stage</h4>
+						                <div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Pipeline</label>
+					                            <select class="form-control" name="pipeline" id="pipeline-select" required>
+					                                <option hidden>-- select --</option>
+					                                <option value="Project Pipeline">Project Pipeline</option>
+					                            </select>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Stage</label>
+					                            <select class="form-control" name="stage" id="stage-select" multiple required>
+					                                <option hidden>-- select --</option>
+													{% for stage in stages %}
+													<option value="{{stage.pk}}">{{stage.stage}}</option>
+													{% endfor %}
+					                            </select>
+											</div>
+										</div>
+										
+										<h4>Description Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Description </label>
+				                            	<textarea class="form-control" rows="3" name="description" id="description-value" placeholder="Description" required></textarea>
+											</div>
+										</div>
+										<h4>Tag Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Tag List</label>
+                            					<input type="text" class="form-control" name="tag_list" id="tag-list-value" placeholder="Tag List">
+											</div>
+										</div>
+										
+										<h4>Permissions</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Visibility</label>
+					                            <select class="form-control" name="visibility" id="visibility-select" required>
+					                                <option hidden>-- Select --</option>
+													<option value="Everyone">Everyone</option>
+					                                <option value="Select a team">Select a team</option>
+					                             </select>
+											</div>
+											
+										</div>
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Save</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Edit Project) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="system-user" tabindex="-1" role="dialog" aria-modal="true">
@@ -2502,7 +2616,10 @@
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 		<!-- Project Detail Funciton -->
-		<script src="{% static 'js/loadProjectDetails.js' %}"></script>
+		<script src="{% static 'js/projects/loadProjectDetails.js' %}"></script>
+
+		<!-- Edit Project Funciton -->
+		<script src="{% static 'js/projects/editProject.js' %}"></script>
 
 		<!-- Contact Detail Funciton -->
 		<script src="{% static 'js/loadContactDetails.js' %}"></script>
