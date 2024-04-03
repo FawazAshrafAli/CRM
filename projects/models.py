@@ -34,6 +34,8 @@ class Project(models.Model):
     # Permissions
     visibility = models.CharField(max_length=150, blank=False, null=False)
     
+    record_owner = models.ForeignKey(CrmUser, blank=True, null=True, on_delete=models.CASCADE, related_name="project_owner")
+
     # Created and Updated Datetime
     created = models.DateTimeField(auto_now_add=True)
     updated  = models.DateTimeField(auto_now=True)
