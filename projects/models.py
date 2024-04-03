@@ -14,6 +14,8 @@ class PipelineStage(models.Model):
     
 
 class Project(models.Model):
+    image = models.ImageField(upload_to='project_images/', blank=True, null=True)
+
     name = models.CharField(max_length=150, blank=False, null=False)
     status = models.CharField(max_length=150, blank=False, null=False, default="In Progress")
     category = models.CharField(max_length=150, blank=False, null=False, default="Email")
