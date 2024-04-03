@@ -61,6 +61,16 @@ class ProjectUpdateView(BaseProjectView, UpdateView):
         return redirect(reverse_lazy('projects:list'))
 
 
+class ProjectImageUpdateView(BaseProjectView, UpdateView):
+    model = Project
+    fields = ["image"]
+    success_url = reverse_lazy('projects:list')
+
+    def form_valid(self, form):
+        messages.success(self.request, "Project image updated successfully.")
+        return super().form_valid(form)
+
+
 class ProjectListView(BaseProjectView, ListView):    
     queryset = Project.objects.all()
     context_object_name = "projects"
@@ -85,7 +95,7 @@ class ProjectDetailView(BaseProjectView, DetailView):
 
         for field in project._meta.fields:
             field_name = field.name
-            if field_name not in ("user_responsible", "stage", "created", "updated"):
+            if field_name not in ("user_responsible", "stage", "created", "updated", "image"):
                 field_value = getattr(project, field_name)
                 serialized_data[field_name] = field_value
             
@@ -93,6 +103,9 @@ class ProjectDetailView(BaseProjectView, DetailView):
             "created": project.created.strftime("%d/%m/%Y"),
             "updated": project.updated.strftime("%d/%m/%Y")
         })        
+
+        if project.image:
+            serialized_data['image'] = project.image.url
 
         if project.stage:
             serialized_data.update({
