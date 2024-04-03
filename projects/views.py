@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Project, PipelineStage
 from django.contrib import messages
@@ -187,3 +187,21 @@ class ProjectStageUpdateView(BaseProjectView, UpdateView):
                 print(f"Error in {field}: {error}")
         return response    
     
+
+
+class ProjectDeleteView(BaseProjectView, View):
+    model: Project
+    success_url = reverse_lazy('projects:list')
+
+    def get(self, request, *args, **kwargs):
+        try: 
+            self.object = get_object_or_404(Project, pk = self.kwargs['pk'])
+            try:
+                self.object.delete()
+                messages.success(self.request, "Project deletion successfull.")
+                return redirect(self.success_url)
+            except Exception as e:
+                print(e)
+                return redirect(reverse_lazy('authentication:error500'))
+        except Http404:
+            return redirect(reverse_lazy('authentication:error404'))
