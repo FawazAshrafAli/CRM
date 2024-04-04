@@ -11,6 +11,7 @@ from authentication.models import CrmUser
 from organizations.models import Company
 from contacts.models import Contact
 from projects.models import Project
+from leads.models import Lead
 
 class BaseDealView(LoginRequiredMixin):
     model = Deal
@@ -105,7 +106,7 @@ class UpdateDealView(BaseDealView, UpdateView):
         for field, errors in form.errors.items():
             for error in errors:
                 print(f"Error on field {field}: {error}")
-        messages.error(self.request, "Error. Lead creation failed.")
+        messages.error(self.request, "Error. Deal updation failed.")
         return super().form_invalid(form)
 
 
@@ -157,11 +158,23 @@ class DetailDealView(BaseDealView, DetailView):
         deal = context['object']
 
         serialized_data = {
-            'id' : deal.id,            
-            'name' : deal.name,
+            'id' : deal.id,
+            'prefix' : deal.prefix,         
+            'first_name' : deal.first_name,
+            'last_name' : deal.last_name,
+            'full_name' : f"{deal.first_name} {deal.last_name}",
             'company' : deal.company.name,
             'company_id': deal.company.id,
-            'company_title' : deal.company.title,            
+            'company_title' : deal.company.title,
+            'title': deal.title,
+            'email': deal.email,
+            'email_opted_out' : deal.email_opted_out,
+            'phone' : deal.phone,
+            'mobile_phone' : deal.mobile_phone,
+            'fax' : deal.fax,
+            'website' : deal.website,
+            'industry' : deal.industry,
+            'number_of_employees' : deal.number_of_employees,
             'company_phone' : deal.company.phone,
             'company_email' : deal.company.email_domains,           
             'category' : deal.category,
@@ -171,6 +184,11 @@ class DetailDealView(BaseDealView, DetailView):
             'deal_value' : deal.deal_value,
             'bid_amount' : deal.bid_amount,
             'bid_type' : deal.bid_type,
+            'mailing_address': deal.mailing_address,
+            'mailing_city' : deal.mailing_city,
+            'mailing_state' : deal.mailing_state,
+            'mailing_postal_code' : deal.mailing_postal_code,
+            'mailing_country' : deal.mailing_country,
             'description' : deal.description,
             'tag_list' : deal.tag_list,
             'pipeline' : deal.pipeline,
@@ -212,4 +230,53 @@ class DeleteDealView(BaseDealView, View):
                 return redirect(reverse_lazy('authentication:error500'))
         except Http404:
             return redirect(reverse_lazy('authentication:error404'))
-        
+
+
+class DealToLeadView(BaseDealView, CreateView):
+    model = Deal
+    fields = "__all__"
+    success_url = reverse_lazy('deals:list')
+
+    def get_object(self, **kwargs):
+        try:
+            return get_object_or_404(Deal, pk = self.kwargs['pk'])
+        except Http404:
+            return redirect(reverse_lazy('authentication:error404'))
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.first_name = ""
+        self.last_name = ""
+        for character in self.object.name:
+            if character == " ":
+                self.first_name = self.object.name[0 : self.object.name.index(character)]
+                self.last_name = self.object.name[self.object.name.index(character) +1 :]                
+        try:
+            lead = get_object_or_404(Lead, 
+                              first_name = self.first_name,
+                              last_name = self.last_name,
+                              organization = self.object.company.pk)
+            lead.archived = False
+            lead.save()
+            self.object.delete()
+            messages.success(self.request, "Successfully changed deal to lead.")
+            return redirect(self.get_success_url())
+        except Http404:
+            try:
+                lead = Lead.objects.create(
+                    image = self.object.image,
+                    first_name = self.first_name,
+                    last_name = self.last_name,
+                    organization = self.object.company,
+                    user_responsible = self.object.user_responsible,
+                    description = self.object.description,
+                    tag_list = self.object.tag_list,     
+                    lead_owner = self.object.record_owner
+                )   
+
+                self.object.delete()
+                messages.success(self.request, "Successfully changed deal to lead.")                                    
+                return redirect(self.get_success_url())
+            except Exception as e:
+                print(e)
+                return redirect(reverse_lazy('authentication:error500'))
