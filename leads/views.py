@@ -333,6 +333,7 @@ class ChangeLeadToDeal(BaseLeadView, CreateView):
         except Http404:
             try:
                 deal = Deal.objects.create(
+                    image = self.object.image,
                     name = self.full_name,
                     company = self.object.organization,                                                                                
                     user_responsible = self.object.user_responsible,
