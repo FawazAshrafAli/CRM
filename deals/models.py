@@ -13,8 +13,7 @@ class Deal(models.Model):
 
     prefix = models.CharField(max_length=25, blank=True, null=True)
     first_name = models.CharField(max_length=100, blank=False, null=False)
-    last_name = models.CharField(max_length=100, blank=True, null=True)
-    # name = models.CharField(max_length=150, blank=False, null=False)    
+    last_name = models.CharField(max_length=100, blank=True, null=True)    
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     title = models.CharField(max_length=150, blank=False, null=False)
 

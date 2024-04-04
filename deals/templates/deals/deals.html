@@ -661,9 +661,9 @@
 														{% if deal.image %}
 														<a href="{{deal.image.url}}" target="_blank" class="avatar" style="width:30px; height:30px" ><img alt="Deal Image" src="{{deal.image.url}}"></a>
 														{% else %}
-														<a href="#"><span class="person-circle-a person-circle">{{deal.name|slice:":1"}}</span></a>
+														<a href="#"><span class="person-circle-a person-circle">{{deal.first_name|slice:":1"}}{{deal.last_name|slice:":1"}}</span></a>
 														{% endif %}
-														<a href="#" data-bs-toggle="modal" data-bs-target="#deal-details" data-deal-id="{{ deal.pk }}" onclick="loadDealDetails({{ deal.pk }}); return false;">{{deal.name}}</a>
+														<a href="#" data-bs-toggle="modal" data-bs-target="#deal-details" data-deal-id="{{ deal.pk }}" onclick="loadDealDetails({{ deal.pk }}); return false;">{{deal.first_name}} {{deal.last_name}}</a>
 													</td>
 													<td><a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-organization-id="{{ deal.company.pk }}" onclick="loadOrganizationDetails({{ deal.company.pk }}); return false;">{{deal.company}}</a></td>
 													<td>
@@ -716,7 +716,7 @@
 								                                <a class="dropdown-item" href="#">Add New Task For Deal</a>
 								                                <a class="dropdown-item" href="#">Add New Event For Deal</a>
 								                                <a class="dropdown-item" href="#">Add Activity Set To Deal</a>
-								                                <a class="dropdown-item" href="#">Convert To Deal</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#deal-to-lead-modal" data-deal-id="{{deal.pk}}" onclick="dealToLead({{deal.pk}}); return false;">Convert To Lead</a>
 															</div>
 														</div>
 													</td>
@@ -806,10 +806,18 @@
 										{% csrf_token %}
 						            	<h4>Deal Details</h4>
 						            	<div class="form-group row">
-				                            <div class="col-md-6">
-				                            	<label class="col-form-label">Deal Name <span class="text-danger">*</span></label>
-                            					<input class="form-control" type="text" name="name" placeholder="Deal Name" required>
-				                            </div>
+											<div class="form-group row">
+												<div class="col-md-12"><label class="col-form-label">Name <span class="text-danger">*</span></label></div>
+												<div class="col-md-4">
+													<input class="form-control" type="text" placeholder="Prefix" name="prefix" required>
+												</div>
+												<div class="col-md-4">
+													<input class="form-control" type="text" placeholder="First name" name="first_name" required>
+												</div>
+												<div class="col-md-4">
+													<input class="form-control" type="text" placeholder="Last name" name="last_name" required>
+												</div>
+											</div>				                            
 				                            <div class="col-md-6">
 				                            	<label class="col-form-label">Company</label>
 					                            <select class="form-control" name="company" required>
@@ -819,8 +827,59 @@
 													{% endfor %}
 					                            </select>
 				                            </div>
+											<div class="col-sm-6">
+												<label class="col-form-label" for="title">Title</label>
+                            					<input type="text" class="form-control" name="title" placeholder="Title" required>
+											</div>
 				                        </div>
 				                        <h4>Additional Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Email</label>
+                            					<input type="text" class="form-control"  name="email" placeholder="Email" required>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Email Opted out</label>
+					                            <div >
+					                              <label class="container-checkbox">
+												  	<input type="checkbox" name="email_opted_out">
+												  	<span class="checkmark"></span>
+												</label>
+					                            </div>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Phone</label>
+                            					<input type="text" class="form-control" name="phone" placeholder="Phone">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Mobile Phone</label>
+                            					<input type="text" class="form-control" name="mobile_phone" placeholder="Mobile Phone" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Fax</label>
+                            					<input type="text" class="form-control" name="fax" placeholder="Fax">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Website</label>
+                            					<input type="text" class="form-control"  name="website" placeholder="Website">
+											</div>
+										</div>
+										
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Industry</label>
+                            					<input type="text" class="form-control" name="industry" placeholder="Industry">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Number of Employees</label>
+                            					<input type="text" class="form-control"  name="number_of_employees" placeholder="Number of Employees">
+											</div>
+										</div>
+
 						                <div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Category</label>
@@ -879,6 +938,35 @@
 					                            </div>
 											</div>
 										</div>
+
+										<h4>Address Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Mailing Address</label>
+                            					<textarea class="form-control" rows="3" name="mailing_address" placeholder="Address" required></textarea>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="City" name="mailing_city" required>
+											</div>
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="State/Provience" name="mailing_state" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Postal Code" name="mailing_postal_code" required>
+											</div>
+											<div class="col-sm-6">
+					                            <select class="form-control" name="mailing_country" required>
+					                                <option value="India">India</option>
+					                                <option value="US">US</option>
+					                                <option value="Japan">Japan</option>
+					                            </select>
+											</div>
+										</div>
+
 										<h4>Description Information</h4>
 										<div class="form-group row">
 											<div class="col-sm-12">
@@ -898,7 +986,7 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Pipeline</label>
 						                        <select class="form-control" name="pipeline">
-						                            <option>Deal Pipeline</option>
+						                            <option value="Deal Pipeline">Deal Pipeline</option>
 						                        </select>
 											</div>
 											<div class="col-md-6">
@@ -918,8 +1006,8 @@
 												<label class="col-form-label">Visibility</label>
 					                            <select class="form-control" name="visibility">
 													<option hidden>-- select --</option>
-					                                <option>Everyone</option>
-					                                <option>Select a team</option>
+					                                <option value="Everyone">Everyone</option>
+					                                <option value="Select a team">Select a team</option>
 					                             </select>
 											</div>
 											
@@ -956,10 +1044,18 @@
 										{% csrf_token %}
 						            	<h4>Deal Details</h4>
 						            	<div class="form-group row">
-				                            <div class="col-md-6">
-				                            	<label class="col-form-label">Deal Name <span class="text-danger">*</span></label>
-                            					<input class="form-control" type="text" name="name" id="name-value" placeholder="Deal Name" required>
-				                            </div>
+				                            <div class="form-group row">
+												<div class="col-md-12"><label class="col-form-label">Name <span class="text-danger">*</span></label></div>
+												<div class="col-md-4">
+													<input class="form-control" type="text" placeholder="Prefix" name="prefix" id="prefix-value" required>
+												</div>
+												<div class="col-md-4">
+													<input class="form-control" type="text" placeholder="First name" name="first_name" id="first-name-value" required>
+												</div>
+												<div class="col-md-4">
+													<input class="form-control" type="text" placeholder="Last name" name="last_name" id="last-name-value" required>
+												</div>
+											</div>
 				                            <div class="col-md-6">
 				                            	<label class="col-form-label">Company</label>
 					                            <select class="form-control" name="company" id="company-select" required>
@@ -969,8 +1065,58 @@
 													{% endfor %}
 					                            </select>
 				                            </div>
+											<div class="col-sm-6">
+												<label class="col-form-label" for="title">Title</label>
+                            					<input type="text" class="form-control" name="title" id="title-value" placeholder="Title" required>
+											</div>
 				                        </div>
 				                        <h4>Additional Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Email</label>
+                            					<input type="text" class="form-control"  name="email" id="email-value" placeholder="Email" required>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Email Opted out</label>
+					                            <div >
+					                              <label class="container-checkbox">
+												  	<input type="checkbox" name="email_opted_out" id="email-opted-out-value">
+												  	<span class="checkmark"></span>
+												</label>
+					                            </div>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Phone</label>
+                            					<input type="text" class="form-control" name="phone" id="name-value" placeholder="Phone">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Mobile Phone</label>
+                            					<input type="text" class="form-control" name="mobile_phone" id="mobile-phone-value" placeholder="Mobile Phone" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Fax</label>
+                            					<input type="text" class="form-control" name="fax" id="fax-value" placeholder="Fax">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Website</label>
+                            					<input type="text" class="form-control"  name="website" id="website-value" placeholder="Website">
+											</div>
+										</div>										
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<label class="col-form-label">Industry</label>
+                            					<input type="text" class="form-control" name="industry" id="industry-value" placeholder="Industry">
+											</div>
+											<div class="col-sm-6">
+												<label class="col-form-label">Number of Employees</label>
+                            					<input type="text" class="form-control"  name="number_of_employees" id="number-of-employees-value" placeholder="Number of Employees">
+											</div>
+										</div>
+
 						                <div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Category</label>
@@ -1029,6 +1175,35 @@
 					                            </div>
 											</div>
 										</div>
+
+										<h4>Address Information</h4>
+										<div class="form-group row">
+											<div class="col-sm-12">
+												<label class="col-form-label">Mailing Address</label>
+                            					<textarea class="form-control" rows="3" name="mailing_address" id="mailing-address-value" placeholder="Address" required></textarea>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="City" name="mailing_city" id="mailing-city-value" required>
+											</div>
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="State/Provience" name="mailing_state" id="mailing-state-value" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-6">
+												<input type="text" class="form-control" placeholder="Postal Code" name="mailing_postal_code" id="mailing-postal-code-value" required>
+											</div>
+											<div class="col-sm-6">
+					                            <select class="form-control" name="mailing_country" id="mailing-country-value" required>
+					                                <option value="India">India</option>
+					                                <option value="US">US</option>
+					                                <option value="Japan">Japan</option>
+					                            </select>
+											</div>
+										</div>
+
 										<h4>Description Information</h4>
 										<div class="form-group row">
 											<div class="col-sm-12">
@@ -1049,7 +1224,7 @@
 												<label class="col-form-label">Pipeline</label>
 						                        <select class="form-control" name="pipeline" id="pipeline-select">
 													<option hidden>-- Select --</option>
-						                            <option value="Deal Pipeline">Deal Pipeline</option>
+						                            <option value="Deal Pipeline" selected>Deal Pipeline</option>
 						                        </select>
 											</div>
 											<div class="col-md-6">
@@ -1230,6 +1405,37 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Change Deal/Record Owner) -->
+
+			<!-- Modal (Deal to Lead) -->
+			<div class="modal fade" id="deal-to-lead-modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    
+							<h4 class="modal-title text-center">Changing deal back to lead '<span id="converting-deal-object"></span>'</h4>
+							<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="row">
+						        <div class="col-md-12">
+						            <form method="POST" id="deal-to-lead-form">
+										{% csrf_token %}
+						            	<h4>Are you sure?</h4>						            	                    
+						                <div class="text-center py-3">
+						                	<button type="submit" class="border-0 btn btn-primary btn-gradient-primary btn-rounded">Yes</button>&nbsp;&nbsp;
+						                	<button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal" aria-labe="Close">Cancel</button>
+						                </div>
+						            </form>
+						        </div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Deal to Lead) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="company-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -2807,8 +3013,11 @@
 		<!-- Change Deal Owner Function -->
 		<script src="{% static 'js/deals/changeDealOwner.js' %}"></script>
 
+		<!-- Change Deal To Lead Function -->
+		<script src="{% static 'js/deals/dealToLead.js' %}"></script>
+
 		<!-- Fetch Organization Detail -->
-		<script src="{% static 'js/loadOrganizationDetails.js' %}"></script>
+		<script src="{% static 'js/organizations/loadOrganizationDetails.js' %}"></script>
 
 		<!-- Message Time Out -->
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>
