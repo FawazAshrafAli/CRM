@@ -661,9 +661,9 @@
 														{% if deal.image %}
 														<a href="{{deal.image.url}}" target="_blank" class="avatar" style="width:30px; height:30px" ><img alt="Deal Image" src="{{deal.image.url}}"></a>
 														{% else %}
-														<a href="#"><span class="person-circle-a person-circle">{{deal.first_name|slice:":1"}}{{deal.last_name|slice:":1"}}</span></a>
+														<a href="#"><span class="person-circle-a person-circle"> {% if deal.last_name %} {{deal.first_name|slice:":1"}}{{deal.last_name|slice:":1"}} {% else %} {{deal.first_name|slice:":1"}} {% endif %}</span></a>
 														{% endif %}
-														<a href="#" data-bs-toggle="modal" data-bs-target="#deal-details" data-deal-id="{{ deal.pk }}" onclick="loadDealDetails({{ deal.pk }}); return false;">{{deal.first_name}} {{deal.last_name}}</a>
+														<a href="#" data-bs-toggle="modal" data-bs-target="#deal-details" data-deal-id="{{ deal.pk }}" onclick="loadDealDetails({{ deal.pk }}); return false;">{% if deal.last_name %} {{deal.first_name}} {{deal.last_name}} {% else %} {{deal.first_name}} {% endif %}</a>
 													</td>
 													<td><a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-organization-id="{{ deal.company.pk }}" onclick="loadOrganizationDetails({{ deal.company.pk }}); return false;">{{deal.company}}</a></td>
 													<td>
@@ -815,7 +815,7 @@
 													<input class="form-control" type="text" placeholder="First name" name="first_name" required>
 												</div>
 												<div class="col-md-4">
-													<input class="form-control" type="text" placeholder="Last name" name="last_name" required>
+													<input class="form-control" type="text" placeholder="Last name" name="last_name">
 												</div>
 											</div>				                            
 				                            <div class="col-md-6">
@@ -1053,7 +1053,7 @@
 													<input class="form-control" type="text" placeholder="First name" name="first_name" id="first-name-value" required>
 												</div>
 												<div class="col-md-4">
-													<input class="form-control" type="text" placeholder="Last name" name="last_name" id="last-name-value" required>
+													<input class="form-control" type="text" placeholder="Last name" name="last_name" id="last-name-value">
 												</div>
 											</div>
 				                            <div class="col-md-6">
@@ -1089,7 +1089,7 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Phone</label>
-                            					<input type="text" class="form-control" name="phone" id="name-value" placeholder="Phone">
+                            					<input type="text" class="form-control" name="phone" id="phone-value" placeholder="Phone">
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">Mobile Phone</label>
@@ -2205,7 +2205,7 @@
                     <div class="row w-100">
                        <div class="col-md-7 account d-flex">
                       	<div class="company_img">
-                      		<img src="{% static 'assets/img/c-logo.png' %}" alt="User" class="user-image" class="img-fluid" />
+                      		<img src="{% static 'assets/img/c-logo.png' %}" alt="User" class="user-image deal-image" class="img-fluid"/>
                   		</div>
                   		<div>
                   			<p class="mb-0">Deal</p>
@@ -2247,23 +2247,23 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Title</span>
-	                        <p class="deal-company-title"></p>
+	                        <p class="deal-title"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Companies</span>
-	                        <p class="deal-company-name"></p>
+	                        <p class="deal-company"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Phone</span>
-	                        <p class="deal-company-phone"></p>
+	                        <p class="deal-phone"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Email</span>
-	                        <p class="deal-company-email"></p>
+	                        <p class="deal-email"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Contact owner</span>
-	                        <p class="deal-owner">John Doe</p>
+	                        <p class="deal-record-owner"></p>
 	                      </div>
 	                    </div>
 	                </div>
@@ -2275,7 +2275,7 @@
 	                        <span>Pipeline: Deal Pipeline</span>
 	                    </div>
 	                    <div class="col text-end">
-	                        <span>Deal State: closed won</span>
+	                        <span>Deal State: <span class="deal-state"></span></span>
 	                    </div>
                     </div>
                   	<div class="row">
@@ -2315,6 +2315,10 @@
 				                                      <td>Company</td>
 				                                      <td class="deal-company"></td>
 				                                    </tr>
+													<tr>
+														<td>Title</td>
+														<td class="deal-title"></td>
+													  </tr>
 				                                </tbody>
 				                            </table>
 									    </div>
@@ -2326,6 +2330,38 @@
 								    <div class="accordion-body__contents">
 								      	<table class="table">
 			                                <tbody>
+												<tr>
+													<td>Email Address</td>
+													<td class="deal-email"></td>
+												</tr>
+												<tr>
+													<td>Email Opted Out</td>
+													<td class="text-capitalize deal-email-opted-out"></td>
+												</tr>
+												<tr>
+													<td>Phone</td>
+													<td class="deal-phone"></td>
+												</tr>
+												<tr>
+													<td>Mobile Phone</td>
+													<td class="deal-mobile-phone"></td>
+												</tr>
+												<tr>
+													<td>Fax</td>
+													<td class="deal-fax"></td>
+												</tr>
+												<tr>
+													<td>Website</td>
+													<td class="deal-website"></td>
+												</tr>
+												<tr>
+													<td>Industry</td>
+													<td class="deal-industry"></td>
+												</tr>
+												<tr>
+													<td>Number of Employees</td>
+													<td class="deal-number-of-employees"></td>
+												</tr>
 			                                    <tr>
 			                                      <td class="border-0">Category</td>
 			                                      <td class="border-0 deal-category"></td>
