@@ -1,4 +1,4 @@
-function loadDealDetails(dealId){ 
+function fetchAndPrintDeal(dealId, dealContentDiv){ 
     $.ajax({
         url: '/deals/detail/' + dealId,
         type: 'GET',
@@ -330,6 +330,33 @@ function loadDealDetails(dealId){
                     $(this).html("None");
                 }
             });
+
+            var printWindow = window.open('', '_blank');
+            printWindow.document.open();
+            printWindow.document.write('<html><head><title>Print</title></head><body>');
+
+            // Wait for stylesheets to load
+            var stylesheetsLoaded = 0;
+            var stylesheets = document.querySelectorAll('link[rel="stylesheet"]');
+            stylesheets.forEach(function(stylesheet) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = stylesheet.href;
+                link.onload = function() {
+                    stylesheetsLoaded++;
+                    if (stylesheetsLoaded === stylesheets.length) {
+
+                        printWindow.document.write(document.getElementById(dealContentDiv).innerHTML);
+                        printWindow.document.write('</body></html>');
+                        printWindow.document.close();
+                        printWindow.print();
+                        printWindow.close();
+                        resolve();
+                    }
+                };
+                printWindow.document.head.appendChild(link);
+            });
+
         },
         error: function(error) {
             console.log('Error:', error);

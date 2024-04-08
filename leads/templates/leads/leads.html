@@ -686,7 +686,7 @@
 														{% else %}
 														<a href="#"><span class="person-circle-a person-circle">{{lead.first_name|slice:":1"}}{{lead.last_name|slice:":1"}}</span></a>
 														{% endif %}
-														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details" data-lead-id="{{ lead.pk }}" onclick="loadLeadDetails({{ lead.pk }}); return false;">{{lead.first_name}} {{lead.last_name}}</a>
+														<a href="#" data-bs-toggle="modal" data-bs-target="#leads-details" data-lead-id="{{ lead.pk }}" onclick="loadLeadDetails({{ lead.pk }}); return false;">{% if lead.last_name %} {{lead.first_name}} {{lead.last_name}} {% else %} {{lead.first_name}} {% endif %}</a>
 													</td>
 													<td>{{lead.title}}</td>
 													<td>
@@ -712,7 +712,7 @@
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#lead_to_contact_modal" data-lead-id="{{lead.pk}}" onclick="changeLeadToContact({{lead.pk}}); return false;">Change Lead to Contact</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#lead_to_deal_modal" data-lead-id="{{lead.pk}}" onclick="changeLeadToDeal({{lead.pk}})">Convert Lead To Deal</a>
-								                                <a class="dropdown-item" href="#">Print This Lead</a>
+								                                <a class="dropdown-item" href="#" data-lead-id="{{lead.pk}}" onclick="fetchAndPrintLead({{lead.pk}}, 'lead-content-div')">Print This Lead</a>
 								                                <a class="dropdown-item" href="#">Merge Into Lead</a>
 								                                <a class="dropdown-item" href="#">SmartMerge Lead</a>
 								                                <a class="dropdown-item" href="#">Add Activity Set To Lead</a>
@@ -812,14 +812,14 @@
 				                                <input class="form-control" type="text" placeholder="First name" name="first_name" required>
 				                            </div>
 				                            <div class="col-md-4">
-				                                <input class="form-control" type="text" placeholder="Last name" name="last_name" required>
+				                                <input class="form-control" type="text" placeholder="Last name" name="last_name">
 				                            </div>
 				                        </div>
 						                <div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Organization</label>
 					                            <select class="form-control" name="organization" required>
-					                                <option>Select</option>
+					                                <option value="" selected hidden>-- Select --</option>
 													{% for organization in organizations %}
 													<option value="{{organization.pk}}">{{organization}}</option>
 													{% endfor %}
@@ -834,7 +834,7 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Lead Status</label>
 					                            <select class="form-control" name="lead_status" required>
-					                                <option>Select</option>
+					                                <option value="" selected hidden>-- Select --</option>
 					                                <option value="Not Contacted">Not Contacted</option>
 													<option value="Attempted Contact">Attempted Contact</option>
 					                                <option value="Contacted">Contacted</option>
@@ -844,7 +844,7 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">User Responsible</label>
 					                            <select class="form-control" name="user_responsible" required>
-					                                <option>Select</option>
+					                                <option value="" selected hidden>-- Select --</option>
 					                                {% for user in users %}
 													<option value="{{user.pk}}">{{user.name}}</option>
 													{% endfor %}
@@ -856,7 +856,15 @@
 												<label class="col-form-label">Lead Rating</label>
                             					<input type="number" class="form-control" name="lead_rating" placeholder="Rating">
 											</div>
-											
+											<div class="col-sm-6">
+												<label class="col-form-label">Lead Owner</label>
+					                            <select class="form-control" name="lead_owner" required>
+					                                <option value="" selected hidden>-- Select --</option>
+					                                {% for user in users %}
+													<option value="{{user.pk}}">{{user.name}}</option>
+													{% endfor %}
+					                            </select>
+											</div>
 										</div>
 										<h4>Additional Information</h4>
 										<div class="form-group row">
@@ -909,11 +917,12 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Lead Source</label>
 					                            <select class="form-control" name="lead_source" required>
-					                                <option>Web</option>
-					                                <option>Phone Enquiry</option>
-					                                <option>Partner Referral</option>
-					                                <option>Purchased List</option>
-					                                <option>Other</option>
+													<option value="" selected hidden>-- Select --</option>
+					                                <option value="Web">Web</option>
+					                                <option value="Phone Enquiry">Phone Enquiry</option>
+					                                <option value="Partner Referral">Partner Referral</option>
+					                                <option value="Purchased List">Purchased List</option>
+					                                <option value="Other">Other</option>
 					                             </select>
 											</div>
 											
@@ -940,6 +949,7 @@
 											</div>
 											<div class="col-sm-6">
 					                            <select class="form-control" name="mailing_country" required>
+													<option value="" selected hidden>-- Select --</option>
 					                                <option>India</option>
 					                                <option>US</option>
 					                                <option>Japan</option>
@@ -966,6 +976,7 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Permission</label>
 					                        	<select class="form-control" name="permission" required>
+													<option value="" selected hidden>-- Select --</option>
 					                                <option>Task Visibility</option>
 					                                <option>Private Task</option>
 					                         	</select>
@@ -1011,14 +1022,14 @@
 				                                <input class="form-control" type="text" placeholder="First name" name="first_name" id="first-name-value" required>
 				                            </div>
 				                            <div class="col-md-4">
-				                                <input class="form-control" type="text" placeholder="Last name" name="last_name" id="last-name-value" required>
+				                                <input class="form-control" type="text" placeholder="Last name" name="last_name" id="last-name-value">
 				                            </div>
 				                        </div>
 						                <div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Organization</label>
 					                            <select class="form-control" name="organization" id="organization-value" required>
-					                                <option hidden>-- Select --</option>
+					                                <option value="" selected hidden>-- Select --</option>
 													{% for organization in organizations %}
 													<option value="{{organization.pk}}">{{organization.name}}</option>
 													{% endfor %}
@@ -1033,7 +1044,7 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Lead Status</label>
 					                            <select class="form-control" name="lead_status" id="lead-status-value" required>
-					                                <option hidden>-- Select --</option>
+					                                <option value="" selected hidden>-- Select --</option>
 					                                <option value="Not Contacted">Not Contacted</option>
 													<option value="Attempted Contact">Attempted Contact</option>
 					                                <option value="Contacted">Contacted</option>
@@ -1042,8 +1053,8 @@
 											</div>
 											<div class="col-sm-6">
 												<label class="col-form-label">User Responsible</label>
-					                            <select class="form-control" name="user_responsible" id="user-responsible-value" required>
-					                                <option hidden>-- Select --</option>
+					                            <select class="form-control" name="user_responsible" id="user-responsible-value">
+					                                <option value="" selected hidden>-- Select --</option>
 					                                {% for user in users %}
 													<option value="{{user.pk}}">{{user.name}}</option>
 													{% endfor %}
@@ -1055,7 +1066,15 @@
 												<label class="col-form-label">Lead Rating</label>
                             					<input type="number" class="form-control" name="lead_rating" id="lead-rating-value" placeholder="Rating">
 											</div>
-											
+											<div class="col-sm-6">
+												<label class="col-form-label">Lead Owner</label>
+					                            <select class="form-control" name="lead_owner" id="lead-owner-value" required>
+					                                <option value="" selected hidden>-- Select --</option>
+					                                {% for user in users %}
+													<option value="{{user.pk}}">{{user.name}}</option>
+													{% endfor %}
+					                            </select>
+											</div>
 										</div>
 										<h4>Additional Information</h4>
 										<div class="form-group row">
@@ -1108,7 +1127,7 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Lead Source</label>
 					                            <select class="form-control" name="lead_source" id="lead-source-value" required>
-													<option>-- Select --</option>
+													<option value="" selected hidden>-- Select --</option>
 					                                <option value="Web">Web</option>
 					                                <option value="Phone Enquiry">Phone Enquiry</option>
 					                                <option value="Partner Referral">Partner Referral</option>
@@ -1140,7 +1159,7 @@
 											</div>
 											<div class="col-sm-6">
 					                            <select class="form-control" name="mailing_country" id="mailing-country-value" required>
-													<option hidden>-- Select --</option>
+													<option value="" selected hidden>-- Select --</option>
 					                                <option value="India">India</option>
 					                                <option value="US">US</option>
 					                                <option value="Japan">Japan</option>
@@ -1167,7 +1186,7 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Permission</label>
 					                        	<select class="form-control" name="permission" id="permission-value" required>
-					                                <option>-- Task Visibility --</option>
+					                                <option value="" selected hidden>-- Select --</option>
 					                                <option value="Private Task">Private Task</option>
 													<option value="Public Task">Public Task</option>
 					                         	</select>
@@ -1381,6 +1400,204 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Lead to Deal) -->
+
+			<!-- Modal (Print Lead) -->
+			<div class="modal right fade" id="print_lead_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Print Deal</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+						<div class="modal-body">
+							<div class="tab-pane show active p-0" id="not-contact-task-details">
+								<div class="crms-tasks" id="lead-content-div">
+								  <div class="tasks__item crms-task-item active">
+									<div class="accordion-header js-accordion-header">Lead Information</div> 
+									  <div class="accordion-body js-accordion-body d-block">
+										<div class="accordion-body__contents">
+											<table class="table">
+												<tbody>
+												  <tr>
+													<td class="border-0">Record ID</td>
+													<td class="border-0 lead-id"></td>
+												  </tr>
+												  <tr>
+													<td>Name</td>
+													<td class="lead-full-name"></td>
+												  </tr>
+												  <tr>
+													<td>Title</td>
+													<td class="lead-title"></td>
+												  </tr>
+												  <tr>
+													  <td>Organization</td>
+													  <td class="lead-organization"></td>
+												  </tr>
+												  <tr>
+													  <td>Lead Status</td>
+													  <td class="lead-status"></td>
+												  </tr>
+												  <tr>
+													  <td>User Responsible</td>
+													  <td class="lead-user-responsible"></td>
+												  </tr>
+												  <tr>
+													  <td>Link Email Address</td>
+													  <td class="lead-email"></td>
+												  </tr>
+												  <tr>
+													  <td>Lead Owner</td>
+													  <td class="lead-owner"></td>
+												  </tr>
+												  <tr>
+													  <td>Lead Created</td>
+													  <td class="lead-created"></td>
+												  </tr>
+												  <tr>
+													  <td>Date of Last Activity</td>
+													  <td class="lead-updated"></td>
+												  </tr>
+												  <tr>
+													  <td>Date of Next Activity</td>
+													  <td></td>
+												  </tr>
+												  <tr>
+													  <td>Lead Rating</td>
+													  <td class="lead-rating"></td>
+												  </tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+								<div class="accordion-header js-accordion-header">Additional Information</div> 
+								  <div class="accordion-body js-accordion-body d-block">
+									<div class="accordion-body__contents">
+										  <table class="table">
+											<tbody>
+											  <tr>
+												<td>Email Address</td>
+												<td class="lead-email"></td>
+											  </tr>
+											  <tr>
+												<td>Email Opted Out</td>
+												<td class="text-capitalize lead-email-opted-out"></td>
+											  </tr>
+											  <tr>
+												<td>Phone</td>
+												<td class="lead-phone"></td>
+											  </tr>
+											  <tr>
+												<td>Mobile Phone</td>
+												<td class="lead-mobile-phone"></td>
+											  </tr>
+											  <tr>
+												<td>Fax</td>
+												<td class="lead-fax"></td>
+											  </tr>
+											  <tr>
+												<td>Website</td>
+												<td class="lead-website"></td>
+											  </tr>
+											  <tr>
+												<td>Industry</td>
+												<td class="lead-industry"></td>
+											  </tr>
+											  <tr>
+												  <td>Number of Employees</td>
+												  <td class="lead-number-of-employees"></td>
+											  </tr>
+											  <tr>
+												  <td>Lead Source</td>
+												  <td class="lead-source"></td>
+											  </tr>
+											  
+											</tbody>
+										 </table>
+									</div>
+								</div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+								<div class="accordion-header js-accordion-header">Address Information</div> 
+								  <div class="accordion-body js-accordion-body d-block">
+									<div class="accordion-body__contents">
+										<table class="table">
+											<tbody>
+												<tr>
+													<td>Address</td>
+													<td class="lead-mailing-address"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									
+								</div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+								<div class="accordion-header js-accordion-header">Description Information</div> 
+								  <div class="accordion-body js-accordion-body d-block">
+									<div class="accordion-body__contents">
+										  <table class="table">
+											<tbody>
+											  <tr>
+												<td>Description</td>
+												<td class="lead-description"></td>
+											  </tr>
+											</tbody>
+										</table>
+									</div>
+									
+								</div>
+							  </div>
+							 
+							  <div class="tasks__item crms-task-item active">
+								<div class="accordion-header js-accordion-header">Tag Information</div> 
+								  <div class="accordion-body js-accordion-body d-block">
+									<div class="accordion-body__contents">
+									  <table class="table">
+											<tbody>
+											  <tr>
+												<td class="border-0">Tag List</td>
+												<td class="border-0 lead-tag-list"></td>
+											  </tr>
+											</tbody>
+										  </table>
+									</div>
+									
+								</div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+								<div class="accordion-header js-accordion-header">Lead Conversion Information</div> 
+								  <div class="accordion-body js-accordion-body d-block">
+									<div class="accordion-body__contents">
+										<table class="table">
+											<tbody>
+												<tr>
+													<td>Converted Contact</td>
+													<td>John</td>
+												</tr>
+												<tr>
+													<td>Converted Organization</td>
+													<td>Umbrella</td>
+												</tr>
+												<tr>
+													<td>Converted Opportunity</td>
+													<td>Lorem ipsum</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									
+								</div>
+							  </div>
+							</div>
+							</div>
+						</div>
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Print Lead) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="leads-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -3735,6 +3952,9 @@
 		
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 		  
+		<!-- Print Lead Function -->
+		<script src="{% static 'js/leads/fetchAndPrintLead.js' %}"></script>
+
 		<!-- Fetching lead details function -->
 		<script src="{% static 'js/leads/loadLeadDetails.js' %}"></script>
 

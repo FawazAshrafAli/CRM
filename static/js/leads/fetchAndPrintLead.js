@@ -1,9 +1,9 @@
-function loadLeadDetails(leadId) {	
+function fetchAndPrintLead(leadId, leadContentDiv) {	
     $.ajax({
-        url: '/leads/detail/' + leadId,  
+        url: '/leads/detail/' + leadId, 
         type: 'GET',
         dataType: 'json',
-        success: function(lead) {										            
+        success: function(lead) {										
             $('.lead-id').each(function() {
                 if (lead.id != null && lead.id != ""){
                     $(this).html(lead.id);
@@ -214,6 +214,33 @@ function loadLeadDetails(leadId) {
                     $(this).html('None'); 
                 };
             });
+
+            var printWindow = window.open('', '_blank');
+            printWindow.document.open();
+            printWindow.document.write('<html><head><title>Print</title></head><body>');
+
+            // Wait for stylesheets to load
+            var stylesheetsLoaded = 0;
+            var stylesheets = document.querySelectorAll('link[rel="stylesheet"]');
+            stylesheets.forEach(function(stylesheet) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = stylesheet.href;
+                link.onload = function() {
+                    stylesheetsLoaded++;
+                    if (stylesheetsLoaded === stylesheets.length) {
+
+                        printWindow.document.write(document.getElementById(leadContentDiv).innerHTML);
+                        printWindow.document.write('</body></html>');
+                        printWindow.document.close();
+                        printWindow.print();
+                        printWindow.close();
+                        resolve();
+                    }
+                };
+                printWindow.document.head.appendChild(link);
+            });
+
         },
         error: function(error) {
             console.error('Error:', error);

@@ -695,7 +695,7 @@
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_project_modal" data-project-id="{{project.pk}}" onclick="deleteProject({{project.pk}})">Delete This Project</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_project_owner_modal" data-project-id="{{project.pk}}" onclick="changeProjectOwner({{project.pk}})">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Project</a>
+								                                <a class="dropdown-item" href="#" data-project-id="{{project.pk}}" onclick="fetchAndPrintProject({{project.pk}}, 'project-content-div')">Print This Project</a>
 								                                <a class="dropdown-item" href="#">Add New Task For Project</a>
 								                                <a class="dropdown-item" href="#">Add New Event For Project</a>
 								                                <a class="dropdown-item" href="#">Add Activity Set To Project</a>
@@ -1122,6 +1122,123 @@
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Change Project Owner) -->
 
+			<!-- Modal (Print Project) -->
+			<div class="modal fade" id="change_project_owner_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Print Project</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							
+							<div class="tab-pane show active" id="pipeline-task-details">
+								<div class="crms-tasks" id="project-content-div">
+							  	<div class="tasks__item crms-task-item active">
+							    	<div class="accordion-header js-accordion-header">Project Details</div> 
+								  	<div class="accordion-body js-accordion-body d-block">
+									    <div class="accordion-body__contents">
+										    <table class="table">
+				                                <tbody>
+				                                    <tr>
+				                                      <td class="border-0">Record ID</td>
+				                                      <td class="border-0 project-id"></td>
+				                                    </tr>
+				                                    <tr>
+				                                      <td>Project Name</td>
+				                                      <td class="project-name"></td>
+				                                    </tr>				                                    				                                    
+				                                </tbody>
+				                            </table>
+									    </div>
+								    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Additional Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+			                                <tbody>			                                			    
+			                                    <tr>
+													<td>Status</td>
+													<td class="project-status"></td>
+												</tr>
+												<tr>
+													<td>Category</td>
+													<td class="project-category"></td>
+												</tr>
+												<tr>
+													<td>User Responsible</td>
+													<td class="project-user-responsible"></td>
+												  </tr>
+			                                    <tr>
+			                                      <td>Last Updated</td>
+			                                      <td class="project-updated"></td>
+			                                    </tr>
+			                                    <tr>
+			                                      <td>Created</td>
+			                                      <td class="project-created"></td>
+			                                    </tr>			                                    
+			                                </tbody>
+			                            </table>
+								    </div>
+							    </div>
+							  </div>							  
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Description Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+		                                  	<tbody>
+			                                    <tr>
+			                                      <td>Description</td>
+			                                      <td class="project-description"></td>
+			                                    </tr>
+		                                  	</tbody>
+		                                </table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Tag List</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <table class="table">
+										<tbody>
+										  <tr>
+											<td>Tag List</td>
+											<td class="project-tag-list"></td>
+										  </tr>
+										</tbody>
+								  </table>
+							    </div>
+							  </div>
+							 
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Permissions</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+		                                  	<tbody>
+			                                    <tr>
+			                                      <td>visibility</td>
+			                                      <td class="project-visibility"></td>
+			                                    </tr>
+		                                  	</tbody>
+		                                </table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							</div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Print Project) -->
+
 			<!--system users Modal -->
             <div class="modal right fade" id="system-user" tabindex="-1" role="dialog" aria-modal="true">
               <div class="modal-dialog" role="document">
@@ -1526,9 +1643,9 @@
 																{% for deal in deals %}
 																<tr>																	
 																	<td>
-																		{{deal.name}}
+																		{% if deal.last_name %} {{deal.first_name}} {{deal.last_name}} {% else %} {{deal.first_name}} {% endif %}
 																	</td>
-																	<td>{{deal.company}}</td>
+																	<td>{{deal.company.name}}</td>
 																	<td>{{deal.user_responsible}}</td>
 																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
@@ -2099,7 +2216,7 @@
 							    </div>
 							  </div>
 							  <div class="tasks__item crms-task-item">
-							    <div class="accordion-header js-accordion-header">Task Comments</div> 
+							    <div class="accordion-header js-accordion-header">Tag List</div> 
 							  	<div class="accordion-body js-accordion-body">
 								    <table class="table">
 										<tbody>
@@ -2253,9 +2370,9 @@
 																{% for deal in deals %}
 																<tr>
 																	<td>
-																		{{deal.name}}
+																		{% if deal.last_name %} {{deal.first_name}} {{deal.last_name}} {% else %} {{deal.first_name}} {% endif %}
 																	</td>
-																	<td>{{deal.company}}</td>
+																	<td>{{deal.company.name}}</td>
 																	<td>{{deal.user_responsible}}</td>
 																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
@@ -2748,6 +2865,9 @@
 
 		<!-- jquery -->
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+		<!-- Print Project Funciton -->
+		<script src="{% static 'js/projects/fetchAndPrintProject.js' %}"></script>
 
 		<!-- Project Detail Funciton -->
 		<script src="{% static 'js/projects/loadProjectDetails.js' %}"></script>

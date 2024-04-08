@@ -685,7 +685,7 @@
 							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_task_owner" data-task-id={{task.id}} onclick="changeTaskOwner({{task.pk}}); return false;">Change Record Owner</a>
 							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_task_confirmation" data-task-id="{{task.id}}" onclick="deleteTask({{task.id}}); return false;">Delete This Tasks</a>
 							                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#clone_task_confirmation" data-task-id="{{task.id}}" onclick="cloneTask({{task.id}}); return false;">Clone This Tasks</a>
-							                                <a class="dropdown-item" href="#">Print This Tasks</a>
+							                                <a class="dropdown-item" href="#" data-task-id="{{task.pk}}" onclick="fetchAndPrintTask({{task.pk}}, 'task-content-div'); return false;">Print This Tasks</a>
 														</div>
 													</div>
 												</td>
@@ -693,7 +693,7 @@
 											{% endfor %}											
 											
 										</tbody>
-									</table>
+									</table>									
 								</div>
 							</div>
 							</div>
@@ -1138,7 +1138,164 @@
 					</div>
 				</div><!-- modal-content -->
 			</div><!-- modal-dialog -->
-		</div><!-- modal (Clone Task Confirmation) --> 
+		</div><!-- modal (Clone Task Confirmation) -->
+
+		<!-- Modal (Printing Task) -->
+		<div class="modal right fade" id="print_task_modal" tabindex="-1" role="dialog" aria-modal="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-center">Print Task</h4>
+						<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						<div class="tab-pane show active" id="tasks-details">
+							<div class="crms-tasks" id="task-content-div">					
+						  <div class="tasks__item crms-task-item active">
+							<div class="accordion-header js-accordion-header">Task Details</div> 
+							  <div class="accordion-body js-accordion-body d-block">
+								<div class="accordion-body__contents">
+									  <table class="table">
+										<tbody>
+											<tr>
+											  <td class="border-0">Record ID</td>
+											  <td class="border-0 task-id"></td>
+											</tr>
+											<tr>
+											  <td>Task Name</td>
+											  <td class="task-name"></td>
+											</tr>
+											<tr>
+											  <td>Assigned To</td>
+											  <td class="task-assigned-to"></td>
+											</tr>
+											<tr>
+											  <td>Category</td>
+											  <td><label class="badge badge-gradient-danger task-category"></label></td>
+											</tr>
+											<tr>
+											  <td>Date Due</td>
+											  <td class="task-due-date"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						  </div>
+						 
+						  
+						  <div class="tasks__item crms-task-item active">
+							<div class="accordion-header js-accordion-header">Additional Information</div> 
+							  <div class="accordion-body js-accordion-body d-block">
+								<div class="accordion-body__contents">
+									  <table class="table">
+										<tbody>
+											<tr>
+											  <td>Start Date</td>
+											  <td class="task-start-date"></td>
+											</tr>
+											<tr>
+											  <td>Reminder Date</td>
+											  <td class="task-reminder-date"></td>
+											</tr>
+											<tr>
+											  <td>Repeats</td>
+											  <td></td>
+											</tr>
+											<tr>
+											  <td>Progress</td>
+											  <td class="task-progress"></td>
+											</tr>
+											<tr>
+											  <td>Priority</td>
+											  <td class="task-priority"></td>
+											</tr>
+											<tr>
+											  <td>Status</td>
+											  <td class="task-status"></td>
+											</tr>
+											<tr>
+											  <td>Last Updated</td>
+											  <td class="task-updated-at"></td>
+											</tr>
+											<tr>
+											  <td>Created</td>
+											  <td class="task-created-at"></td>
+											</tr>
+											<tr>
+											  <td>Task Created By</td>
+											  <td></td>
+											</tr>
+											<tr>
+											  <td>Task Owner</td>
+											  <td></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
+							</div>
+						  </div>
+						   <div class="tasks__item crms-task-item active">
+							<div class="accordion-header js-accordion-header">Related To</div> 
+							  <div class="accordion-body js-accordion-body d-block">
+								<div class="accordion-body__contents">
+									 <table class="table">
+										 <tbody>
+											<tr>
+											  <td>Related To</td>
+											  <td class="task-related-to"></td>
+											</tr>
+										</tbody>
+									 </table>
+								</div>
+							</div>
+						  </div>
+
+						  <div class="tasks__item crms-task-item active">
+							<div class="accordion-header js-accordion-header">Description Information</div> 
+							  <div class="accordion-body js-accordion-body d-block">
+								<div class="accordion-body__contents">
+								  <table class="table">
+										<tbody>
+											<tr>
+												<td class="border-0">Description</td>
+												<td class="border-0 task-description"></td>
+											</tr>
+										</tbody>
+									  </table>
+								</div>
+							</div>
+						  </div>
+						  <!-- <div class="tasks__item crms-task-item active">
+							<div class="accordion-header js-accordion-header">Task Comments</div> 
+							  <div class="accordion-body js-accordion-body d-block">
+								<div class="accordion-body__contents">
+								  <button class="btn btn-secondary text-white w-25">Add Comments</button>
+								</div>
+							</div>
+						  </div>  -->
+						  <div class="tasks__item crms-task-item active">
+							<div class="accordion-header js-accordion-header">Permissions</div> 
+							  <div class="accordion-body js-accordion-body d-block">
+								<div class="accordion-body__contents">
+								  <table class="table">
+									  <tbody>
+										<tr>
+										  <td>Task visibility</td>
+										  <td class="task-visibility"></td>
+										</tr>
+									  </tbody>
+									</table>
+								</div>								
+							</div>
+						  </div>
+						</div>
+						</div>
+					</div>
+				</div><!-- modal-content -->
+			</div><!-- modal-dialog -->
+		</div><!-- modal (Printing Task) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="system-user" tabindex="-1" role="dialog" aria-modal="true">
@@ -1155,7 +1312,7 @@
                   		</div>
                   		<div>
                   			<p class="mb-0">System User</p>
-                  			<span class="modal-title">John Doe</span>
+                  			<span class="modal-title">{{request.user.username}}</span>
                     		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
                     		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   		</div>
@@ -1455,9 +1612,9 @@
 																<tr>
 																	
 																	<td>
-																		{{deal.name}}
+																		{% if deal.last_name %} {{deal.first_name}} {{deal.last_name}} {% else %} {{deal.first_name}} {% endif %}
 																	</td>
-																	<td>{{deal.organization.name}}</td>
+																	<td>{{deal.company.name}}</td>
 																	<td>{{deal.user_responsible.name}}</td>
 																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
@@ -1938,29 +2095,29 @@
 								<div class="crms-tasks">					
 							  <div class="tasks__item crms-task-item">
 							    <div class="accordion-header js-accordion-header">Task Details</div> 
-							  	<div class="accordion-body js-accordion-body">
+							  	<div class="accordion-body js-accordion-body print-visible">
 								    <div class="accordion-body__contents">
 								      	<table class="table">
 				                            <tbody>
 				                                <tr>
 				                                  <td class="border-0">Record ID</td>
-				                                  <td class="border-0 task-id">124192692</td>
+				                                  <td class="border-0 task-id"></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Task Name</td>
-				                                  <td class="task-name">1. Personalize your account</td>
+				                                  <td class="task-name"></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Assigned To</td>
-				                                  <td class="task-assigned-to">John Doe</td>
+				                                  <td class="task-assigned-to"></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Category</td>
-				                                  <td><label class="badge badge-gradient-danger task-category">Get Started</label></td>
+				                                  <td><label class="badge badge-gradient-danger task-category"></label></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Date Due</td>
-				                                  <td class="task-due-date">07/12/2000</td>
+				                                  <td class="task-due-date"></td>
 				                                </tr>
 				                            </tbody>
 				                        </table>
@@ -1971,7 +2128,7 @@
 							  
 							  <div class="tasks__item crms-task-item">
 							    <div class="accordion-header js-accordion-header">Additional Information</div> 
-							  	<div class="accordion-body js-accordion-body">
+							  	<div class="accordion-body js-accordion-body print-visible">
 								    <div class="accordion-body__contents">
 								      	<table class="table">
 				                            <tbody>
@@ -2023,13 +2180,13 @@
 							  </div>
 							   <div class="tasks__item crms-task-item">
 							    <div class="accordion-header js-accordion-header">Related To</div> 
-							  	<div class="accordion-body js-accordion-body">
+							  	<div class="accordion-body js-accordion-body print-visible">
 								    <div class="accordion-body__contents">
 								     	<table class="table">
 								     		<tbody>
 				                                <tr>
 				                                  <td>Related To</td>
-				                                  <td class="task-related-to">Lorem Ipsum</td>
+				                                  <td class="task-related-to"></td>
 				                                </tr>
 			                            	</tbody>
 								     	</table>
@@ -2039,13 +2196,13 @@
 
 							  <div class="tasks__item crms-task-item">
 							    <div class="accordion-header js-accordion-header">Description Information</div> 
-							  	<div class="accordion-body js-accordion-body">
+							  	<div class="accordion-body js-accordion-body print-visible">
 								    <div class="accordion-body__contents">
 								      <table class="table">
 			                                <tbody>
 				                                <tr>
 				                                    <td class="border-0">Description</td>
-				                                    <td class="border-0 task-description">Lorem Ipsum</td>
+				                                    <td class="border-0 task-description"></td>
 				                                </tr>
 			                                </tbody>
 			                              </table>
@@ -2054,7 +2211,7 @@
 							  </div>
 							  <div class="tasks__item crms-task-item">
 							    <div class="accordion-header js-accordion-header">Task Comments</div> 
-							  	<div class="accordion-body js-accordion-body">
+							  	<div class="accordion-body js-accordion-body print-visible">
 								    <div class="accordion-body__contents">
 								      <button class="btn btn-secondary text-white w-25">Add Comments</button>
 								    </div>
@@ -2062,13 +2219,13 @@
 							  </div>
 							  <div class="tasks__item crms-task-item">
 							    <div class="accordion-header js-accordion-header">Permissions</div> 
-							  	<div class="accordion-body js-accordion-body">
+							  	<div class="accordion-body js-accordion-body print-visible">
 								    <div class="accordion-body__contents">
 								      <table class="table">
 			                              <tbody>
 			                                <tr>
 			                                  <td>Task visibility</td>
-			                                  <td>Private</td>
+			                                  <td></td>
 			                                </tr>
 			                              </tbody>
 			                            </table>
@@ -2201,10 +2358,10 @@
 																{% for deal in deals %}
 																<tr>
 																	<td>
-																		{{deal.name}}
+																		{% if deal.last_name %} {{deal.first_name}} {{deal.last_name}} {% else %} {{deal.first_name}} {% endif %}
 																	</td>
-																	<td>{{deal.organization.name}}</td>
-																	<td>{deal.user_responsible.name}</td>
+																	<td>{{deal.company.name}}</td>
+																	<td>{{deal.user_responsible.name}}</td>
 																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
@@ -2557,6 +2714,7 @@
 	
 					</div>
 				</div>
+				
 			</div>
 
 		<!--theme settings-->
@@ -2564,7 +2722,6 @@
           	<div class="toggle" data-bs-toggle="modal" data-bs-target="#settings"><i class="fa fa-cog fa-w-16 fa-spin fa-2x"></i></div>
            
         </div>
-
 
 		
 		<!-- jQuery -->
@@ -2601,26 +2758,29 @@
 		<!-- Function to time out message div -->
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>
 
+		<!-- Task Printing Function -->
+		<script src="{% static 'js/tasks/fetchAndPrintTask.js' %}"></script>
+
 		<!-- Task Details Fetching Function -->
-		<script src="{% static 'js/task/loadTaskDetails.js' %}"></script>
+		<script src="{% static 'js/tasks/loadTaskDetails.js' %}"></script>
 
 		<!-- Insert Edit Task Form Dynamicaly -->
-		<script src="{% static 'js/task/editTask.js' %}"></script>
+		<script src="{% static 'js/tasks/editTask.js' %}"></script>
 
 		<!-- Completing Task detail fetching -->
-		<script src="{% static 'js/task/completeTask.js' %}"></script>
+		<script src="{% static 'js/tasks/completeTask.js' %}"></script>
 
 		<!-- Complete and Clone Task detail fetching -->
-		<script src="{% static 'js/task/completeAndCloneTask.js' %}"></script>
+		<script src="{% static 'js/tasks/completeAndCloneTask.js' %}"></script>
 
 		<!-- Task Owner detail fetching -->
-		<script src="{% static 'js/task/changeTaskOwner.js' %}"></script>
+		<script src="{% static 'js/tasks/changeTaskOwner.js' %}"></script>
 
 		<!-- Fetch Task Deletion Function -->
-		<script src="{% static 'js/task/deleteTask.js' %}"></script>
+		<script src="{% static 'js/tasks/deleteTask.js' %}"></script>
 
 		<!-- Fetch Task Cloning Function -->
-		<script src="{% static 'js/task/cloneTask.js' %}"></script>
+		<script src="{% static 'js/tasks/cloneTask.js' %}"></script>
 
 		<!-- User Details Fetching Function -->
 		<script src="{% static 'js/loadCrmUserDetails.js' %}"></script>

@@ -679,7 +679,7 @@
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_contact_owner" data-contact-id="{{contact.pk}}" onclick="changeContactOwner({{contact.pk}}); return false;">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#lead_convertion" data-contact-id="{{contact.pk}}" onclick="contactToLead({{contact.pk}}); return false;">Change Contact To Lead</a>
-								                                <a class="dropdown-item" href="#">Print This Contact</a>
+								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-contact-id="{{contact.pk}}" onclick="fetchAndPrintContact({{contact.pk}}, 'contact-content-div'); return false;">Print This Contact</a>
 								                                <a class="dropdown-item" href="mailto:{{contact.email}}">Email This Contact</a>
 								                                <a class="dropdown-item" href="#">Add New Task For Contact</a>
 								                                <a class="dropdown-item" href="#">Add New Event For Contact</a>
@@ -1367,6 +1367,217 @@
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Contact to Lead Convertion)-->
 
+			<!-- Modal (Print Contact) -->
+			<div class="modal right fade" id="print_contact_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<button type="button" class="close md-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Print Contact</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+						</div>
+
+						<div class="modal-body">
+							<div class="tab-pane show active" id="task-details">
+								<div class="crms-tasks" id="contact-content-div">
+							  	<div class="tasks__item crms-task-item active">
+							    	<div class="accordion-header js-accordion-header">Name & Occupation</div> 
+								  	<div class="accordion-body js-accordion-body d-block">
+									    <div class="accordion-body__contents">
+									      <table class="table">
+				                                <tbody>
+				                                  <tr>
+				                                    <td class="border-0">Record ID</td>
+				                                    <td class="border-0 contact-id"></td>
+				                                  </tr>
+				                                  <tr>
+				                                    <td class="border-0">Name</td>
+				                                    <td class="border-0 contact-full-name"></td>
+				                                  </tr>
+				                                  <tr>
+				                                    <td>Company</td>
+				                                    <td class="contact-organization"></td>
+				                                  </tr>
+				                                  <tr>
+				                                    <td>Title</td>
+				                                    <td class="contact-title"></td>
+				                                  </tr>
+				                                </tbody>
+				                            </table>
+									    </div>
+								    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Contact Details</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+			                                <tbody>
+			                                  <tr>
+			                                    <td class="border-0">Email</td>
+			                                    <td class="border-0 contact-email"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Email Opted out</td>
+												<td class="border-0 text-capitalize contact-email-opted-out"></td>			                                    
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Phone</td>
+			                                    <td class="contact-email"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Home Phone</td>
+			                                    <td class="contact-home-phone"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Mobile Phone</td>
+			                                    <td class="contact-mobile-phone"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Other Phone</td>
+			                                    <td class="contact-other-phone"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Assistant Phone</td>
+			                                    <td class="contact-assistant-phone"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Assistant Name</td>
+			                                    <td class="contact-assistant-name"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Fax</td>
+			                                    <td class="contact-fax"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Linkedin</td>
+			                                    <td class="contact-linkedin"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Facebook</td>
+			                                    <td class="contact-facebook"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Twitter</td>
+			                                    <td class="contact-twitter"></td>
+			                                  </tr>
+			                                  
+			                                </tbody>
+			                            </table>
+								    </div>
+							    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Address Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      <table class="table">
+		                                <tbody>
+		                                  <tr>
+		                                    <td class="border-0">Mailling Address</td>
+		                                    <td class="border-0 contact-mailing-address"></td>
+		                                  </tr>
+		                                  <tr>
+		                                    <td>Other Address</td>
+		                                    <td class="contact-other-address"></td>
+		                                  </tr>
+		                                </tbody>
+		                              </table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Dates To Remember</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      <table class="table">
+			                                <tbody>
+			                                  <tr>
+			                                    <td class="border-0">Dates to Remember</td>
+			                                    <td class="border-0 contact-due-date"></td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Date of Birth</td>
+			                                    <td class="contact-date-of-birth"></td>
+			                                  </tr>
+			                                  
+			                                </tbody>
+			                              </table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Additional Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+			                                <tbody>
+				                                  <tr>
+				                                    <td class="border-0">Date of Next Activity</td>
+				                                    <td class="border-0"></td>
+				                                  </tr>
+				                                  <tr>
+				                                    <td>Date of Last Activity</td>
+				                                    <td class="contact-updated"></td>
+				                                  </tr>
+				                                  <tr>
+				                                    <td>Contact Owner</td>
+				                                    <td class="contact-owner"></td>
+				                                  </tr>
+				                                  <tr>
+				                                    <td>Contact Created</td>
+				                                    <td class="contact-created"></td>
+				                                  </tr>
+			                                  
+			                                	</tbody>
+			                              	</table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Description Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      <table class="table">
+			                                <tbody>
+				                                <tr>
+				                                    <td class="border-0">Description</td>
+				                                    <td class="border-0 contact-description"></td>
+				                                </tr>
+			                                </tbody>
+			                              </table>
+								    </div>
+							    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Tag List</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      <table class="table">
+			                                <tbody>
+			                                  <tr>
+			                                    <td class="border-0">Tag List</td>
+			                                    <td class="border-0 contact-tag-list"></td>
+			                                  </tr>
+			                                </tbody>
+			                              </table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							</div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Contact to Lead Convertion)-->
+
 
 			<!--system users Modal -->
             <div class="modal right fade" id="system-user" tabindex="-1" role="dialog" aria-modal="true">
@@ -1383,7 +1594,7 @@
                   		</div>
                   		<div>
                   			<p class="mb-0">System User</p>
-                  			<span class="modal-title">John Doe</span>
+                  			<span class="modal-title">{{request.user.username}}</span>
                     		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
                     		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   		</div>
@@ -1774,9 +1985,9 @@
 																<tr>
 																	
 																	<td>
-																		{{deal.name}}
+																		{% if deal.last_name %} {{deal.first_name}} {{deal.last_name}} {% else %} {{deal.first_name}} {% endif %}
 																	</td>
-																	<td>{{deal.organization.name}}</td>
+																	<td>{{deal.company.name}}</td>
 																	<td>{{deal.user_responsible.name}}</td>
 																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
@@ -2797,6 +3008,9 @@
 		<!-- W3 functions -->
 		<!-- Message TimeOut Function -->
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>
+
+		<!-- Print Contact Funciton -->
+		<script src="{% static 'js/contacts/fetchAndPrintContact.js' %}"></script>
 
 		<!-- Contact Detail Funciton -->
 		<script src="{% static 'js/contacts/loadContactDetails.js' %}"></script>

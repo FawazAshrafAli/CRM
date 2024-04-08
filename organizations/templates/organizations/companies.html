@@ -676,7 +676,7 @@
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-organization-modal" data-organization-id="{{organization.pk}}" onclick="deleteOrganization({{organization.pk}}); return false;">Delete This Organization</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change-organization-owner-modal" data-organization-id="{{organization.pk}}" onclick="changeRecordOwner({{organization.pk}}); return false;">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Organization</a>
+								                                <a class="dropdown-item" href="#" data-organization-id="{{organization.pk}}" onclick="fetchAndPrintOrganization({{organization.pk}}, 'company-content-div')">Print This Organization</a>
 								                                <a class="dropdown-item" href="#">Add New Task For Organization</a>
 								                                <a class="dropdown-item" href="#">Add New Event For Organization</a>
 								                                <a class="dropdown-item" href="#">Add Activity Set To Organization</a>
@@ -1234,6 +1234,167 @@
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Change Organization Owner) -->
 
+			<!-- Modal (Print Company) -->
+			<div class="modal right fade" id="print-organization-modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<button type="button" class="close md-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    <h4 class="modal-title text-center">Print Organization</h4>
+		                    <button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">
+							<div class="tab-pane show active" id="task-details">
+								<div class="crms-tasks" id="company-content-div">
+							  	<div class="tasks__item crms-task-item active">
+							    	<div class="accordion-header js-accordion-header">Organization Name</div> 
+								  	<div class="accordion-body js-accordion-body d-block">
+									    <div class="accordion-body__contents">
+										    <table class="table">
+				                                <tbody>
+				                                  <tr>
+				                                    <td class="border-0">Record ID</td>
+				                                    <td class="border-0 organization-id">None</td>
+				                                  </tr>
+				                                  <tr>
+				                                    <td>Organization Name</td>
+				                                    <td class="organization-name">None</td>
+				                                  </tr>
+				                                </tbody>
+				                            </table>
+									    </div>
+								    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Organization Contact Details</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+			                                <tbody>
+			                                  <tr>
+			                                    <td class="border-0">Phone</td>
+			                                    <td class="border-0 organization-phone">None</td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Fax</td>
+			                                    <td class="organization-fax">None</td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Website</td>
+			                                    <td class="organization-website">None</td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>LinkedIn</td>
+			                                    <td class="organization-linkedin">None</td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Facebook</td>
+			                                    <td class="organization-facebook">None</td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Twitter</td>
+			                                    <td class="organization-twitter">None</td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Email Domains</td>
+			                                    <td class="organization-email-domains">None</td>
+			                                  </tr>
+			                                </tbody>
+			                              </table>
+								    </div>
+							    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Address Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								        <table class="table">
+			                                <tbody>
+			                                  <tr>
+			                                    <td class="border-0">Billing Address</td>
+			                                    <td class="border-0 organization-billing-address">None</td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Shipping Address</td>
+			                                    <td class="organization-shipping-address">None</td>
+			                                  </tr>
+			                                </tbody>
+		                                </table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Additional Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+			                                <tbody>
+			                                  <tr>
+			                                    <td>Dates to remember</td>
+			                                    <td class="organization-date-to-remember">None</td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Organization Created</td>
+			                                    <td class="organization-created-at">None</td>
+			                                  </tr>
+			                                   <tr>
+			                                    <td>Date of Next Activity </td>
+			                                    <td>09/12/2005</td>
+			                                  </tr>
+			                                  <tr>
+			                                    <td>Date of Last Activity </td>
+			                                    <td class="organization-updated-at">None</td>
+			                                  </tr>
+			                                </tbody>
+			                             </table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Description Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+			                                <tbody>
+			                                  <tr>
+			                                    <td>Description</td>
+			                                    <td class="organization-description">None</td>
+			                                  </tr>
+			                                </tbody>
+			                             </table>
+								    </div>
+							    </div>
+							  </div>
+							 
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Tag Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      <table class="table">
+			                                <tbody>
+			                                  <tr>
+			                                    <td class="border-0">Tag List</td>
+			                                    <td class="border-0 organization-tag-list">None</td>
+			                                  </tr>
+			                                </tbody>
+			                              </table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							</div>
+							</div>
+
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Print Company) -->
+
 			<!--system users Modal -->
             <div class="modal right fade" id="company-details" tabindex="-1" role="dialog" aria-modal="true">
               <div class="modal-dialog" role="document">
@@ -1585,9 +1746,9 @@
 																{% for deal in deals %}
 																<tr>																	
 																	<td>
-																		{{deal.name}}
+																		{% if deal.last_name %} {{deal.first_name}} {{deal.last_name}} {% else %} {{deal.first_name}} {% endif %}
 																	</td>
-																	<td>{{deal.organization.name}}</td>
+																	<td>{{deal.company.name}}</td>
 																	<td>{{deal.user_responsible.name}}</td>
 																	<td>{{deal.deal_value}}‎{{deal.bid_admount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
@@ -2205,6 +2366,9 @@
 		<!-- Message time out function -->
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>
 		
+		<!-- Print Organization Function -->
+		<script src="{% static 'js/organizations/fetchAndPrintOrganization.js' %}"></script>
+
 		<!-- Fetch Organization Detail -->
 		<script src="{% static 'js/organizations/loadOrganizationDetails.js' %}"></script>
 

@@ -140,6 +140,7 @@ class DetailLeadView(BaseLeadView, DetailView):
             "first_name": lead.first_name,
             "last_name": lead.last_name,
             "organization" : lead.organization.id,
+            "organization_name" : lead.organization.name,
             "title" : lead.title,            
             "mailing_address": lead.mailing_address,
             "mailing_city": lead.mailing_city,
@@ -166,8 +167,11 @@ class DetailLeadView(BaseLeadView, DetailView):
         if lead.lead_status:
             serialized_data["lead_status"] = lead.lead_status,
 
-        if lead.record_owner:
-            serialized_data["record_owner"] = self.object.record_owner.pk
+        if lead.lead_owner:
+            serialized_data.update({
+                "lead_owner":  self.object.lead_owner.pk,
+                "lead_owner_name":  self.object.lead_owner.name
+                                   })
 
         if lead.image:
             serialized_data["image"] = lead.image.url
@@ -178,7 +182,10 @@ class DetailLeadView(BaseLeadView, DetailView):
             serialized_data["full_name"] = lead.first_name
 
         if lead.user_responsible:
-            serialized_data["user_responsible"] = lead.user_responsible.id,
+            serialized_data.update({
+                "user_responsible" : lead.user_responsible.id,
+                "user_responsible_name" : lead.user_responsible.name
+                })
 
         if lead.mailing_address and lead.mailing_city and lead.mailing_state and lead.mailing_postal_code and lead.mailing_country:
             full_mailing_address = f"{lead.mailing_address}, {lead.mailing_city}, {lead.mailing_state}, {lead.mailing_postal_code}, {lead.mailing_country}."
@@ -298,7 +305,7 @@ class ChangeLeadToContact(BaseLeadView, CreateView):
                     description = self.object.description,
                     permission = self.object.permission,
                     tag_list = self.object.tag_list,                
-                    record_owner = self.object.record_owner,                                
+                    record_owner = self.object.lead_owner,                                
                 )
                 self.object.delete()
                 messages.success(self.request, "Change lead to contacts successfully.")
@@ -320,13 +327,15 @@ class ChangeLeadToDeal(BaseLeadView, CreateView):
             return redirect(reverse_lazy('authentication:error404'))
         
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object.last_name:
-            self.full_name = f"{self.object.first_name} {self.object.last_name}"
+        self.object = self.get_object()        
         try:
             get_object_or_404(Deal, 
-                              name = self.full_name,
-                              company = self.object.organization,                              
+                              prefix = self.object.prefix,
+                              first_name = self.object.first_name,
+                              last_name = self.object.last_name,
+                              company = self.object.organization,
+                              title = self.object.title,
+                              email = self.object.email,
                               )            
             messages.success(self.request, "Similer deal already exists.")
             return redirect(self.get_success_url())
@@ -334,7 +343,7 @@ class ChangeLeadToDeal(BaseLeadView, CreateView):
             try:
                 deal = Deal.objects.create(
                     image = self.object.image,
-                    name = self.full_name,
+                    prefix = self.object.prefix,
                     company = self.object.organization,                                                                                
                     user_responsible = self.object.user_responsible,
                     description = self.object.description,

@@ -83,6 +83,21 @@ function editLead(leadId) {
             } else {
                 $('#lead-rating-value').prop('value', '');
             };
+            
+            var leadOwnerValue = document.getElementById('lead-owner-value')
+            if (lead.lead_owner != null && lead.lead_owner != '') {
+                for (var i = 0; i < leadOwnerValue.options.length; i++) {
+                    if (leadOwnerValue.options[i].value == lead.lead_owner) {
+                        leadOwnerValue.options[i].selected = true;                        
+                    } else {
+                        leadOwnerValue.options[i].selected = false;
+                    };
+                };
+            } else {
+                for (var i = 0; i < leadOwnerValue.options.length; i++) {
+                    leadOwnerValue.options[i].selected = false;
+                };
+            };
 
             if (lead.email != null && lead.email != '') {
                 $('#email-value').prop('value', lead.email);
