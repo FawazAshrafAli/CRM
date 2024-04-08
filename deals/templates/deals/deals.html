@@ -712,7 +712,7 @@
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-deal-modal" data-deal-id="{{deal.pk}}" onclick="deleteDeal({{deal.pk}}); return false;">Delete This Deal</a>
 								                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#change_deal_owner_modal" data-deal-id="{{deal.pk}}" onclick="changeDealOwner({{deal.pk}}); return false;">Change Record Owner</a>
 								                                <a class="dropdown-item" href="#">Generate Merge Document</a>
-								                                <a class="dropdown-item" href="#">Print This Deal</a>
+								                                <a class="dropdown-item" href="#" data-deal-id="{{deal.pk}}" onclick="fetchAndPrintDeal({{deal.pk}}, 'deal-content-div')">Print This Deal</a>
 								                                <a class="dropdown-item" href="#">Add New Task For Deal</a>
 								                                <a class="dropdown-item" href="#">Add New Event For Deal</a>
 								                                <a class="dropdown-item" href="#">Add Activity Set To Deal</a>
@@ -1436,6 +1436,179 @@
 					</div><!-- modal-content -->
 				</div><!-- modal-dialog -->
 			</div><!-- modal (Deal to Lead) -->
+
+			<!-- Modal (Print Deal) -->
+			<div class="modal right fade" id="print_deal_modal" tabindex="-1" role="dialog" aria-modal="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+		                    
+							<h4 class="modal-title text-center">Print Deal</h4>
+							<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
+		                  </div>
+
+						<div class="modal-body">							
+							<div class="tab-pane show active" id="pipeline-task-details">
+								<div class="crms-tasks" id="deal-content-div">
+							  	<div class="tasks__item crms-task-item active">
+							    	<div class="accordion-header js-accordion-header">Lead Details</div> 
+								  	<div class="accordion-body js-accordion-body d-block">
+									    <div class="accordion-body__contents">
+										    <table class="table">
+				                                <tbody>
+				                                    <tr>
+				                                      <td class="border-0">Record ID</td>
+				                                      <td class="border-0 deal-id"></td>
+				                                    </tr>
+				                                    <tr>
+				                                      <td>Deal Name</td>
+				                                      <td class="deal-name"></td>
+				                                    </tr>
+				                                    <tr>
+				                                      <td>Company</td>
+				                                      <td class="deal-company"></td>
+				                                    </tr>
+													<tr>
+														<td>Title</td>
+														<td class="deal-title"></td>
+													  </tr>
+				                                </tbody>
+				                            </table>
+									    </div>
+								    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Additional Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+			                                <tbody>
+												<tr>
+													<td>Email Address</td>
+													<td class="deal-email"></td>
+												</tr>
+												<tr>
+													<td>Email Opted Out</td>
+													<td class="text-capitalize deal-email-opted-out"></td>
+												</tr>
+												<tr>
+													<td>Phone</td>
+													<td class="deal-phone"></td>
+												</tr>
+												<tr>
+													<td>Mobile Phone</td>
+													<td class="deal-mobile-phone"></td>
+												</tr>
+												<tr>
+													<td>Fax</td>
+													<td class="deal-fax"></td>
+												</tr>
+												<tr>
+													<td>Website</td>
+													<td class="deal-website"></td>
+												</tr>
+												<tr>
+													<td>Industry</td>
+													<td class="deal-industry"></td>
+												</tr>
+												<tr>
+													<td>Number of Employees</td>
+													<td class="deal-number-of-employees"></td>
+												</tr>
+			                                    <tr>
+			                                      <td class="border-0">Category</td>
+			                                      <td class="border-0 deal-category"></td>
+			                                    </tr>
+			                                    <tr>
+			                                      <td>Probability Of Winning</td>
+			                                      <td class="deal-probability-of-winning"></td>
+			                                    </tr>
+			                                    <tr>
+			                                      <td>Forecast Close Date</td>
+			                                      <td class="deal-forecast-close-date"></td>
+			                                    </tr>
+			                                    <tr>
+			                                      <td>Actual Close Date</td>
+			                                      <td class="deal-actual-close-date"></td>
+			                                    </tr>
+			                                    <tr>
+			                                      <td>User Responsible</td>
+			                                      <td class="deal-user_responsible"></td>
+			                                    </tr>
+			                                    <tr>
+			                                      <td>Deal Value</td>
+			                                      <td class="deal-value"></td>
+			                                    </tr>
+			                                    <tr>
+			                                      <td>Bid Amount</td>
+			                                      <td class="deal-bid-amount"></td>
+			                                    </tr>
+			                                    <tr>
+			                                      <td>Bid Type</td>
+			                                      <td class="deal-bid-type"></td>
+			                                    </tr>			                                    
+			                                </tbody>
+			                            </table>
+								    </div>
+							    </div>
+							  </div>
+							  
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Description Information</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+		                                  	<tbody>
+			                                    <tr>
+			                                      <td class="border-0">Description</td>
+			                                      <td class="border-0 deal-description"></td>
+			                                    </tr>
+		                                  	</tbody>
+		                                </table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Tag List</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+										<table class="table">
+											<tbody>
+											  <tr>
+												<td class="border-0">Tag List</td>
+												<td class="border-0 deal-tag-list"></td>
+											  </tr>
+											</tbody>
+									  </table>
+								    </div>
+							    </div>
+							  </div>
+							 
+							  <div class="tasks__item crms-task-item active">
+							    <div class="accordion-header js-accordion-header">Visibility</div> 
+							  	<div class="accordion-body js-accordion-body d-block">
+								    <div class="accordion-body__contents">
+								      	<table class="table">
+		                                  	<tbody>
+			                                    <tr>
+			                                      <td class="border-0">Task visibility</td>
+			                                      <td class="border-0 deal-visibility"></td>
+			                                    </tr>
+		                                  	</tbody>
+		                                </table>
+								    </div>
+								    
+							    </div>
+							  </div>
+							</div>
+							</div>
+						</div>
+
+					</div><!-- modal-content -->
+				</div><!-- modal-dialog -->
+			</div><!-- modal (Print Deal) -->
 
 			<!--system users Modal -->
             <div class="modal right fade" id="company-details" tabindex="-1" role="dialog" aria-modal="true">
@@ -3030,6 +3203,9 @@
 
 		<!-- jquery -->
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+		<!-- Print Deal Function js -->
+		<script src="{% static 'js/deals/fetchAndPrintDeal.js' %}"></script>
 
 		<!-- Deal Detail js -->
 		<script src="{% static 'js/deals/loadDealDetails.js' %}"></script>
