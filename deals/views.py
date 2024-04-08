@@ -158,11 +158,10 @@ class DetailDealView(BaseDealView, DetailView):
         deal = context['object']
 
         serialized_data = {
-            'id' : deal.id,
+            'id' : deal.id,            
             'prefix' : deal.prefix,         
             'first_name' : deal.first_name,
-            'last_name' : deal.last_name,
-            'full_name' : f"{deal.first_name} {deal.last_name}",
+            'last_name' : deal.last_name,            
             'company' : deal.company.name,
             'company_id': deal.company.id,
             'company_title' : deal.company.title,
@@ -194,10 +193,21 @@ class DetailDealView(BaseDealView, DetailView):
             'pipeline' : deal.pipeline,
             'stages' :  [deal_stage.stage for deal_stage in deal.stage.all()],
             'stages_id' :  [deal_stage.id for deal_stage in deal.stage.all()],
-            'visibility' : deal.visibility,            
+            'deal_state' : deal.stage.last().stage,
+            'visibility' : deal.visibility,                       
             'created' : deal.created,
             'updated' : deal.updated
         }
+        if deal.image:
+            serialized_data['image'] = deal.image.url,
+
+        if deal.last_name:
+            serialized_data['full_name'] = f"{deal.first_name} {deal.last_name}"
+        else:
+            serialized_data['full_name'] = deal.first_name
+
+        if deal.record_owner:
+            serialized_data['record_owner'] = deal.record_owner.name
 
         if deal.image:
             serialized_data['image'] = deal.image.url
@@ -244,18 +254,16 @@ class DealToLeadView(BaseDealView, CreateView):
             return redirect(reverse_lazy('authentication:error404'))
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.first_name = ""
-        self.last_name = ""
-        for character in self.object.name:
-            if character == " ":
-                self.first_name = self.object.name[0 : self.object.name.index(character)]
-                self.last_name = self.object.name[self.object.name.index(character) +1 :]                
+        self.object = self.get_object()        
         try:
-            lead = get_object_or_404(Lead, 
-                              first_name = self.first_name,
-                              last_name = self.last_name,
-                              organization = self.object.company.pk)
+            lead = get_object_or_404(Lead,
+                                     prefix = self.object.prefix,                                     
+                                    first_name = self.object.first_name,
+                                    last_name = self.object.last_name,                                    
+                                    organization = self.object.company,
+                                    email = self.object.email,
+                                    phone = self.object.phone,
+                                    )
             lead.archived = False
             lead.save()
             self.object.delete()
@@ -265,13 +273,28 @@ class DealToLeadView(BaseDealView, CreateView):
             try:
                 lead = Lead.objects.create(
                     image = self.object.image,
-                    first_name = self.first_name,
-                    last_name = self.last_name,
+                    prefix = self.object.prefix,
+                    first_name = self.object.first_name,
+                    last_name = self.object.last_name,
                     organization = self.object.company,
+                    title = self.object.title,
                     user_responsible = self.object.user_responsible,
+                    lead_owner = self.object.record_owner,
+                    email = self.object.email,
+                    email_opted_out = self.object.email_opted_out,
+                    phone = self.object.phone,
+                    mobile_phone = self.object.mobile_phone,
+                    fax = self.object.fax,
+                    website = self.object.website,
+                    industry = self.object.industry,
+                    number_of_employees = self.object.number_of_employees,
+                    mailing_address = self.object.mailing_address,
+                    mailing_city = self.object.mailing_city,
+                    mailing_state = self.object.mailing_state,
+                    mailing_postal_code = self.object.mailing_postal_code,
+                    mailing_country = self.object.mailing_country,
                     description = self.object.description,
-                    tag_list = self.object.tag_list,     
-                    lead_owner = self.object.record_owner
+                    tag_list = self.object.tag_list,                    
                 )   
 
                 self.object.delete()
