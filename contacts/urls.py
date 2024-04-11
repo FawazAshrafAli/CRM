@@ -3,13 +3,14 @@ from .views import (ListContactView, CreateContactView,
                     UpdateContactView, DeleteContactView, 
                     DetailContactView, UpdateContactImageView,
                     CloneContactView, UpdateContactOwner, 
-                    LeadConvertionView, ListLastWeekContactView)
+                    LeadConvertionView, ListLastWeekContactView, 
+                    ListCreatedLastDayContactView)
 
 app_name = "contacts"
 
 urlpatterns = [
     path('', ListContactView.as_view(),  name='list'),
-    path('list/last_24_hours/', ListLastWeekContactView.as_view(),  name='list_24_hours'),
+    path('list/last_24_hours/', ListCreatedLastDayContactView.as_view(),  name='list_24_hours'),
     path('list/last_7_days/', ListLastWeekContactView.as_view(),  name='list_7_days'),
     path('detail/<pk>', DetailContactView.as_view(), name='detail'),
     path('create/', CreateContactView.as_view(), name='create'),

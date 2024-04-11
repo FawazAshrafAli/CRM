@@ -115,7 +115,7 @@ class ListContactView(BaseContactView, ListView):
         return context
     
 
-class ListLastDayContactView(ListContactView):    
+class ListCreatedLastDayContactView(ListContactView):    
     queryset = Contact.objects.filter(archived = False, created__gt = timezone.now() - timedelta(days=1))
 
 
