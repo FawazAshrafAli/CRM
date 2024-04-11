@@ -3,9 +3,8 @@ from django.contrib.auth.models import User
 
 class CrmUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name =  models.CharField(max_length=100, null=True, blank=True)
+    organization = models.CharField(max_length=150, blank=True, null=True)
     title = models.CharField(max_length=100, null=True, blank=True)
-    email = models.EmailField(max_length=254, null=False, blank=False, unique=True)    
     birthday = models.DateField(blank=True, null=True)
     address = models.CharField(max_length=150, null=True, blank=True)
     address_city = models.CharField(max_length=150, null=True, blank=True)
@@ -52,4 +51,8 @@ class CrmUser(models.Model):
     updated = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.name
+        if self.user.last_name:
+            return f"{self.user.first_name} + {self.user.last_name}"
+        else:
+            return self.user.first_name
+ 
