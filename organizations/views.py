@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import  CreateView, ListView, DetailView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
@@ -5,8 +6,11 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.db.models import ProtectedError
+from django.utils import timezone
+from django.utils.timezone import timedelta
+from django.http import Http404
 
-from .models import Company
+from .models import Company, CompanyRecentlyViewed
 from contacts.models import Contact
 from projects.models import Project
 from deals.models import Deal
@@ -38,6 +42,39 @@ class CreateOrganizationView(BaseOrganizationView, CreateView):
         return super().form_invalid(form)
     
 
+class CreateRecentlyViewedOrganizationView(BaseOrganizationView, CreateView):
+    model = CompanyRecentlyViewed
+    fields = "__all__"
+
+    def get_object(self, **kwargs):
+        try:
+            return get_object_or_404(Company, pk = self.kwargs['pk'])
+        except Http404:
+            return redirect(reverse_lazy('authentication:error404'))
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.user = request.user
+        try:
+            lookup_kwargs = {
+                'company_object' : self.object,
+                'user_object' : self.user
+            }
+            defaults = {
+                'company_object' : self.object,
+                'user_object' : self.user
+            }
+            CompanyRecentlyViewed.objects.update_or_create(
+                defaults= defaults,
+                **lookup_kwargs
+            )
+            return JsonResponse({'message' : 'success'})
+        except Exception as e:
+            print(e)
+            return redirect(reverse_lazy('authentication:error500'))
+    
+        
+            
 
 class ListOrganizationView(BaseOrganizationView, ListView):    
     template_name = "organizations/companies.html"    
@@ -54,6 +91,38 @@ class ListOrganizationView(BaseOrganizationView, ListView):
             })
         return context
     
+
+class ListOrganizationCreatedLastDayView(ListOrganizationView):
+    queryset = Company.objects.filter(created__gt = timezone.now() - timedelta(days=1))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['last_24_hours'] = True
+        return context
+    
+
+class ListOrganizationCreatedLastWeekView(ListOrganizationView):
+    queryset = Company.objects.filter(created__gt = timezone.now() - timedelta(days=7))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['last_7_days'] = True
+        return context
+    
+
+class ListRecentlyViewedOrganizationView(ListOrganizationView):
+
+    def get_queryset(self):
+        recently_viewed_companies = CompanyRecentlyViewed.objects.filter(user_object = self.request.user).order_by('-timestamp')
+        recently_viewed_company_ids = [viewed_company.company_object_id for viewed_company in recently_viewed_companies]        
+        companies = Company.objects.filter(pk__in=recently_viewed_company_ids)
+        return companies
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['recently_viewed'] = True
+        return context
+            
 
 
 class DetailOrganizationView(BaseOrganizationView, DetailView):    

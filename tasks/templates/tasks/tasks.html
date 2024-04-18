@@ -309,9 +309,14 @@
 
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+							{% if user.image %}
+							<span class="user-img"><img src="{{user.image.url}}" alt="Profile Picture">
+							{% else %}
+					
 							<span class="user-img"><img src="{% static 'assets/img/profiles/avatar-21.jpg' %}" alt="">
+							{% endif %}
 							<span class="status online"></span></span>
-							<span>Admin</span>
+							<span>{{request.user.first_name}}</span>
 						</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="profile.html">My Profile</a>
@@ -352,7 +357,7 @@
 				                  
 				                </div>
 				                <div class="nav-profile-text d-flex flex-column">
-				                  <span class="font-weight-bold mb-2">David Grey. H</span>
+				                  <span class="font-weight-bold mb-2">{% if request.user.last_name %} {{request.user.first_name}} {{request.user.last_name}} {% else %} {{request.user.first_name}} {% endif %}</span>
 				                  <span class="text-white text-small">Project Manager</span>
 				                </div>
 				                <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
@@ -664,9 +669,9 @@
 						                                <div class="progress-bar bg-gradient-danger" role="progressbar" style="width: {{task.progress}}%" aria-valuenow="{{task.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
 						                            </div>
 												</td>
-												<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user" data-user-id={{task.assigned_to.pk}} onclick="loadCrmUserDetails({{task.assigned_to.pk}}); return false;">{{task.assigned_to.name}}</a></td>
+												<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user" data-user-id={{task.assigned_to.pk}} onclick="loadCrmUserDetails({{task.assigned_to.pk}}); return false;">{% if task.assigned_to.user.last_name %} {{task.assigned_to.user.first_name}} {{task.assigned_to.user.last_name}} {% else %} {{task.assigned_to.user.first_name}} {% endif %} {% if not task.assigned_to %} None {% endif %}</a></td>
 												<td>{{task.due_date}}</td>
-												<td>{{task.task_owner}}</td>
+												<td>{% if task.record_owner.user.last_name %} {{task.record_owner.user.first_name}} {{task.record_owner.user.last_name}} {% else %} {{task.record_owner.user.first_name}} {% endif %}</td>
 												<td><label class="badge badge-gradient-danger">{{task.status}}</label></td>
 												<td>
 					                              <label class="container-checkbox">
@@ -781,7 +786,7 @@
 											<select class="form-control" name="assigned_to" required>
 												<option hidden>-- Select --</option>
 												{% for user in users %}
-												<option value="{{user.pk}}">{{user.name}}</option>
+												<option value="{{user.pk}}">{% if user.user.last_name %} {{user.user.first_name}} {{user.user.last_name}} {% else %} {{user.user.first_name}} {% endif %}</option>
 												{% endfor %}
 											</select>
 										</div>
@@ -905,10 +910,10 @@
 										</div>
 										<div class="col-sm-6">
 											<label class="col-form-label">Assigned To</label>
-											<select class="form-control" name="assigned_to" required>
+											<select class="form-control" name="assigned_to" id="assigned-to-value" required>
 												<option hidden>-- Select --</option>
 												{% for user in users %}
-												<option value="{{user.pk}}" id="task-assigned-to-{{user.pk}}">{{user.name}}</option>
+												<option value="{{user.pk}}" id="task-assigned-to-{{user.user.pk}}">{% if user.user.last_name %} {{user.user.first_name}} {{user.user.last_name}} {% else %} {{user.user.first_name}} {% endif %}</option>
 												{% endfor %}
 											</select>
 										</div>
@@ -1063,7 +1068,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title text-center">Edit Task</h4>
+						<h4 class="modal-title text-center">Edit Task Owner</h4>
 						<button type="button" class="btn-close xs-close" data-bs-dismiss="modal"></button>
 						</div>
 					<div class="modal-body">
@@ -1075,7 +1080,12 @@
 									<div class="form-group row">
 										<div class="col-sm-6">
 											<label class="col-form-label">Task Owner <span class="text-danger">*</span></label>
-											<input class="form-control" type="text" name="task_owner" id="task-owner-value" placeholder="Task Owner" required>
+											<select class="form-control" name="record_owner" required>
+												<option hidden>-- Select --</option>
+												{% for user in users %}
+												<option value="{{user.pk}}" id="task-assigned-to-{{user.pk}}">{% if user.user.last_name %} {{user.user.first_name}} {{user.user.last_name}} {% else %} {{user.user.first_name}} {% endif %}</option>
+												{% endfor %}
+											</select>
 										</div>										
 									</div>									
 									<div class="text-center py-3">
@@ -1224,11 +1234,11 @@
 											</tr>
 											<tr>
 											  <td>Task Created By</td>
-											  <td></td>
+											  <td class="task-created-by"></td>
 											</tr>
 											<tr>
 											  <td>Task Owner</td>
-											  <td></td>
+											  <td class="task-owner"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -1400,7 +1410,7 @@
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Company</td>
-				                                    <td></td>
+				                                    <td class="user-organization"></td>
 				                                  </tr>
 				                                  <tr>
 				                                    <td>Title</td>
@@ -2134,43 +2144,43 @@
 				                            <tbody>
 				                                <tr>
 				                                  <td>Start Date</td>
-				                                  <td class="task-start-date">05/10/2012</td>
+				                                  <td class="task-start-date"></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Reminder Date</td>
-				                                  <td class="task-reminder-date">05/01/2012</td>
+				                                  <td class="task-reminder-date"></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Repeats</td>
-				                                  <td>Lorem</td>
+				                                  <td></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Progress</td>
-				                                  <td class="task-progress">0%</td>
+				                                  <td><span class="task-progress"></span> %</td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Priority</td>
-				                                  <td class="task-priority">Medium</td>
+				                                  <td class="task-priority"></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Status</td>
-				                                  <td class="task-status">Not Started</td>
+				                                  <td class="task-status"></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Last Updated</td>
-				                                  <td class="task-updated-at">04-Jun-20</td>
+				                                  <td class="task-updated-at"></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Created</td>
-				                                  <td class="task-created-at">03-Jun-20 1:14 AM</td>
+				                                  <td class="task-created-at"></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Task Created By</td>
-				                                  <td>John Doe</td>
+				                                  <td class="task-created-by"></td>
 				                                </tr>
 				                                <tr>
 				                                  <td>Task Owner</td>
-				                                  <td>John Doe</td>
+				                                  <td class="task-owner"></td>
 				                                </tr>
 				                            </tbody>
 				                        </table>
@@ -2225,7 +2235,7 @@
 			                              <tbody>
 			                                <tr>
 			                                  <td>Task visibility</td>
-			                                  <td></td>
+			                                  <td class="task-visibility"></td>
 			                                </tr>
 			                              </tbody>
 			                            </table>

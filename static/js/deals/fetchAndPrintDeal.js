@@ -330,7 +330,7 @@ function fetchAndPrintDeal(dealId, dealContentDiv){
                     $(this).html("None");
                 }
             });
-
+function printDiv(contentDiv) {
             var printWindow = window.open('', '_blank');
             printWindow.document.open();
             printWindow.document.write('<html><head><title>Print</title></head><body>');
@@ -346,7 +346,7 @@ function fetchAndPrintDeal(dealId, dealContentDiv){
                     stylesheetsLoaded++;
                     if (stylesheetsLoaded === stylesheets.length) {
 
-                        printWindow.document.write(document.getElementById(dealContentDiv).innerHTML);
+                        printWindow.document.write(document.getElementById(contentDiv).innerHTML);
                         printWindow.document.write('</body></html>');
                         printWindow.document.close();
                         printWindow.print();
@@ -356,6 +356,7 @@ function fetchAndPrintDeal(dealId, dealContentDiv){
                 };
                 printWindow.document.head.appendChild(link);
             });
+        };
 
         },
         error: function(error) {

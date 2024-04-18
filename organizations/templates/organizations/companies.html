@@ -588,13 +588,13 @@
 						<div class="row">
 							<div class="col">
 								<div class="dropdown">
-									<a class="dropdown-toggle recently-viewed" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Recently Viewed</a>
+									<a class="dropdown-toggle recently-viewed" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{% if recently_viewed %} Recently Viewed  {% elif last_24_hours %} Companies added in the last 24 hours {% elif last_7_days %} Companies added in the last 7 days {% else %} All Companies {% endif %}</a>
 									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Recently Viewed</a>
+										<a class="dropdown-item" href="{% url 'organizations:recently_viewed' %}">Recently Viewed</a>
 				                        <a class="dropdown-item" href="#">Items I'm following</a>
-				                        <a class="dropdown-item" href="#">All Companies</a>
-				                        <a class="dropdown-item" href="#">Companies added in the last 24 hours</a>
-				                        <a class="dropdown-item" href="#">Companies added in the last 7 days</a>
+				                        <a class="dropdown-item" href="{% url 'organizations:list' %}">All Companies</a>
+				                        <a class="dropdown-item" href="{% url 'organizations:last_24_hours' %}">Companies added in the last 24 hours</a>
+				                        <a class="dropdown-item" href="{% url 'organizations:last_7_days' %}">Companies added in the last 7 days</a>
 				                        <a class="dropdown-item" href="#">Companies with no notes in the last month</a>
 				                        <a class="dropdown-item" href="#">Companies with no notes in the last 7 days</a>
 									</div>
@@ -657,7 +657,7 @@
 													</td>
 													<td>
 														<a href="#" class="avatar"><img alt="Organization Image" {% if organization.image %} src="{{organization.image.url}}" {% else %} src="{% static 'assets/img/c-logo2.png' %}" {% endif %}></a>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-organization-id="{{ organization.pk }}" onclick="loadOrganizationDetails({{ organization.pk }}); return false;">{{organization.name}}</a>
+														<a href="#" data-bs-toggle="modal" data-bs-target="#company-details" data-organization-id="{{ organization.pk }}" onclick="loadOrganizationDetails({{ organization.pk }}); updateCompanyRecentlyViewed({{organization.pk}}); return false;">{{organization.name}}</a>
 													</td>
 													<td>{{organization.phone}}</td>
 													<td>
@@ -2331,11 +2331,11 @@
 
 		<!--theme settings-->
         <div class="sidebar-contact">
-          	<div class="toggle" data-bs-toggle="modal" data-bs-target="#settings"><i class="fa fa-cog fa-w-16 fa-spin fa-2x"></i></div>
-           
+			<div class="toggle" data-bs-toggle="modal" data-bs-target="#settings"><i class="fa fa-cog fa-w-16 fa-spin fa-2x"></i></div>
+			
         </div>
-
-
+		
+		
 		<!-- jQuery -->
         <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
 		
@@ -2351,18 +2351,18 @@
 		<!-- Datatable JS -->
 		<script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
 		<script src="{% static 'assets/js/dataTables.bootstrap4.min.js' %}"></script>
-
+		
 		<!-- Datetimepicker JS -->
 		<script src="{% static 'assets/js/moment.min.js' %}"></script>
 		<script src="{% static 'assets/js/bootstrap-datetimepicker.min.js' %}"></script>
-
-		 <!-- Custom JS -->
+		
+		<!-- Custom JS -->
 		<!-- theme JS -->
 		<script src="{% static 'assets/js/theme-settings.js' %}"></script>
-
+		
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
-
+		
 		<!-- Message time out function -->
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>
 		
@@ -2383,6 +2383,9 @@
 
 		<!-- Change Organization owner Function -->
 		<script src="{% static 'js/organizations/changeRecordOwner.js' %}"></script>
+
+		<!-- Update Recently Viewed Organization Function -->
+		<script src="{% static 'js/organizations/updateCompanyRecentlyViewed.js' %}"></script>
 
     </body>
 </html>

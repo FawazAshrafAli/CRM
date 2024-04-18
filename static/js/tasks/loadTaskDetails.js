@@ -3,8 +3,7 @@ function loadTaskDetails(taskId) {
         url: '/tasks/detail/' + taskId,  
         type: 'GET',
         dataType: 'json',
-        success: function(task) {            
-            console.log('not loading')
+        success: function(task) {                        
             $('.task-id').each(function() {
                 if (task.id != null && task.id != "") {
                     $(this).html(task.id); 
@@ -100,17 +99,41 @@ function loadTaskDetails(taskId) {
                 }
             });
 
+            $('.task-created-by').each(function() {                    
+                if (task.created_by != null && task.created_by != "") {
+                    $(this).html(task.created_by); 
+                } else {
+                    $(this).html("None"); 
+                }
+            });
+
+            $('.task-owner').each(function() {                    
+                if (task.record_owner != null && task.record_owner != "") {
+                    $(this).html(task.record_owner); 
+                } else {
+                    $(this).html("None"); 
+                }
+            });
+
+            $('.task-visibility').each(function() {                    
+                if (task.task_visibility != null && task.task_visibility != "") {
+                    $(this).html(task.task_visibility); 
+                } else {
+                    $(this).html("None"); 
+                }
+            });
+
             $('.task-created-at').each(function() {                    
-                if (task.created_at != null && task.created_at != "") {
-                    $(this).html(task.created_at); 
+                if (task.created != null && task.created != "") {
+                    $(this).html(task.created); 
                 } else {
                     $(this).html("None"); 
                 }
             });
             
             $('.task-updated-at').each(function() {                    
-                if (task.updated_at != null && task.updated_at != "") {
-                    $(this).html(task.updated_at); 
+                if (task.updated != null && task.updated != "") {
+                    $(this).html(task.updated); 
                 } else {
                     $(this).html("None"); 
                 }

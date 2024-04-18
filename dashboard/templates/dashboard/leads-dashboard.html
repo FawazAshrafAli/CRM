@@ -310,9 +310,13 @@
 
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+							{% if user.image %}
+							<span class="user-img"><img src="{{user.image.url}}" alt="Profile Picture">
+							{% else %}
 							<span class="user-img"><img src="{% static 'assets/img/profiles/avatar-21.jpg' %}" alt="">
+							{% endif %}
 							<span class="status online"></span></span>
-							<span>Admin</span>
+							<span>{{request.user.first_name}}</span>
 						</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="profile.html">My Profile</a>
@@ -349,12 +353,15 @@
 							<li class="nav-item nav-profile">
 				              <a href="#" class="nav-link">
 				                <div class="nav-profile-image">
-				                  <img src="{% static 'assets/img/profiles/avatar-17.jpg' %}" alt="profile">
-				                  
+									{% if user.image %}
+									<img src="{{user.image.url}}" alt="profile">				                 
+									{% else %}
+									<img src="{% static 'assets/img/profiles/avatar-17.jpg' %}" alt="profile">				                 
+									{% endif %} 
 				                </div>
 				                <div class="nav-profile-text d-flex flex-column">
-				                  <span class="font-weight-bold mb-2">David Grey. H</span>
-				                  <span class="text-white text-small">Project Manager</span>
+				                  <span class="font-weight-bold mb-2">{% if request.user.last_name %} {{request.user.first_name}} {{request.user.last_name}} {% else %} {{request.user.first_name}} {% endif %}</span>
+				                  <span class="text-white text-small">{{user.title}}</span>
 				                </div>
 				                <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
 				              </a>

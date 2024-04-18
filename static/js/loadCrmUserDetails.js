@@ -20,6 +20,14 @@ function loadCrmUserDetails(userId) {
                 }
             });
 
+            $('.user-organization').each(function () {                
+                if (user.organization != null && user.organization != "") {
+                    $(this).html(user.organization);
+                } else {
+                    $(this).html("None");
+                }
+            });
+
             $('.user-title').each(function () {                
                 if (user.title != null && user.title != "") {
                     $(this).html(user.title);

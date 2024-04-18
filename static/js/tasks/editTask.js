@@ -12,10 +12,19 @@ function editTask(taskId) {
                 $('#task-name-value').prop('value', '');
             };
             
-            if (task.assigned_to != null && task.assigned_to != ''){
-                $('#task-assigned-to-' + task.assigned_to_pk).prop('selected', true);
+            var assignedToValue = document.getElementById("assigned-to-value");
+            if (task.assigned_to_id != null && task.assigned_to_id != ''){
+                for (var i = 0; i < assignedToValue.options.length; i++) {                    
+                    if (assignedToValue.options[i].value == task.assigned_to_id) {
+                        assignedToValue.options[i].selected = true;                        
+                    } else {
+                        assignedToValue.options[i].selected = false;
+                    };
+                }                
             } else {
-                $('#task-assigned-to-' + task.assigned_to_pk).prop('selected', false);
+                for (var i = 0; i < selectElement.options.length; i++) {                    
+                    selectElement.options[i].selected = false;
+                }
             };
 
             

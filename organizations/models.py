@@ -1,5 +1,6 @@
 from django.db import models
 from authentication.models import CrmUser
+from django.contrib.auth.models import User
 
 class Company(models.Model):
     image = models.ImageField(upload_to='company_images/', blank=True, null=True)
@@ -51,3 +52,9 @@ class Company(models.Model):
     
     def __str__(self):
         return self.name
+
+
+class CompanyRecentlyViewed(models.Model):
+    company_object = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='company_recently_viewed', blank=False, null=False)
+    user_object = models.ForeignKey(User, on_delete=models.CASCADE, related_name='company_recently_viewed', blank=False, null=False)
+    timestamp = models.DateTimeField(auto_now=True)
