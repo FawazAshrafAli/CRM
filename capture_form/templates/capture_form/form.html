@@ -43,7 +43,7 @@
                 </div>                    
                 <br>            
                 <div class="form-group">
-                    <select class="form-control" name="state" id="stateDropdown"  onchange="populateCities()">
+                    <select class="form-control" name="state" id="stateDropdown"  oninput="populateCities()">
                         <option hidden disabled selected>Select State</option>
                         {% for state in states %}
                         <option value="{{state}}">{{state}}</option>
@@ -52,30 +52,24 @@
                 </div>
                 <br>
                 <div class="form-group">
-                    <select class="form-control" name="city" id="cityDropdown" onchange="getProgram();">
+                    <select class="form-control" name="city" id="cityDropdown" oninput="getProgram();" disabled>
                         <option hidden disabled selected>Select City</option>                                                        
                     </select>
                 </div>
                 <br>
                 <div class="form-group">
-                    <select class="form-control" name="program" id="">
-                        <option hidden disabled selected>Select Program</option>
-                        <option value="Bachelor of Arts">Bachelor of Arts</option>
-                        <option value="Bachelor of Science">Bachelor of Science</option>
-                        <option value="Bachelor of Technology">Bachelor of Technology</option>
-                        <option value="Master of Arts">Master of Arts</option>
-                        <option value="Master of Science">Master of Science</option>
-                        <option value="Master of Technology">Master of Technology</option>
+                    <select class="form-control" name="program" id="program-dropdown" oninput="getCourse()" disabled>
+                        <option hidden disabled selected>Select Program</option>                        
                     </select>
                 </div>
                 <br>
                 <div class="form-group">
-                    <select class="form-control" name="description" id="">
+                    <select class="form-control" name="description" id="course-dropdown" disabled>
                         <option hidden disabled selected>Select Course</option>
-                        <option value="BSc Chemistry">BSc Chemistry</option>
+                        <!-- <option value="BSc Chemistry">BSc Chemistry</option>
                         <option value="BSc Physics">BSc Physics</option>
                         <option value="Bsc Biology">Bsc Biology</option>
-                        <option value="BSc Computer Science">BSc Computer Science</option>
+                        <option value="BSc Computer Science">BSc Computer Science</option> -->
                     </select>
                 </div>
                 <br>
@@ -101,11 +95,16 @@
             crossorigin="anonymous"
         ></script>
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
         <!-- For Fething districts based on state -->
         <script src="{% static 'js/districts/getDistricts.js' %}"></script>
 
         <!-- For Fething programs based on state and district -->
         <script src="{% static 'js/capture_form/getProgram.js' %}"></script>
+
+        <!-- For Fething courses based on state, district and program -->
+        <script src="{% static 'js/capture_form/getCourse.js' %}"></script>
         
     </body>
 </html>

@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_list_or_404, redirect
 from django.views.generic import TemplateView, CreateView, DetailView
 from leads.models import Lead
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .models import Program
+from django.http import Http404, JsonResponse
+from django.core.serializers import serialize
+
+from .models import Program, Course
 
 class FormView(TemplateView):
     template_name = 'capture_form/form.html'
@@ -40,8 +43,33 @@ class CreateLeadView(FormView, CreateView):
 class GetProgramView(DetailView):
     model = Program
 
-    def post(self, request, *args, **kwargs):
-        data = request.POST
+    def get(self, request, *args, **kwargs):
+        data = request.GET
 
         state = data.get('state')
-        district = data.get('district')
+        city = data.get('city')
+
+        programs = Program.objects.filter(state__name=state, district__name=city).values_list('id', 'name')
+        return JsonResponse(list(programs), safe=False)
+    
+
+class GetCourseView(DetailView):
+    model = Course
+
+    def get(self, request, *args, **kwargs):
+        data = request.GET
+
+        state = data.get('state')
+        city = data.get('city')
+        program = data.get('program')
+        
+        print(state)
+        print(city)
+        print(program)
+
+        courses = Course.objects.filter(state__name=state, district__name=city, program = program).values_list('id', 'name')        
+
+        if courses:
+            print(len(courses))
+    
+        return JsonResponse(list(courses), safe=False)

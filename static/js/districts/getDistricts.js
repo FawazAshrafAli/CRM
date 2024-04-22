@@ -44,8 +44,15 @@ function populateCities() {
     var cityDropdown = document.getElementById("cityDropdown");
     var selectedState = stateDropdown.value;
 
+    
+    if (selectedState != null && selectedState != '') {
+        cityDropdown.removeAttribute('disabled');
+        document.getElementById('program-dropdown').setAttribute('disabled', true);
+        document.getElementById('course-dropdown').setAttribute('disabled', true);
+    }
+
     // Clear the city dropdown before populating it with new options
-    cityDropdown.innerHTML = "";
+    cityDropdown.innerHTML = "<option hidden disabled selected>Select City</option>";
 
     // Populate the city dropdown with options based on the selected state
     stateCities[selectedState].forEach(function(city) {
