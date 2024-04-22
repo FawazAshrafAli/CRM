@@ -11,7 +11,7 @@ class Lead(models.Model):
     prefix = models.CharField(max_length=25, blank=True, null=True)
     first_name = models.CharField(max_length=100, blank=False, null=False)
     last_name = models.CharField(max_length=100, blank=True, null=True)
-    organization = models.ForeignKey(Company, on_delete=models.PROTECT)
+    organization = models.ForeignKey(Company, on_delete=models.PROTECT, blank=True, null=True)
     title = models.CharField(max_length=150, blank=False, null=False)
     lead_status = models.CharField(max_length=150, blank=False, null=False, default = 'Not Contacted')
     user_responsible = models.ForeignKey(CrmUser, on_delete=models.PROTECT, blank=True, null=True, related_name="user_responsible")
