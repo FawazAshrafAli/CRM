@@ -1,0 +1,111 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Title</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+    </head>
+
+    <body>
+        <main class="d-flex justify-content-center">
+            <form method="post" class="border border-1 rounded-3 mt-5 p-3 shadow" action="{% url 'capture_form:create_lead' %}" style="width: 420px; background-color: whitesmoke;">
+                {% csrf_token %}
+                <h6 class="text-center">Registration Form</h6>
+                <hr class="text-light">
+                <div class="row">
+                    <div class="form-group col-6">
+                        <input type="text" class="form-control" name="first_name" id="first-name-value" placeholder="First Name" oninput="formValidate()">                        
+                    </div>
+                    <div class="form-group col-6">
+                        <input type="text" class="form-control" name="last_name" id="" placeholder="Last Name">
+                    </div>
+                </div>
+                <br>
+                <div class="form-group">
+                    <input type="email" class="form-control" name="email" id="" placeholder="Email">
+                </div>
+                <br>
+                <div class="form-group">
+                    <input type="tel" class="form-control" name="phone" id="" pattern="[0-9]+" title="Only numerical characters" placeholder="Phone Number">
+                </div>                    
+                <br>            
+                <div class="form-group">
+                    <select class="form-control" name="state" id="stateDropdown"  onchange="populateCities()">
+                        <option hidden disabled selected>Select State</option>
+                        {% for state in states %}
+                        <option value="{{state}}">{{state}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <br>
+                <div class="form-group">
+                    <select class="form-control" name="city" id="cityDropdown" onchange="getProgram();">
+                        <option hidden disabled selected>Select City</option>                                                        
+                    </select>
+                </div>
+                <br>
+                <div class="form-group">
+                    <select class="form-control" name="program" id="">
+                        <option hidden disabled selected>Select Program</option>
+                        <option value="Bachelor of Arts">Bachelor of Arts</option>
+                        <option value="Bachelor of Science">Bachelor of Science</option>
+                        <option value="Bachelor of Technology">Bachelor of Technology</option>
+                        <option value="Master of Arts">Master of Arts</option>
+                        <option value="Master of Science">Master of Science</option>
+                        <option value="Master of Technology">Master of Technology</option>
+                    </select>
+                </div>
+                <br>
+                <div class="form-group">
+                    <select class="form-control" name="description" id="">
+                        <option hidden disabled selected>Select Course</option>
+                        <option value="BSc Chemistry">BSc Chemistry</option>
+                        <option value="BSc Physics">BSc Physics</option>
+                        <option value="Bsc Biology">Bsc Biology</option>
+                        <option value="BSc Computer Science">BSc Computer Science</option>
+                    </select>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-sm btn-success form-control">Submit</button>
+                <br>
+                <br>
+                <div class="d-flex justify-content-center align-item-center">
+                    <span>Powered by: &nbsp;</span>
+                    <a href="https://w3digital.in/"><img src="{% static 'images/zencrm_logo.png' %}" alt="" width="100px"></a>
+                </div>
+            </form>
+        </main>
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- For Fething districts based on state -->
+        <script src="{% static 'js/districts/getDistricts.js' %}"></script>
+
+        <!-- For Fething programs based on state and district -->
+        <script src="{% static 'js/capture_form/getProgram.js' %}"></script>
+        
+    </body>
+</html>

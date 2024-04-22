@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'projects',
     'activities',
     'reports',
+    'capture_form',
 ]
 
 MIDDLEWARE = [
