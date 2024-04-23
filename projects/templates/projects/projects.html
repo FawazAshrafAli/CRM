@@ -665,7 +665,13 @@
 													</td>
 													<td>{{project.status}}</td>
 													
-													<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user" data-contact-id="{{project.user_responsible.pk}}" onclick="loadContactDetails({{project.user_responsible.pk}})">{{project.user_responsible.name}}</a></td>
+													<td><a href="#" data-bs-toggle="modal" data-bs-target="#system-user" data-contact-id="{{project.user_responsible.pk}}" onclick="loadContactDetails({{project.user_responsible.pk}})">
+														{% if project.user_responsible.user.last_name %}
+														{{project.user_responsible.user.first_name}} {{project.user_responsible.user.last_name}}
+														{% else %}
+														{{project.user_responsible.user.first_name}}
+														{% endif %}
+													</a></td>
 													<td>{{project.category}}</td>
 													<td>
 														<div class="pipeline-small flat pipeline-project">
@@ -2888,7 +2894,7 @@
 		<script src="{% static 'js/projects/changeProjectOwner.js' %}"></script>
 
 		<!-- Contact Detail Funciton -->
-		<script src="{% static 'js/loadContactDetails.js' %}"></script>
+		<script src="{% static 'js/contacts/loadContactDetails.js' %}"></script>
 
 		<!-- Message TimeOut Function -->
 		<script src="{% static 'js/messageTimeOut.js' %}"></script>

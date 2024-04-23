@@ -690,7 +690,11 @@
 													</td>
 													<td>
 														{% if deal.user_responsible %}
-														{{deal.user_responsible.name}}
+														{% if deal.user_responsible.user.last_name %}
+														{{deal.user_responsible.user.first_name}} {{deal.user_responsible.user.last_name}}
+														{% else %}
+														{{deal.user_responsible.user.first_name}}
+														{% endif %}
 														{% else %}
 														None
 														{% endif %}

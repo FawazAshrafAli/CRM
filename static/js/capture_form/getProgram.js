@@ -9,7 +9,7 @@ function getProgram() {
 
     $.ajax({
         type: 'GET',
-        url: '/capture_form/get_programs/',
+        url: '/form/get_programs/',
         dataType: 'json',
         data: {'state': stateDropdownValue, 'city': cityDropdownValue},
         success: function (data) {

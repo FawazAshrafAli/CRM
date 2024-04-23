@@ -31,5 +31,5 @@ urlpatterns = [
     path('projects/', include('projects.urls', namespace="projects")),   # project management    
     path('activities/', include('activities.urls', namespace="activities")),   # activity management    
     path('reports/', include('reports.urls', namespace="reports")),   # activity management
-    path('capture_form/', include('capture_form.urls', namespace="capture_form")),   # form capture
+    path('form/', include('capture_form.urls', namespace="capture_form")),   # form capture
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])

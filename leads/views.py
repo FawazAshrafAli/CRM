@@ -133,14 +133,12 @@ class DetailLeadView(BaseLeadView, DetailView):
         
     def render_to_response(self, context, **response_kwargs):
         lead = context['object']
-                
+
         serialized_data = {
             "id" : lead.id,        
             "prefix" : lead.prefix,
             "first_name": lead.first_name,
-            "last_name": lead.last_name,
-            "organization" : lead.organization.id,
-            "organization_name" : lead.organization.name,
+            "last_name": lead.last_name,            
             "title" : lead.title,            
             "mailing_address": lead.mailing_address,
             "mailing_city": lead.mailing_city,
@@ -164,14 +162,24 @@ class DetailLeadView(BaseLeadView, DetailView):
             "updated" : lead.updated.strftime("%d/%m/%Y")
         }
 
+        if lead.organization:
+            serialized_data.update({
+                "organization" : lead.organization.id,
+                "organization_name" : lead.organization.name
+            })
+
         if lead.lead_status:
             serialized_data["lead_status"] = lead.lead_status,
 
         if lead.lead_owner:
+            if lead.lead_owner.user.last_name:
+                lead_owner_name = f"{lead.lead_owner.user.first_name} {lead.lead_owner.user.last_name}"
+            else:
+                lead_owner_name = lead.lead_owner.user.first_name
             serialized_data.update({
-                "lead_owner":  self.object.lead_owner.pk,
-                "lead_owner_name":  self.object.lead_owner.name
-                                   })
+                "lead_owner": lead.lead_owner.pk,
+                "lead_owner_name": lead_owner_name
+                })
 
         if lead.image:
             serialized_data["image"] = lead.image.url
@@ -182,9 +190,14 @@ class DetailLeadView(BaseLeadView, DetailView):
             serialized_data["full_name"] = lead.first_name
 
         if lead.user_responsible:
+            if lead.user_responsible.user.last_name:
+                user_responsible_name = f"{lead.user_responsible.user.first_name} {lead.user_responsible.user.last_name}"
+            else:
+                user_responsible_name = lead.user_responsible.user.first_name
+
             serialized_data.update({
                 "user_responsible" : lead.user_responsible.id,
-                "user_responsible_name" : lead.user_responsible.name
+                "user_responsible_name" : user_responsible_name
                 })
 
         if lead.mailing_address and lead.mailing_city and lead.mailing_state and lead.mailing_postal_code and lead.mailing_country:

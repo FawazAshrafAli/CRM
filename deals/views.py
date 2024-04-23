@@ -66,7 +66,8 @@ class CloneDealView(BaseDealView, CreateView):
         try:
             new_deal = Deal.objects.create(
                 image = self.object.image,
-                name = self.object.name,
+                first_name = self.object.first_name,
+                last_name = self.object.last_name,
                 company = self.object.company,
                 category = self.object.category,
                 probability_of_winning = self.object.probability_of_winning,
@@ -207,16 +208,23 @@ class DetailDealView(BaseDealView, DetailView):
             serialized_data['full_name'] = deal.first_name
 
         if deal.record_owner:
-            serialized_data['record_owner'] = deal.record_owner.name
+            if deal.record_owner.user.last_name:
+                serialized_data['record_owner'] = f"{deal.record_owner.user.first_name} {deal.record_owner.user.last_name}"
+            else:
+                serialized_data['record_owner'] = deal.record_owner.user.first_name
 
         if deal.image:
             serialized_data['image'] = deal.image.url
 
         if deal.user_responsible:
             serialized_data.update({
-                'user_responsible': deal.user_responsible.name,
                 'user_responsible_id': deal.user_responsible.id,
                 })
+            if deal.user_responsible.user.last_name:
+                serialized_data['user_responsible'] = f"{deal.user_responsible.user.first_name} {deal.user_responsible.user.last_name}"
+            else:
+                serialized_data['user_responsible'] = deal.user_responsible.user.firs_name,
+                
             
         if deal.record_owner:
             serialized_data['record_owner_id'] = deal.record_owner.id

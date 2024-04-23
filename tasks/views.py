@@ -72,7 +72,6 @@ class TaskCreateView(BaseTaskView, CreateView): # For creating task.
             status = status,
             related_to = related_to,
             description = description,            
-            permission = permission,
             created_by = created_by
         )
         messages.success(self.request,"New task created")
@@ -181,7 +180,8 @@ class TaskListView(BaseTaskView, ListView): # To list tasks.
             "deals": Deal.objects.all(),
             "projects": Project.objects.all(),
             "organizations": Company.objects.all(),
-            "leads": Lead.objects.all(),          
+            "leads": Lead.objects.all(),
+            "tasks": Task.objects.all()
         })
 
         return context
@@ -194,6 +194,7 @@ class TaskDetailView(BaseTaskView, DetailView): # For providing a detail of a si
 
     def render_to_response(self, context, **response_kwargs):
         task = context['object']
+        print(task)
 
         serialized_data = {}
 

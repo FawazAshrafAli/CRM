@@ -29,6 +29,33 @@ class CreateLeadView(FormView, CreateView):
     fields = ["first_name", "last_name", "email", "phone", "description"]
     success_url = reverse_lazy('capture_form:form')
 
+    def post(self, request, *args, **kwargs):
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        state = request.POST.get('state')
+        city = request.POST.get('city')
+        program = request.POST.get('program')
+        program = Program.objects.filter(pk = program).first().name
+        course = request.POST.get('course')
+        course = Course.objects.filter(pk = course).first().name
+
+        try:
+            Lead.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                phone=phone,
+                description = f"Interested in {program} in {course} at  {city}, {state}."            
+            )
+            messages.success(self.request, "Registration successfull.")
+            return redirect(self.success_url)
+        except Exception as e:
+            print(e)
+            return redirect(reverse_lazy('authentication:error500'))
+
+
     def form_valid(self, form):
         messages.success(self.request, "Registration successfull.")
         return super().form_valid(form)

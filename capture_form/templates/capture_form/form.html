@@ -21,13 +21,23 @@
 
     <body>
         <main class="d-flex justify-content-center">
+            <div id="message-div">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+
             <form method="post" class="border border-1 rounded-3 mt-5 p-3 shadow" action="{% url 'capture_form:create_lead' %}" style="width: 420px; background-color: whitesmoke;">
                 {% csrf_token %}
                 <h6 class="text-center">Registration Form</h6>
                 <hr class="text-light">
                 <div class="row">
                     <div class="form-group col-6">
-                        <input type="text" class="form-control" name="first_name" id="first-name-value" placeholder="First Name" oninput="formValidate()">                        
+                        <input type="text" class="form-control" name="first_name" id="first-name-value" placeholder="First Name">
                     </div>
                     <div class="form-group col-6">
                         <input type="text" class="form-control" name="last_name" id="" placeholder="Last Name">
@@ -64,12 +74,8 @@
                 </div>
                 <br>
                 <div class="form-group">
-                    <select class="form-control" name="description" id="course-dropdown" disabled>
-                        <option hidden disabled selected>Select Course</option>
-                        <!-- <option value="BSc Chemistry">BSc Chemistry</option>
-                        <option value="BSc Physics">BSc Physics</option>
-                        <option value="Bsc Biology">Bsc Biology</option>
-                        <option value="BSc Computer Science">BSc Computer Science</option> -->
+                    <select class="form-control" name="course" id="course-dropdown" disabled>
+                        <option hidden disabled selected>Select Course</option>                        
                     </select>
                 </div>
                 <br>

@@ -161,10 +161,12 @@ class ProjectDetailView(BaseProjectView, DetailView):
                 })
 
         if project.user_responsible:
-            serialized_data.update({
-                "user_responsible": project.user_responsible.name,
-                "user_responsible_id": project.user_responsible.pk,
-            })
+            serialized_data["user_responsible_id"] = project.user_responsible.pk
+
+            if project.user_responsible.user.last_name:
+                serialized_data["user_responsible"] = f"{project.user_responsible.user.first_name} {project.user_responsible.user.last_name}"
+            else:
+                serialized_data["user_responsible"] = project.user_responsible.user.first_name
 
         if project.record_owner:
             serialized_data.update({
