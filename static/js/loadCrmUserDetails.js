@@ -12,6 +12,16 @@ function loadCrmUserDetails(userId) {
                 }
             });
 
+            console.log(user.image)
+            $('.user-image').each(function () {
+                if (user.image != null && user.image != "") {
+                    console.log('imaged')
+                    $(this).prop('src', user.image)
+                } else {
+                    $(this).prop('src', "/static/assets/img/system-user.png/");
+                }
+            });
+            
             $('.user-name').each(function () {
                 if (user.name != null && user.name != "") {
                     $(this).html(user.name);

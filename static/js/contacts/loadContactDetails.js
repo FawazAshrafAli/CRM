@@ -12,6 +12,14 @@ function loadContactDetails(contactId) {
                     $(this).html("None");
                 };
             });
+
+            $('.contact-image').each(function() {
+                if (contact.image != null && contact.image != ""){
+                    $(this).prop('src', contact.image);
+                } else {
+                    $(this).prop("src", '/static/assets/img/system-user.png');
+                };
+            });
             
             $('.contact-full-name').each(function() {
                 if (contact.full_name != null && contact.full_name != ""){
@@ -153,6 +161,14 @@ function loadContactDetails(contactId) {
                 };
             });
 
+            $('.contact-full-mailing-address').each(function() {
+                if (contact.full_mailing_address != null && contact.full_mailing_address != ""){
+                    $(this).html(contact.full_mailing_address);
+                } else {
+                    $(this).html("None");
+                };
+            });
+
             $('.contact-other-address').each(function() {
                 if (contact.other_address != null && contact.other_address != ""){
                     $(this).html(contact.other_address);
@@ -164,6 +180,14 @@ function loadContactDetails(contactId) {
             $('.contact-other-country').each(function() {
                 if (contact.other_country != null && contact.other_country != ""){
                     $(this).html(contact.other_country);
+                } else {
+                    $(this).html("None");
+                };
+            });
+
+            $('.contact-full-other-address').each(function() {
+                if (contact.full_other_address != null && contact.full_other_address != ""){
+                    $(this).html(contact.full_other_address);
                 } else {
                     $(this).html("None");
                 };
@@ -225,9 +249,10 @@ function loadContactDetails(contactId) {
                 };
             });
 
+            console.log(contact.record_owner)
             $('.contact-owner').each(function() {
-                if (contact.record_owner_name != null && contact.record_owner_name != ""){							
-                    $(this).html(contact.record_owner_name);
+                if (contact.record_owner != null && contact.record_owner != ""){							
+                    $(this).html(contact.record_owner);
                 } else {
                     $(this).html("None");
                 };

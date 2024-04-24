@@ -21,13 +21,14 @@ class BaseTaskView(LoginRequiredMixin): #base class
     model = Task
     login_url = 'authentication:login'
     template_name = 'tasks/tasks.html'
+    error404 = reverse_lazy('authentication:error404')
 
-    def get_context_data(self):
-        context = {}
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         try:
-            context['user'] = get_object_or_404(CrmUser, user = self.request.user)
+            context['user'] = get_object_or_404(CrmUser, user=self.request.user)
         except Http404:
-            return redirect(reverse_lazy('authentication:error404'))
+            return redirect(self.error404)
         return context
     
 
@@ -53,7 +54,6 @@ class TaskCreateView(BaseTaskView, CreateView): # For creating task.
         status = request.POST.get('status')
         related_to = request.POST.get('related_to')
         description = request.POST.get('description')
-        permission = request.POST.get('permission')
         created_by = self.request.user.pk
         try:
             created_by = get_object_or_404(CrmUser, user__pk = created_by)
@@ -102,16 +102,29 @@ class CloneTaskView(BaseTaskView, View):
                 status=task.status,
                 related_to=task.related_to,
                 description=task.description,
-                permission=task.permission,
                 task_owner=task.record_owner
             )
             return redirect('tasks:list')
-        except Task.DoesNotExist:
-            return HttpResponse("Task does not exist.")
+        except Http404:
+            return redirect(self.error404)
 
 
 class TaskUpdateView(BaseTaskView, UpdateView): # For updating task.
-    fields='__all__'
+    fields=[
+        'name',
+        'assigned_to',
+        'category',
+        'due_date',
+        'start_date',
+        'reminder_date',
+        'progress',
+        'priority',
+        'status',
+        'related_to',
+        'description',
+        'task_visibility',
+        'created_by'
+    ]
     query_pk_and_slug = 'pk'
     success_url = reverse_lazy('tasks:list')
     
@@ -160,7 +173,6 @@ class TaskCompletionAndCloningView(BaseTaskView, UpdateView):
                 status=self.object.status,
                 related_to=self.object.related_to,
                 description=self.object.description,
-                permission=self.object.permission,
                 task_owner=self.object.record_owner
             )
         self.object.status = "Completed"
@@ -190,11 +202,11 @@ class CompletedTaskListView(TaskListView):
     queryset = Task.objects.filter(status="Completed")
 
 class TaskDetailView(BaseTaskView, DetailView): # For providing a detail of a single task. 
+    model = Task
     query_pk_and_slug = 'pk'
 
     def render_to_response(self, context, **response_kwargs):
         task = context['object']
-        print(task)
 
         serialized_data = {}
 
@@ -202,11 +214,17 @@ class TaskDetailView(BaseTaskView, DetailView): # For providing a detail of a si
             field_name = field.name
             field_value = getattr(task, field_name)
             if field_value:
-                if field_name in ("assigned_to", "record_owner", "created_by"):
-                    if field_value.user.first_name:
-                        serialized_data[field_name] = f"{field_value.user.first_name} {field_value.user.last_name}"
+                if field_name in ("assigned_to", "record_owner", "created_by", "record_owner"):
+                    if field_value.user.last_name:
+                        serialized_data.update({
+                            field_name: f"{field_value.user.first_name} {field_value.user.last_name}",
+                            field_name + '_id': field_value.pk,
+                        })
                     else:
-                        serialized_data[field_name] = field_value.user.first_name
+                        serialized_data.update({
+                            field_name: field_value.user.first_name,
+                            field_name + '_id': field_value.user.id,
+                                                })
                 elif field_name in ("created", "updated"):
                     serialized_data[field_name] = field_value.strftime("%d %b %Y %I:%M %p")
                 else:

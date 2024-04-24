@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from django.http import Http404
 from datetime import datetime
+from django.db import models
 
 from .models import CrmUser, CrmUserFamilyInformation, CrmUserEducation, CrmUserExperience
 
@@ -129,9 +130,20 @@ class CrmUserDetailView(BaseCrmUserView, DetailView):
                         'name' : name,
                         'email' : field_value.email
                         })
+                
+                elif field_name == 'image':
+                    serialized_data[field_name] = field_value.url
+
+                elif field_name == "reports_to":
+                    if field_value.user.last_name:
+                        field_value = f"{field_value.user.first_name} {field_value.user.last_name}"
+                    else:
+                        field_value = field_value.user.first_name
+                    
+                    serialized_data[field_name] = field_value
 
                 elif field_name in ('created', 'updated'):
-                    serialized_data[field_name] = field_value.strftime("%b %d, %Y")                
+                    serialized_data[field_name] = field_value.strftime("%b %d, %Y")
                 else:                
                     serialized_data[field_name] = field_value            
 

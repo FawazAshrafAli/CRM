@@ -889,10 +889,11 @@
 										<div class="form-group row">
 											<div class="col-sm-6">
 												<label class="col-form-label">Mailing Country</label>
-					                            <select class="form-control" name="mailing_country" required>
-					                                <option>India</option>
-					                                <option>US</option>
-					                                <option>Japan</option>
+					                            <select class="form-control" name="mailing_country" required>													
+					                                <option hidden selected>Country</option>
+													{% for country in countries %}
+					                                <option value="{{country}}">{{country}}</option>
+					                                {% endfor %}
 					                            </select>
 											</div>
 											<div class="col-sm-6 mt-3">
@@ -914,9 +915,10 @@
 											</div>
 											<div class="col-sm-6">
 												<select class="form-control" name="other_country">
-					                                <option>India</option>
-					                                <option>US</option>
-					                                <option>Japan</option>
+					                                <option hidden selected>Country</option>
+													{% for country in countries %}
+					                                <option value="{{country}}">{{country}}</option>
+					                                {% endfor %}
 					                            </select>
 											</div>
 										</div>
@@ -1090,32 +1092,10 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Mailing Country</label>
 					                            <select class="form-control" name="mailing_country" id="mailing-country-value" required>
-					                                <option hidden>-- Select --</option>
-													
-													<option value="Argentina">Argentina</option>
-													<option value="Brazil">Brazil</option>
-													<option value="Canada">Canada</option>
-													<option value="Denmark">Denmark</option>
-													<option value="El Salvarado">El Salvarado</option>
-													<option value="Finland">Finland</option>
-													<option value="Germany">Germany</option>
-													<option value="Hungary">Hungary</option>
-													<option value="India">India</option>
-													<option value="Japan">Japan</option>
-													<option value="Kenya">Kenya</option>
-													<option value="Lebanon">Lebanon</option>
-													<option value="Mexico">Mexico</option>
-													<option value="Netherlands">Netherlands</option>
-													<option value="Oman">Oman</option>
-													<option value="Philippines">Philippines</option>
-													<option value="Qatar">Qatar</option>
-													<option value="Russia">Russia</option>
-													<option value="Sweden">Sweden</option>
-													<option value="Tibet">Tibet</option>
-					                                <option value="US">US</option>
-													<option value="Veitnam">Veitnam</option>
-													<option value="Wales">Wales</option>				                        
-													<option value="Zimbabwe">Zimbabwe</option>
+					                                <option hidden selected>Country</option>
+													{% for country in countries %}
+					                                <option value="{{country}}">{{country}}</option>
+					                                {% endfor %}
 					                            </select>
 											</div>
 											<div class="col-sm-6 mt-3">
@@ -1137,32 +1117,10 @@
 											</div>
 											<div class="col-sm-6">
 												<select class="form-control" name="other_country" id="other-country-value">
-					                                <option hidden>-- Select --</option>
-													
-													<option value="Argentina">Argentina</option>
-													<option value="Brazil">Brazil</option>
-													<option value="Canada">Canada</option>
-													<option value="Denmark">Denmark</option>
-													<option value="El Salvarado">El Salvarado</option>
-													<option value="Finland">Finland</option>
-													<option value="Germany">Germany</option>
-													<option value="Hungary">Hungary</option>
-													<option value="India">India</option>
-													<option value="Japan">Japan</option>
-													<option value="Kenya">Kenya</option>
-													<option value="Lebanon">Lebanon</option>
-													<option value="Mexico">Mexico</option>
-													<option value="Netherlands">Netherlands</option>
-													<option value="Oman">Oman</option>
-													<option value="Philippines">Philippines</option>
-													<option value="Qatar">Qatar</option>
-													<option value="Russia">Russia</option>
-													<option value="Sweden">Sweden</option>
-													<option value="Tibet">Tibet</option>
-					                                <option value="US">US</option>
-													<option value="Veitnam">Veitnam</option>
-													<option value="Wales">Wales</option>				                        
-													<option value="Zimbabwe">Zimbabwe</option>
+					                                <option hidden selected>Country</option>
+													{% for country in countries %}
+					                                <option value="{{country}}">{{country}}</option>
+					                                {% endfor %}
 					                            </select>
 											</div>
 										</div>
@@ -1315,9 +1273,9 @@
 				                            <div class="col-md-12"><label class="col-form-label">Contact Record Owner</label></div>
 				                            <div class="col-md-12">
 				                                <select class="form-control" name="record_owner" id="contact-owner-value" required>
-													<option hidden>-- Select --</option>
+													<option hidden selected>-- Select --</option>
 													{% for user in users %}
-													<option value={{user.pk}}>{{user.name}}</option>
+													<option value={{user.pk}}>{% if user.user.last_name %} {{user.user.first_name}} {{user.user.last_name}} {% else %} {{user.user.first_name}} {% endif %}</option>
 													{% endfor %}					                                
 					                            </select>
 				                            </div>				                            
@@ -1476,11 +1434,11 @@
 		                                <tbody>
 		                                  <tr>
 		                                    <td class="border-0">Mailling Address</td>
-		                                    <td class="border-0 contact-mailing-address"></td>
+		                                    <td class="border-0 contact-full-mailing-address"></td>
 		                                  </tr>
 		                                  <tr>
 		                                    <td>Other Address</td>
-		                                    <td class="contact-other-address"></td>
+		                                    <td class="contact-full-other-address"></td>
 		                                  </tr>
 		                                </tbody>
 		                              </table>
@@ -1590,11 +1548,11 @@
                     <div class="row w-100">
                       <div class="col-md-7 account d-flex">
                       	<div class="company_img">
-                      		<img src="{% static 'assets/img/system-user.png' %}" alt="User" class="user-image" class="img-fluid" />
+                      		<img src="{% static 'assets/img/system-user.png' %}" alt="User" class="user-image img-fluid contact-image" />
                   		</div>
                   		<div>
-                  			<p class="mb-0">System User</p>
-                  			<span class="modal-title">{{request.user.username}}</span>
+                  			<p class="mb-0">Contact</p>
+                  			<span class="modal-title contact-full-name"></span>
                     		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
                     		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   		</div>
@@ -1634,23 +1592,23 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Title</span>
-	                        <p>Phone call</p>
+	                        <p class="contact-title"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Companies</span>
-	                        <p>Claimpett corp</p>
+	                        <p class="contact-organization"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Phone</span>
-	                        <p>9876764875</p>
+	                        <p class="contact-phone"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Email</span>
-	                        <p>johndoe@gmail.com</p>
+	                        <p class="contact-email"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Contact owner</span>
-	                        <p>John Doe</p>
+	                        <p class="contact-owner"></p>
 	                      </div>
 	                    </div>
 	                </div>
@@ -1766,11 +1724,11 @@
 		                                <tbody>
 		                                  <tr>
 		                                    <td class="border-0">Mailling Address</td>
-		                                    <td class="border-0 contact-mailing-address"></td>
+		                                    <td class="border-0 contact-full-mailing-address"></td>
 		                                  </tr>
 		                                  <tr>
 		                                    <td>Other Address</td>
-		                                    <td class="contact-other-address"></td>
+		                                    <td class="contact-full-other-address"></td>
 		                                  </tr>
 		                                </tbody>
 		                              </table>

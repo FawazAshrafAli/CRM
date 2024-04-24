@@ -784,7 +784,7 @@
 										<div class="col-sm-6">
 											<label class="col-form-label">Assigned To</label>
 											<select class="form-control" name="assigned_to" required>
-												<option hidden>-- Select --</option>
+												<option disabled hidden selected>-- Select --</option>
 												{% for user in users %}
 												<option value="{{user.pk}}">{% if user.user.last_name %} {{user.user.first_name}} {{user.user.last_name}} {% else %} {{user.user.first_name}} {% endif %}</option>
 												{% endfor %}
@@ -795,7 +795,7 @@
 										<div class="col-sm-6">
 												<label class="col-form-label">Category</label>
 											<select class="form-control" name="category" required>
-												<option hidden>-- Select --</option>
+												<option disabled hidden selected>-- Select --</option>
 												<option value="Email">Email</option>
 												<option value="Follow">Follow up</option>
 												<option value="Get">Get Started</option>
@@ -851,7 +851,7 @@
 										<div class="col-sm-6">
 											<label class="col-form-label">Related To</label>
 											<select class="form-control" name="related_to" required>
-												<option>Select</option>
+												<option disabled hidden selected>-- Select --</option>
 												<option>Test</option>
 												</select>
 										</div>
@@ -869,7 +869,7 @@
 										<div class="col-sm-6">
 											<label class="col-form-label">Permission</label>
 											<select class="form-control" name="permission" required>
-												<option>Task Visibility</option>
+												<option disabled hidden selected>-- Task Visibility --</option>
 												<option>Private Task</option>
 											</select>
 										</div>
@@ -911,7 +911,7 @@
 										<div class="col-sm-6">
 											<label class="col-form-label">Assigned To</label>
 											<select class="form-control" name="assigned_to" id="assigned-to-value" required>
-												<option hidden>-- Select --</option>
+												<option disabled hidden selected>-- Select --</option>
 												{% for user in users %}
 												<option value="{{user.pk}}" id="task-assigned-to-{{user.user.pk}}">{% if user.user.last_name %} {{user.user.first_name}} {{user.user.last_name}} {% else %} {{user.user.first_name}} {% endif %}</option>
 												{% endfor %}
@@ -922,7 +922,7 @@
 										<div class="col-sm-6">
 												<label class="col-form-label">Category</label>
 											<select class="form-control" name="category" id="category-value" required>
-												<option hidden>-- Select --</option>
+												<option disabled hidden selected>-- Select --</option>
 												<option value="Email">Email</option>
 												<option value="Follow">Follow up</option>
 												<option value="Get">Get Started</option>
@@ -977,7 +977,7 @@
 										<div class="col-sm-6">
 											<label class="col-form-label">Related To</label>
 											<select class="form-control" name="related_to" id="related-to-value" required>
-												<option hidden>-- Select --</option>
+												<option disabled hidden selected>-- Select --</option>
 												<option value="Test">Test</option>
 												<option value="Other">Other</option>
 											</select>
@@ -996,7 +996,7 @@
 										<div class="col-sm-6">
 											<label class="col-form-label">Permission</label>
 											<select class="form-control" name="permission" id="permission-value" required>
-												<option hidden>Task Visibility</option>
+												<option disabled hidden selected>-- Task Visibility --</option>
 												<option value="Private Task">Private Task</option>
 												<option value="Public Task">Public Task</option>
 											</select>
@@ -1080,8 +1080,8 @@
 									<div class="form-group row">
 										<div class="col-sm-6">
 											<label class="col-form-label">Task Owner <span class="text-danger">*</span></label>
-											<select class="form-control" name="record_owner" required>
-												<option hidden>-- Select --</option>
+											<select class="form-control" name="record_owner" id="record-owner-dropdown" required>
+												<option hidden selected>-- Select --</option>
 												{% for user in users %}
 												<option value="{{user.pk}}" id="task-assigned-to-{{user.pk}}">{% if user.user.last_name %} {{user.user.first_name}} {{user.user.last_name}} {% else %} {{user.user.first_name}} {% endif %}</option>
 												{% endfor %}
@@ -1318,11 +1318,11 @@
                     <div class="row w-100">
                       <div class="col-md-7 account d-flex">
                       	<div class="company_img">
-                      		<img src="{% static 'assets/img/system-user.png' %}" alt="User" class="user-image" class="img-fluid" />
+                      		<img src="{% static 'assets/img/system-user.png' %}" alt="User Image" class="img-fluid user-image" />
                   		</div>
                   		<div>
                   			<p class="mb-0">System User</p>
-                  			<span class="modal-title">{{request.user.username}}</span>
+                  			<span class="modal-title user-name"></span>
                     		<span class="rating-star"><i class="fa fa-star" aria-hidden="true"></i></span>
                     		<span class="lock"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   		</div>
@@ -1362,24 +1362,20 @@
 	                    <div class="row">
 	                      <div class="col">
 	                        <span>Title</span>
-	                        <p>VB of sales</p>
+	                        <p class="user-title"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Companies</span>
-	                        <p>Solemen tech</p>
+	                        <p class="user-organization"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Phone</span>
-	                        <p>9876764875</p>
+	                        <p class="user-phone"></p>
 	                      </div>
 	                      <div class="col">
 	                        <span>Email</span>
-	                        <p>johndoe@gmail.com</p>
-	                      </div>
-	                      <div class="col">
-	                        <span>Contact owner</span>
-	                        <p>John Doe</p>
-	                      </div>
+	                        <p class="user-email"></p>
+	                      </div>	                      
 	                    </div>
 	                </div>
                   </div>
@@ -1625,7 +1621,13 @@
 																		{% if deal.last_name %} {{deal.first_name}} {{deal.last_name}} {% else %} {{deal.first_name}} {% endif %}
 																	</td>
 																	<td>{{deal.company.name}}</td>
-																	<td>{{deal.user_responsible.name}}</td>
+																	<td>
+																		{% if deal.user_responsible.user.last_name %}
+																		{{deal.user_responsible.user.first_name}} {{deal.user_responsible.user.last_name}}
+																		{% else %}
+																		{{deal.user_responsible.user.first_name}}
+																		{% endif %}
+																	</td>
 																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
@@ -1669,7 +1671,11 @@
 																		{{project.name}}
 																	</td>
 																	<td>{{project.status}}</td>
-																	<td>{{project.user_responsible.name}}</td>																	
+																	<td>{% if project.user_responsible.user.last_name %}
+																		{{project.user_responsible.user.first_name}} {{project.user_responsible.user.last_name}}
+																		{% else %}
+																		{{project.user_responsible.user.first_name}}
+																		{% endif %}</td>																	
 																	<td>{{project.created|date:"d-m-y h:i A"}}</td>
 										                            <td class="text-end">
 																		<div class="dropdown dropdown-action">
@@ -2312,7 +2318,6 @@
 																	<th>Title</th>
 																	<th>phone</th>
 																	<th>Email</th>
-																	<th>Status</th>																	
 																</tr>
 															</thead>
 															<tbody>
@@ -2371,7 +2376,13 @@
 																		{% if deal.last_name %} {{deal.first_name}} {{deal.last_name}} {% else %} {{deal.first_name}} {% endif %}
 																	</td>
 																	<td>{{deal.company.name}}</td>
-																	<td>{{deal.user_responsible.name}}</td>
+																	<td>
+																		{% if deal.user_responsible.user.last_name %}
+																		{{deal.user_responsible.user.first_name}} {{deal.user_responsible.user.last_name}}
+																		{% else %}
+																		{{deal.user_responsible.user.first_name}}
+																		{% endif %}
+																	</td>
 																	<td>{{deal.deal_value}}‎{{deal.bid_amount}}</td>
 																	<td><i class="fa fa-star" aria-hidden="true"></i></td>
 																	
@@ -2421,7 +2432,13 @@
 																		{{project.name}}
 																	</td>
 																	<td>{{project.status}}</td>
-																	<td>{{project.user_responsible.name}}</td>
+																	<td>
+																		{% if project.user_responsible.user.last_name %}
+																		{{project.user_responsible.user.first_name}} {{project.user_responsible.user.last_name}}
+																		{% else %}
+																		{{project.user_responsible.user.first_name}}
+																		{% endif %}
+																	</td>
 																	<td>{{project.created|date:"d-m-y h:i A"}}</td>
 										                            <td class="text-end">
 																		<div class="dropdown dropdown-action">

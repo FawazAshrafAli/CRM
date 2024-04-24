@@ -862,9 +862,10 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Billing Country</label>
 					                            <select class="form-control" name="billing_country" required>
-					                                <option>India</option>
-					                                <option>US</option>
-					                                <option>Japan</option>
+					                                <option hidden selected>Country</option>
+													{% for country in countries %}
+					                                <option value="{{country}}">{{country}}</option>
+													{% endfor %}
 					                            </select>
 											</div>
 											<div class="col-sm-6">
@@ -886,9 +887,10 @@
 											</div>
 											<div class="col-sm-6">
 												<select class="form-control" name="shipping_country">
-					                                <option>India</option>
-					                                <option>US</option>
-					                                <option>Japan</option>
+					                                <option hidden selected>Country</option>
+													{% for country in countries %}
+					                                <option value="{{country}}">{{country}}</option>
+					                                {% endfor %}
 					                            </select>
 											</div>
 										</div>
@@ -1046,9 +1048,9 @@
 											<div class="col-sm-6">
 												<label class="col-form-label">Billing Country</label>
 					                            <select class="form-control" name="billing_country" id="billing-country-value" required>
-					                                <option value="India">India</option>
-					                                <option value="US">US</option>
-					                                <option value="Japan">Japan</option>
+													{% for country in countries %}
+					                                <option value="{{country}}">{{country}}</option>					                                
+													{% endfor %}
 					                            </select>
 											</div>
 											<div class="col-sm-6">
@@ -1070,10 +1072,10 @@
 											</div>
 											<div class="col-sm-6">
 												<select class="form-control" name="shipping_country" id="shipping-country-value">
-					                                <option>No Country</option>
-													<option value="India">India</option>
-					                                <option value="US">US</option>
-					                                <option value="Japan">Japan</option>
+					                                <option hidden selected>Country</option>
+													{% for country in countries %}
+													<option value="{{country}}">{{country}}</option>
+													{% endfor %}
 					                            </select>
 											</div>
 										</div>
@@ -1215,7 +1217,7 @@
 												<select class="form-control" name="record_owner" id="record-owner-value">
 					                                <option hidden>-- Select --</option>
 													{% for user in users %}
-					                                <option value="{{user.pk}}">{{user.name}}</option>
+					                                <option value="{{user.pk}}">{% if user.user.last_name %} {{user.user.first_name}} {{user.user.last_name}} {% else %} {{user.user.first_name}} {% endif %}</option>
 													{% endfor %}
 					                         	</select>
 				                            </div>

@@ -118,6 +118,7 @@ function editContact(contactId) {
                 $('#twitter-value').prop('value', '');
             };
 
+            console.log(contact.mailing_address)
             if (contact.mailing_address != null && contact.mailing_address != '') {
                 $('#mailing-address-value').prop('value', contact.mailing_address);
             } else {

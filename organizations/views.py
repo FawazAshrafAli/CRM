@@ -9,6 +9,7 @@ from django.db.models import ProtectedError
 from django.utils import timezone
 from django.utils.timezone import timedelta
 from django.http import Http404
+from pycountry import countries
 
 from .models import Company, CompanyRecentlyViewed
 from contacts.models import Contact
@@ -88,6 +89,7 @@ class ListOrganizationView(BaseOrganizationView, ListView):
             "projects": Project.objects.all(),
             "deals": Deal.objects.all(),
             "users": CrmUser.objects.all(),
+            "countries": [country.name for country in countries],
             })
         return context
     

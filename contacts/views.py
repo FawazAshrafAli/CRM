@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.utils.timezone import timedelta
 from django.contrib.auth.models import User
+from pycountry import countries
 
 from authentication.models import CrmUser
 from organizations.models import Company
@@ -110,7 +111,8 @@ class ListContactView(BaseContactView, ListView):
             'related_contacts': Contact.objects.all(),
             'deals': Deal.objects.all(),
             'projects': Project.objects.all(),
-            'users': CrmUser.objects.all()
+            'users': CrmUser.objects.all(),
+            'countries': [country.name for country in countries],
         })
         return context
     
@@ -135,45 +137,54 @@ class DetailContactView(BaseContactView, DetailView):
         # Auto dictionary creation using field name in a model and their respective value
         for field in contact._meta.fields:
             field_name = field.name
-            if field_name not in ("organization", "created", "updated", "image", "record_owner"):
-                field_value = getattr(contact, field_name)
-                serialized_data[field_name] = field_value        
+            field_value = getattr(contact, field_name)
+            if field_value:
+                if field_name == 'image':
+                    serialized_data[field_name] = field_value.url
+                
+                elif field_name in ["first_name", "last_name"]:
+                    serialized_data[field_name] = field_value
+                    if field_name == 'first_name':
+                        serialized_data["full_name"] = field_value                    
+                    elif field_name == 'last_name':
+                        serialized_data["full_name"] += f" {field_value}"
+                
+                elif field_name == "organization":
+                    serialized_data.update({
+                        field_name + "_id" : field_value.id,
+                        field_name : field_value.name
+                        })            
 
-        if contact.image:
-            serialized_data['image'] = contact.image.url
+                elif field_name in ["mailing_address", "mailing_city", "mailing_state", "mailing_postal_code", "mailing_country"]:
+                    serialized_data[field_name] = field_value
+                    if field_name == "mailing_address":
+                        full_mailing_address = field_value
+                    elif field_name in ["mailing_city", "mailing_state", "mailing_postal_code", "mailing_country"] and full_mailing_address != "":
+                        full_mailing_address += f", {field_value}"
+                        if field_name == "mailing_country":
+                            serialized_data['full_mailing_address'] = full_mailing_address
 
-        # Compining names together to form full name
-        if contact.first_name and contact.last_name:
-            serialized_data["full_name"] = f"{contact.first_name} {contact.last_name}"
-        elif contact.first_name:
-            serialized_data["full_name"] = contact.first_name
+                elif field_name in ["other_address", "other_city", "other_state", "other_postal_code", "other_country"]:
+                    serialized_data[field_name] = field_value
+                    if field_name == "other_address":
+                        full_other_address = field_value
+                    elif field_name in ["other_city", "other_state", "other_postal_code", "other_country"] and full_other_address != "":
+                        full_other_address += f", {field_value}"
+                        if field_name == "other_country":
+                            serialized_data['full_other_address'] = full_other_address                                                 
 
-        if contact.organization:
-            serialized_data.update({
-                "organization_id" : contact.organization.id,
-                "organization" : contact.organization.name
-                })            
+                elif field_name == 'record_owner':
+                    serialized_data[field_name + "_id"] = field_value.id
+                    if field_value.user.last_name:
+                        serialized_data[field_name] = f"{field_value.user.first_name} {field_value.user.last_name}"
+                    else:
+                        serialized_data[field_name] = field_value.user.first_name
 
-        # Combining all fields of mailing addres to form full mailing address
-        if contact.mailing_address and contact.mailing_city and contact.mailing_state and contact.mailing_postal_code and contact.mailing_country:
-            mailing_address = f"{contact.mailing_address}, {contact.mailing_city}, {contact.mailing_state}, {contact.mailing_postal_code}, {contact.mailing_country}."
-            serialized_data['mailing_address'] = mailing_address
+                elif field_name in ["created", "updated"]:
+                    serialized_data[field_name] = field_value.strftime("%b %d, %Y")
 
-        # Combining all fields of other addres to form full mailing address
-        if contact.other_address and contact.other_city and contact.other_state and contact.other_postal_code and contact.other_country:
-            other_address = f"{contact.other_address}, {contact.other_city}, {contact.other_state}, {contact.other_postal_code}, {contact.other_country}."
-            serialized_data['other_address'] = other_address
-
-        if contact.record_owner:
-            serialized_data.update({
-                'record_owner': contact.record_owner.id,
-                'record_owner_name': contact.record_owner.name
-                })
-
-        serialized_data.update({
-            'created' : contact.created.strftime("%b %d, %Y"),
-            'updated' : contact.updated.strftime("%d/%m/%Y")
-            })
+                else:
+                    serialized_data[field_name] = field_value
 
         return JsonResponse(serialized_data)
 
